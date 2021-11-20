@@ -1,0 +1,17 @@
+@import './variables.scss';
+
+@mixin font($style: normal, $weight: 500, $size: 1rem, $line: 1.5rem, $family: $sora) {
+  font: $style $weight #{$size}/#{$line} $family;
+}
+
+@mixin flex($direction: row, $justify: center, $align: center) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin size($width: $width, $height: $height) {
+  width: $width;
+  height: $height;
+}

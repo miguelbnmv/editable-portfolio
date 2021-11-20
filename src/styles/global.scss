@@ -1,0 +1,59 @@
+@import './variables.scss';
+@import './mixins.scss';
+
+html,
+body {
+  @include font($family: $sora);
+
+  h1 {
+    font-size: $heading;
+  }
+
+  h3 {
+    font-size: $title;
+  }
+
+  p,
+  a,
+  li,
+  span,
+  button {
+    font-size: $text;
+  }
+
+  a,
+  button {
+    text-decoration: none;
+    font-weight: 400;
+    border: none;
+    cursor: pointer;
+  }
+
+  a {
+
+    &:focus,
+    &:active,
+    &:visited,
+    &:link,
+    &:hover {
+      text-decoration: none;
+      color: inherit;
+      outline: none;
+    }
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+}
