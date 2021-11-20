@@ -1,6 +1,7 @@
+import {header} from './header.module.scss'
 const Header = () => {
   return (
-      <header>
+      <header className={header}>
         <ul>
           <li><a href='/'>Home</a></li>
           <li><a href='/projects'>Projects</a></li>

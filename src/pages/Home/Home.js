@@ -1,4 +1,5 @@
 import Layout from '../../components/shared/layout';
+import Footer from '../../components/home/footer';
 import { contentContainer } from './home.module.scss'
 
 const Home = () => {
@@ -7,6 +8,7 @@ const Home = () => {
       <div className={contentContainer}>
         <h1>Home.</h1>
       </div>
+      <Footer />
     </Layout>
   )
 }
