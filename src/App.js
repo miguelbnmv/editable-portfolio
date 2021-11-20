@@ -1,11 +1,10 @@
 import React from 'react';
 import { BrowserRouter , Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
-import Projects from './pages/Projects/ProjectsList';
-import Experience from './pages/Experience';
+import Home from './pages/home';
+import Projects from './pages/projects/ProjectsList';
+import Experience from './pages/experience';
 
 function App() {
-  console.log(Home);
   return (
     <BrowserRouter>
       <Routes>
