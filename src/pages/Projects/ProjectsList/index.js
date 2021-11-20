@@ -1,1 +1,1 @@
-export {default} from './projects-list.js'
+export { default } from './ProjectsList.js'
