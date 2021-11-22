@@ -1,0 +1,149 @@
+@import '../../../styles/global.scss';
+
+.contentContainer {
+  overflow: hidden;
+
+  .hero {
+    @include flex($direction:column, $justify:flex-end);
+    height: 75vh;
+    position: relative;
+
+    img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center bottom;
+    }
+
+    h1 {
+      @include font(normal, 800, 16rem, 100%);
+      white-space: nowrap;
+      text-transform: uppercase;
+      text-shadow: -0.125rem -0.125rem 0 $white, 0.125rem -0.125rem 0 $white, -0.125rem 0.125rem 0 $white, 0.125rem 0.125rem 0 $white;
+      color: $darkGray;
+      opacity: 0.3;
+      -webkit-user-select: none;
+      z-index: 2
+    }
+  }
+
+  .main {
+    overflow: hidden;
+
+    h3 {
+      color: $green;
+    }
+
+    p {
+      margin-top: 2rem;
+    }
+
+    h1 {
+      font-weight: 600;
+      margin-top: 4rem;
+    }
+
+    .primaryDescription {
+      position: relative;
+
+      .primaryDescriptionContent {
+        @include container(8rem 4rem);
+        width: 65%;
+        float: right;
+      }
+
+      img {
+        @include size(100%, 80vh);
+        object-fit: cover;
+      }
+
+
+      .about {
+        @include size(27rem, 27rem);
+        @include flex($direction: column, $justify: space-evenly);
+        border: 0.125rem solid $white;
+        border-radius: 50%;
+
+        position: absolute;
+        top: 15rem;
+        left: -5rem;
+
+        &::after {
+          @include size(100%, 100%);
+          content: '';
+          border: 0.125rem solid $white;
+          border-radius: 50%;
+
+          position: absolute;
+          transform: scale(1.125, 1.125);
+          top: -1.6rem;
+          right: -1rem;
+        }
+
+        .aboutCategory {
+          @include flex(column);
+
+          span {
+            color: $green;
+
+            &:last-child {
+              color: $white;
+            }
+          }
+        }
+      }
+    }
+
+    .secondaryDescription {
+      @include container(8rem 4rem);
+      @include flex($justify: space-between, $align: flex-start);
+
+      img {
+        width: 45%;
+        min-width: 45%;
+        height: 25rem;
+        object-fit: cover;
+        margin-top: 7.5rem;
+      }
+
+      .secondaryDescriptionContent {
+        margin-left: -3.5rem;
+        width: 80%;
+      }
+    }
+
+    .gallery {
+      @include flex();
+      @include container(8rem 4rem);
+
+      .myMasonryGrid {
+        display: flex;
+        width: 80%;
+
+        .myMasonryGridColumn {
+          img {
+            padding: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 1.25rem;
+}
+
+::-webkit-scrollbar-track {
+  background: $gray;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $darkGray;
+  border: 0.125rem solid $gray;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $lightGray;
+}
