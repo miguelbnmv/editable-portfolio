@@ -1,8 +1,15 @@
+import Layout from '../../../components/shared/layout/Layout';
+import ProjectCard from '../../../components/projects/projectCard/ProjectCard';
+
+import {contentContainer} from './projects-list.module.scss';
+
 const Projects = () => {
   return (
-    <div>
-      <h1>Projects.</h1>
-    </div>
+    <Layout>
+      <div className={contentContainer}>
+        <ProjectCard/>
+      </div>
+    </Layout>
   )
 }
 

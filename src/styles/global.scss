@@ -4,17 +4,24 @@
 html,
 body {
   @include font($family: $sora);
+  background-color: $darkGray;
+  color: $white;
 
   h1 {
+    @include font($weight: 600, $line: 125%, $family: $sora);
     font-size: $heading;
-    line-height: 150%;
   }
 
   h3 {
+    @include font($weight: 300, $line:150%, $family: $sora);
     font-size: $title;
   }
 
-  p,
+  p {
+    @include font($line: 150%, $family: $playfair);
+    font-size: $longText;
+  }
+
   a,
   li,
   button {
@@ -27,6 +34,7 @@ body {
     font-weight: 400;
     border: none;
     cursor: pointer;
+    background-color: transparent;
   }
 
   a {

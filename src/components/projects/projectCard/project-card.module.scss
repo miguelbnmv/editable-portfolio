@@ -1,0 +1,36 @@
+@import '../../../styles/global.scss';
+
+.card {
+  width: 100%;
+  height: 40vh;
+  padding: 5rem 0;
+  position: relative;
+
+  button {
+    @include font(normal, 800, 16rem, 9.375rem);
+    white-space: nowrap;
+    text-transform: uppercase;
+    text-shadow: -0.125rem -0.125rem 0 $white, 0.125rem -0.125rem 0 $white, -0.125rem 0.125rem 0 $white, 0.125rem 0.125rem 0 $white;
+    color: $darkGray;
+    -webkit-user-select: none;
+  }
+
+  img {
+    position: absolute;
+    height: 100%;
+    opacity: 0;
+    // transform: translate(-50%, -50%);
+    z-index: -1;
+  }
+
+  &:hover {
+
+    img {
+      opacity: 1;
+    }
+
+    button {
+      color: $white;
+    }
+  }
+}
