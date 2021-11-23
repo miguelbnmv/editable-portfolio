@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import Header from '../header';
 import { appWrapper } from './layout.module.scss';
 
-const Layout = ({ children }) => {
+const Layout = ({ pageTitle, noFill, hide, children }) => {
   return (
     <div className={appWrapper}>
-      <Header />
+      <Header pageTitle={pageTitle} noFill={noFill} hide={hide}/>
       {children}
     </div>
   );
@@ -15,5 +15,8 @@ const Layout = ({ children }) => {
 export default Layout;
 
 Layout.propTypes = {
+  pageTitle: PropTypes.string,
+  noFill: PropTypes.bool,
+  hide: PropTypes.bool,
   children: PropTypes.node,
 };

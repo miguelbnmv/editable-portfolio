@@ -9,7 +9,7 @@ import Kelvin from '../../assets/icons/Kelvin.png';
 
 const Home = () => {
   return (
-    <Layout>
+    <Layout pageTitle='Home' hide>
       <div className={contentContainer}>
           <div className={about}>
             <h1>Hello, I'm <span>Kelvin</span></h1>
