@@ -1,6 +1,12 @@
 @import './variables.scss';
 
-@mixin font($style: normal, $weight: 500, $size: 1rem, $line: 1.5rem, $family: $sora) {
+@mixin container($padding:1rem, $background: inherit, $boxShadow: inherit) {
+  padding: $padding;
+  background-color: $background;
+  box-shadow: $boxShadow;
+}
+
+@mixin font($style: normal, $weight: 400, $size: 1rem, $line: 1.5rem, $family: $sora) {
   font: $style $weight #{$size}/#{$line} $family;
 }
 
