@@ -1,0 +1,10 @@
+@import '../../../styles/mixins.scss';
+
+.wrapper {
+    @include flex($direction: column, $justify: center, $align: flex-start);
+    margin-right: 4rem;
+
+    span:first-child {
+        color: $green;
+    }
+}

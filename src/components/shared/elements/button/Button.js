@@ -17,16 +17,23 @@ var classes = {
   red: red,
   white: white,
   borderless: borderless,
-  close: close
+  close: close,
 };
 
 var icons = {
   left: left,
-  right: right
+  right: right,
 };
 
-
-const Button = ({ color, handle, path, img, text, type = 'button', disabled }) => {
+const Button = ({
+  color,
+  handle,
+  path,
+  img,
+  text,
+  type = 'button',
+  disabled,
+}) => {
   return (
     <>
       <a href={path}>
@@ -41,8 +48,8 @@ const Button = ({ color, handle, path, img, text, type = 'button', disabled }) =
         </button>
       </a>
     </>
-  )
-}
+  );
+};
 
 Button.propTypes = {
   color: PropTypes.string,

@@ -1,4 +1,4 @@
-@import '../../../styles/global.scss';
+@import '../../../styles/mixins.scss';
 
 .header {
   @include container(2rem 4rem, $background: $darkGray, $boxShadow: $shadow);

@@ -1,4 +1,4 @@
-@import '../../styles/global.scss';
+@import '../../styles/mixins.scss';
 
 .contentContainer {
     @include container(4rem);
@@ -6,12 +6,11 @@
     height: 100vh;
     overflow: hidden;
 
-
     .about {
         @include flex($direction: column, $align: flex-start);
         width: 50%;
         padding-top: 10rem;
-        
+
         span {
             color: $green;
         }
@@ -27,6 +26,7 @@
 
         ul {
             @include flex($justify: flex-start);
+
             a {
                 padding-right: 1rem;
             }
@@ -45,7 +45,7 @@
             right: 9.5rem;
         }
 
-        >div{
+        >div {
             position: relative;
         }
 
