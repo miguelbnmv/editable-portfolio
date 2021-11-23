@@ -5,7 +5,7 @@ import {contentContainer} from './projects-list.module.scss';
 
 const Projects = () => {
   return (
-    <Layout>
+    <Layout pageTitle='Projects'>
       <div className={contentContainer}>
         <ProjectCard/>
       </div>

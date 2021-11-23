@@ -2,9 +2,8 @@ import Layout from '../../components/shared/layout/';
 
 const Experience = () => {
   return (
-    <Layout>
+    <Layout pageTitle='Experience'>
       <div>
-        <h1>Experience.</h1>
       </div>
     </Layout>
   )

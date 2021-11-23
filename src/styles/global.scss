@@ -6,6 +6,7 @@ body {
   @include font($family: $sora);
   background-color: $darkGray;
   color: $white;
+  overflow: overlay;
 
   h1 {
     @include font($weight: 600, $line: 125%, $family: $sora);
