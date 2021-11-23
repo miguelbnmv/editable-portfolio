@@ -1,0 +1,37 @@
+@import '/src/styles/mixins.scss';
+
+.input {
+  @include font($weight: 300);
+
+  div {
+    @include flex($justify: flex-start, $align: flex-start);
+    margin-bottom: 0.5rem;
+    color: $white;
+
+    img {
+      margin-left: 0.25rem;
+    }
+  }
+
+  input {
+    @include size(100%, 3rem);
+    @include font($weight: 300);
+    padding: 0 1rem;
+    color: $white;
+    background-color: $darkGray;
+
+    &.red {
+      background-color: rgba($color: $red, $alpha: 0.1);
+    }
+
+    &:focus {
+      outline: none;
+      border: 1px solid $green;
+    }
+  }
+
+  .errorMessage {
+    margin-top: 0.5rem;
+    color: $red;
+  }
+}

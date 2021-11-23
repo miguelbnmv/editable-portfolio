@@ -1,4 +1,3 @@
-@import './variables.scss';
 @import './mixins.scss';
 
 html,
@@ -49,6 +48,18 @@ body {
   img {
     max-width: 100%;
     display: block;
+  }
+
+  input {
+    border: none;
+  }
+
+  ::placeholder {
+    color: $lightGray;
+  }
+
+  ::-webkit-calendar-picker-indicator {
+    filter: invert(1);
   }
 
   * {

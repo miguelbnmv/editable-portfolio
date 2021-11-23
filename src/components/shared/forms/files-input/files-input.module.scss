@@ -1,0 +1,30 @@
+@import '/src/styles/mixins.scss';
+
+.input {
+  @include size(100%, 7rem);
+
+  label {
+    @include size(100%, 100%);
+    @include font($weight: 300);
+    display: flex;
+    padding: 0.25rem;
+    background-color: $darkGray;
+    cursor: pointer;
+
+    >div:last-child {
+      @include size(100%, 100%);
+      @include flex();
+      border: 1px dashed $lightGray;
+      color: $lightGray;
+    }
+  }
+
+  input {
+    display: none;
+
+    &:focus {
+      outline: none;
+      border: 1px solid $green;
+    }
+  }
+}

@@ -1,0 +1,25 @@
+@import '/src/styles/mixins.scss';
+
+.wrapper {
+  @include flex($justify: space-between);
+  @include font($weight: 600);
+  padding-bottom: 0.5rem;
+  border-bottom: 0.225rem solid $darkGray;
+  color: $white;
+
+  .controls {
+    display: flex;
+    margin-left: 1rem;
+
+    button {
+      @include font($weight: 300);
+      color: $white;
+      background-color: transparent;
+
+      &.remove {
+        margin-left: 1rem;
+        color: $red;
+      }
+    }
+  }
+}
