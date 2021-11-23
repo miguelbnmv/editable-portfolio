@@ -1,0 +1,96 @@
+@import '/src/styles/mixins.scss';
+
+.background {
+  @include flex();
+  @include size(100vw, 100vh);
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba($color: $darkGray, $alpha: 0.8);
+
+  .modal {
+    width: 50%;
+    background-color: $gray;
+
+    @media only screen and (max-width: $tablet) {
+      @include size(100%, 100%);
+      @include flex(column, space-between, initial);
+    }
+
+    .header {
+      @include flex($justify: space-between);
+      padding: 2.5rem;
+      color: $white;
+      background-color: $darkGray;
+      box-shadow: 0 -0.25rem 2.5rem 0.5rem rgba(0, 0, 0, 0.25);
+
+      @media only screen and (max-width: $tablet) {
+        padding: 2rem;
+
+        h3 {
+          font-size: 1.5rem;
+        }
+      }
+
+      button {
+        background-color: transparent;
+        padding: 0.5rem;
+      }
+    }
+
+    .content {
+      max-height: 33rem;
+      overflow-y: auto;
+      padding: 2.5rem;
+
+      @media only screen and (max-width: $tablet) {
+        height: 100%;
+        max-height: initial;
+        padding: 2rem;
+      }
+
+      >div:not(:last-child) {
+        margin-bottom: 2rem;
+      }
+
+      .double {
+        display: grid;
+        gap: 2rem;
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .footer {
+      @include flex(column);
+      padding: 2.5rem;
+
+      @media only screen and (max-width: $tablet) {
+        padding: 2rem;
+        box-shadow: 0 -0.25rem 2.5rem 0.5rem rgba(0, 0, 0, 0.25);
+      }
+
+      .submit {
+        @include size(100%, 3rem);
+        @include font($weight: 300);
+        background-color: $green;
+        text-align: center;
+        cursor: pointer;
+
+        &.white {
+          background-color: $white;
+        }
+      }
+
+      .link {
+        @include font($weight: 300);
+        margin-top: 1.5rem;
+        color: $white;
+
+        button {
+          background-color: transparent;
+          color: $green;
+        }
+      }
+    }
+  }
+}
