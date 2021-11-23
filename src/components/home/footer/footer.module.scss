@@ -1,3 +1,10 @@
-@import '../../../styles/global.scss';
+@import '../../../styles/mixins.scss';
 
-.footer {}
+.footer {
+    @include flex($direction: column, $justify: center, $align: flex-start) ;
+    margin-right: 2rem;
+
+    span:first-child{
+        color: $green;
+    }
+}
