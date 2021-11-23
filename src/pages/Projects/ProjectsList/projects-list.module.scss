@@ -1,7 +1,7 @@
 @import '../../../styles/global.scss';
 
 .contentContainer {
-  @include container(5rem 0);
+  @include container(15rem 0 5rem 0);
 
   >div {
 

@@ -4,9 +4,8 @@ import { contentContainer } from './home.module.scss'
 
 const Home = () => {
   return (
-    <Layout>
+    <Layout pageTitle='Home' hide>
       <div className={contentContainer}>
-        <h1>Home.</h1>
       </div>
       <Footer />
     </Layout>

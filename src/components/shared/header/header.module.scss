@@ -1,3 +1,45 @@
+@import '../../../styles/global.scss';
+
 .header {
-  display: none;
+  @include container(2rem 4rem, $background: $darkGray, $boxShadow: $shadow);
+  position: fixed;
+  z-index: 10;
+  width: 100%;
+
+  .btnWrapper {
+    @include flex($justify: space-between);
+
+    a {
+      &:last-child {
+        button {
+          flex-direction: row-reverse;
+        }
+      }
+    }
+  }
+
+  .pageInfo {
+    margin-top: 2rem;
+
+    h1 {
+      line-height: 100%;
+
+      span {
+        color: $green;
+      }
+    }
+  }
+
+  &.headerTransparent {
+    @include container(2rem 4rem, $background: transparent, $boxShadow: none);
+    position: absolute;
+  }
+
+  &.hideHeader {
+    @include container(2rem 4rem, $background: transparent, $boxShadow: none);
+
+    .pageInfo {
+      display: none;
+    }
+  }
 }

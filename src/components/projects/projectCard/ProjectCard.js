@@ -10,7 +10,7 @@ const ProjectCard = () => {
   const navigate = useNavigate();
   
   const position = useMousePosition();
-  console.log(position.x , position.y);
+  // console.log(position.x , position.y);
 
   return (
     <>
