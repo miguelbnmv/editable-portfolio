@@ -1,10 +1,9 @@
-@import '../../../styles/global.scss';
+@import '../../../styles/mixins.scss';
 
 .card {
-  width: 100%;
-  height: 40vh;
-  padding: 5rem 0;
+  @include size(100%, 40vh);
   position: relative;
+  padding: 5rem 0;
 
   button {
     @include font(normal, 800, 16rem, 9.375rem);
@@ -19,12 +18,10 @@
     position: absolute;
     height: 100%;
     opacity: 0;
-    // transform: translate(-50%, -50%);
     z-index: -1;
   }
 
   &:hover {
-
     img {
       opacity: 1;
     }

@@ -14,7 +14,7 @@ const Experience = () => {
   const [modal, setModal] = useState(false);
 
   return (
-    <Layout pageTitle='Experience'>
+    <Layout pageTitle="Experience">
       <div>
         {modal ? (
           <Formik

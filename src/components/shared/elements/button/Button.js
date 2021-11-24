@@ -17,37 +17,28 @@ var classes = {
   red: red,
   white: white,
   borderless: borderless,
-  close: close
+  close: close,
 };
 
-var icons = {
-  left: left,
-  right: right
-};
+var icons = { left: left, right: right };
 
-
-const Button = ({ color, handle, path, img, text, type = 'button', disabled }) => {
+const Button = ({ color, handle, img, text, type = 'button', disabled }) => {
   return (
-    <>
-      <a href={path}>
-        <button
-          onClick={handle}
-          type={type}
-          className={`${button} ${classes[color]}`}
-          disabled={disabled}
-        >
-          {img ? <img src={icons[img]} alt={img} width={28} /> : ''}
-          <span>{text}</span>
-        </button>
-      </a>
-    </>
-  )
-}
+    <button
+      type={type}
+      className={`${button} ${classes[color]}`}
+      onClick={handle}
+      disabled={disabled}
+    >
+      {img ? <img src={icons[img]} alt={img} width={28} /> : ''}
+      <span>{text}</span>
+    </button>
+  );
+};
 
 Button.propTypes = {
   color: PropTypes.string,
   handle: PropTypes.func,
-  path: PropTypes.string,
   img: PropTypes.string,
   text: PropTypes.string.isRequired,
   type: PropTypes.string,

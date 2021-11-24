@@ -1,16 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Header from '../header';
-import { appWrapper } from './layout.module.scss';
 
-const Layout = ({ pageTitle, noFill, hide, children }) => {
-  return (
-    <div className={appWrapper}>
-      <Header pageTitle={pageTitle} noFill={noFill} hide={hide}/>
-      {children}
-    </div>
-  );
-};
+const Layout = ({ pageTitle, noFill, hide, children }) => (
+  <>
+    <Header pageTitle={pageTitle} noFill={noFill} hide={hide} />
+    {children}
+  </>
+);
 
 export default Layout;
 

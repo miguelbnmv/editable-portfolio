@@ -1,4 +1,4 @@
-@import '../../../styles/global.scss';
+@import '../../../styles/mixins.scss';
 
 .header {
   @include container(2rem 4rem, $background: $darkGray, $boxShadow: $shadow);
@@ -9,12 +9,8 @@
   .btnWrapper {
     @include flex($justify: space-between);
 
-    a {
-      &:last-child {
-        button {
-          flex-direction: row-reverse;
-        }
-      }
+    button:last-child {
+      flex-direction: row-reverse;
     }
   }
 

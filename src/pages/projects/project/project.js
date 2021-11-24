@@ -10,7 +10,8 @@ import {
   main,
   primaryDescription,
   primaryDescriptionContent,
-  about, aboutCategory,
+  about,
+  aboutCategory,
   secondaryDescription,
   secondaryDescriptionContent,
   gallery,
@@ -22,7 +23,6 @@ const Project = () => {
   const { projectId } = useParams();
   const project = Data.find(({ id }) => id === parseInt(projectId));
 
-
   const breakpointColumnsObj = {
     default: 2,
     800: 1,
@@ -31,21 +31,19 @@ const Project = () => {
   return (
     <Layout pageTitle={project.name} noFill>
       <div className={contentContainer}>
-
         <div className={hero}>
-          <img src={project.banner} alt='project-banner' />
-          <h1>{project.name}. {project.name}.</h1>
+          <img src={project.banner} alt="project-banner" />
+          <h1>
+            {project.name}. {project.name}.
+          </h1>
         </div>
-
         <div className={main}>
-
           <div className={primaryDescription}>
             <div className={primaryDescriptionContent}>
               <h3>{project.primaryDescription.title}</h3>
               <p>{project.primaryDescription.description}</p>
               <h1>"{project.quote}"</h1>
             </div>
-
             <div className={about}>
               <div className={aboutCategory}>
                 <span>Subject</span>
@@ -64,36 +62,38 @@ const Project = () => {
                 <span>{project.about.year}</span>
               </div>
             </div>
-
-            <img src={project.primaryDescription.image} alt='description-illustration' />
+            <img
+              src={project.primaryDescription.image}
+              alt="description-illustration"
+            />
           </div>
-
           <div className={secondaryDescription}>
-            <img src={project.secondaryDescription.image} alt='description-illustration'/>
+            <img
+              src={project.secondaryDescription.image}
+              alt="description-illustration"
+            />
             <div className={secondaryDescriptionContent}>
               <h3>{project.secondaryDescription.title}</h3>
               <p>{project.secondaryDescription.description}</p>
             </div>
           </div>
-
           <div className={gallery}>
             <Masonry
               breakpointCols={breakpointColumnsObj}
               className={myMasonryGrid}
               columnClassName={myMasonryGridColumn}
             >
-              <img src={project.gallery.img0} alt='project-img' />
-              <img src={project.gallery.img1} alt='project-img' />
-              <img src={project.gallery.img2} alt='project-img' />
-              <img src={project.gallery.img3} alt='project-img' />
-              <img src={project.gallery.img4} alt='project-img' />
+              <img src={project.gallery.img0} alt="project-img" />
+              <img src={project.gallery.img1} alt="project-img" />
+              <img src={project.gallery.img2} alt="project-img" />
+              <img src={project.gallery.img3} alt="project-img" />
+              <img src={project.gallery.img4} alt="project-img" />
             </Masonry>
           </div>
-
         </div>
       </div>
     </Layout>
-  )
-}
+  );
+};
 
 export default Project;
