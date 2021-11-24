@@ -3,7 +3,7 @@
 .header {
   @include container(2rem 4rem, $background: $darkGray, $boxShadow: $shadow);
   position: fixed;
-  z-index: 10;
+  z-index: 2;
   width: 100%;
 
   .btnWrapper {
@@ -15,6 +15,7 @@
   }
 
   .pageInfo {
+    @include flex($justify: space-between);
     margin-top: 2rem;
 
     h1 {
@@ -29,6 +30,10 @@
   &.headerTransparent {
     @include container(2rem 4rem, $background: transparent, $boxShadow: none);
     position: absolute;
+
+    button:last-child {
+      flex-direction: row;
+    }
   }
 
   &.hideHeader {

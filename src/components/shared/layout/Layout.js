@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Header from '../header';
 
-const Layout = ({ pageTitle, noFill, hide, children }) => (
+const Layout = ({ pageTitle, noFill, hide, children, openModal }) => (
   <>
-    <Header pageTitle={pageTitle} noFill={noFill} hide={hide} />
+    <Header pageTitle={pageTitle} noFill={noFill} hide={hide} openModal={openModal} />
     {children}
   </>
 );
@@ -16,4 +16,5 @@ Layout.propTypes = {
   noFill: PropTypes.bool,
   hide: PropTypes.bool,
   children: PropTypes.node,
+  openModal: PropTypes.func,
 };

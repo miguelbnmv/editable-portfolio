@@ -31,7 +31,7 @@ const Input = ({
       placeholder={placeholder}
       className={error ? red : null}
     />
-    <p className={errorMessage}>{error}</p>
+    <span className={errorMessage}>{error}</span>
   </div>
 );
 

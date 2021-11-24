@@ -1,5 +1,6 @@
 import Layout from '../../components/shared/layout';
 import InfoElement from '../../components/home/info-element';
+import Button from '../../components/shared/elements/button';
 
 import GithubIcon from '../../assets/icons/Github.png';
 import InstagramIcon from '../../assets/icons/Instagram.png';
@@ -27,7 +28,12 @@ const Home = () => {
             wants to share his very good projects.
           </p>
           <br />
-          <button>Contact →</button>
+          <Button
+            handle={() => {}}
+            text="Contact"
+            img="right"
+            color="green"
+          />
           <br />
 
           <ul>

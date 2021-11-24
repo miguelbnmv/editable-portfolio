@@ -14,7 +14,7 @@ const Experience = () => {
   const [modal, setModal] = useState(false);
 
   return (
-    <Layout pageTitle="Experience">
+    <Layout pageTitle="Experience" openModal={() => setModal(true)}>
       <div>
         {modal ? (
           <Formik
@@ -37,7 +37,6 @@ const Experience = () => {
           </Formik>
         ) : null}
         <h1>Experience.</h1>
-        <button onClick={() => setModal(true)}>Teste teste</button>
       </div>
     </Layout>
   );

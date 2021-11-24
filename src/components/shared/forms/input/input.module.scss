@@ -31,7 +31,9 @@
   }
 
   .errorMessage {
+    display: block;
     margin-top: 0.5rem;
     color: $red;
+    font-size: 0.95rem;
   }
 }

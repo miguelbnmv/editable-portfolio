@@ -18,16 +18,22 @@ const navigation = {
   Experience: ['projects', 'home'],
 };
 
-const Header = ({ pageTitle, noFill, hide }) => {
+const Header = ({ pageTitle, noFill, hide, openModal }) => {
   const navigate = useNavigate();
 
-  const getTitle = (index) =>
-    navigation[pageTitle] ? navigation[pageTitle][index] : pageTitle;
+  console.log(openModal)
 
-  const getPath = (index) =>
-    navigation[pageTitle][index] === 'home'
+  const getTitle = (index) => {
+    if (noFill) return 'Projects';
+    return navigation[pageTitle] ? navigation[pageTitle][index] : pageTitle;
+  };
+
+  const getPath = (index) => {
+    if (noFill) return '/projects';
+    return navigation[pageTitle][index] === 'home'
       ? '/'
       : '/' + navigation[pageTitle][index];
+  };
 
   return (
     <header
@@ -42,18 +48,25 @@ const Header = ({ pageTitle, noFill, hide }) => {
           img="left"
           color="borderless"
         />
-        <Button
-          handle={() => navigate(getPath(1))}
-          text={getTitle(1)}
-          img="right"
-          color="borderless"
-        />
+        {!noFill ? (
+          <Button
+            handle={() => navigate(getPath(1))}
+            text={getTitle(1)}
+            img="right"
+            color="borderless"
+          />
+        ) : null}
       </div>
       <div className={pageInfo}>
         <h1>
           {pageTitle}
           <span>.</span>
         </h1>
+        <Button
+          handle={openModal}
+          text='Edit'
+          color="white"
+        />
       </div>
     </header>
   );
@@ -63,6 +76,7 @@ Header.propTypes = {
   pageTitle: PropTypes.string,
   noFill: PropTypes.bool,
   hide: PropTypes.bool,
+  openModal: PropTypes.func,
 };
 
 export default Header;
