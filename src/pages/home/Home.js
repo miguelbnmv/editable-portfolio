@@ -1,9 +1,9 @@
 import Layout from '../../components/shared/layout';
 import InfoElement from '../../components/home/info-element';
 
-import Icon1 from '../../assets/icons/Github.png';
-import Icon2 from '../../assets/icons/Instagram.png';
-import Icon3 from '../../assets/icons/Twitter.png';
+import GithubIcon from '../../assets/icons/Github.png';
+import InstagramIcon from '../../assets/icons/Instagram.png';
+import TwitterIcon from '../../assets/icons/Twitter.png';
 import Kelvin from '../../assets/images/Kelvin.png';
 
 import {
@@ -31,14 +31,14 @@ const Home = () => {
           <br />
 
           <ul>
-            <a href="github">
-              <img src={Icon1} alt="Github icon" />
+            <a href="github.com">
+              <img src={GithubIcon} alt="Github icon" />
             </a>
-            <a href="instagram">
-              <img src={Icon2} alt="Instagram icon" />
+            <a href="instagram.com">
+              <img src={InstagramIcon} alt="Instagram icon" />
             </a>
-            <a href="twitter">
-              <img src={Icon3} alt="Twitter icon" />
+            <a href="twitter.com">
+              <img src={TwitterIcon} alt="Twitter icon" />
             </a>
           </ul>
         </div>

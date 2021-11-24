@@ -21,6 +21,14 @@ const navigation = {
 const Header = ({ pageTitle, noFill, hide }) => {
   const navigate = useNavigate();
 
+  const getTitle = (index) =>
+    navigation[pageTitle] ? navigation[pageTitle][index] : pageTitle;
+
+  const getPath = (index) =>
+    navigation[pageTitle][index] === 'home'
+      ? '/'
+      : '/' + navigation[pageTitle][index];
+
   return (
     <header
       className={`${header} ${
@@ -29,22 +37,14 @@ const Header = ({ pageTitle, noFill, hide }) => {
     >
       <div className={btnWrapper}>
         <Button
-          handle={() => navigate(
-            navigation[pageTitle][0] === 'home'
-              ? '/'
-              : '/' + navigation[pageTitle][0]
-          )}
-          text={navigation[pageTitle][0]}
+          handle={() => navigate(getPath(0))}
+          text={getTitle(0)}
           img="left"
           color="borderless"
         />
         <Button
-          handle={() => navigate(
-            navigation[pageTitle][1] === 'home'
-              ? '/'
-              : '/' + navigation[pageTitle][1]
-          )}
-          text={navigation[pageTitle][1]}
+          handle={() => navigate(getPath(1))}
+          text={getTitle(1)}
           img="right"
           color="borderless"
         />
