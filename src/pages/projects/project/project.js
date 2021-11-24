@@ -23,6 +23,7 @@ const Project = () => {
   const { projectId } = useParams();
   const project = Data.find(({ id }) => id === parseInt(projectId));
 
+
   const breakpointColumnsObj = {
     default: 2,
     800: 1,

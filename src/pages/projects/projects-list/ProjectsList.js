@@ -9,7 +9,7 @@ const ProjectsList = () => (
   <Layout pageTitle="Projects">
     <div className={contentContainer}>
       {Data.map((project) => (
-        <ProjectCard project={project} />
+        <ProjectCard project={project} key={project.id} />
       ))}
     </div>
   </Layout>
