@@ -9,12 +9,8 @@
   .btnWrapper {
     @include flex($justify: space-between);
 
-    a {
-      &:last-child {
-        button {
-          flex-direction: row-reverse;
-        }
-      }
+    button:last-child {
+      flex-direction: row-reverse;
     }
   }
 
