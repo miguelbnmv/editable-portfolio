@@ -1,8 +1,9 @@
 import { useParams } from 'react-router-dom';
 import Masonry from 'react-masonry-css';
 
-import Data from '../../../assets/json/Projects.json';
-import Layout from '../../../components/shared/layout/Layout';
+import Layout from 'components/shared/layout/Layout';
+
+import Data from 'assets/json/Projects.json';
 
 import {
   contentContainer,

@@ -39,7 +39,7 @@ const Home = () => {
       initialValues={isContact ? contactFormValues : editInfoFormValues}
       schema={isContact ? contactFormSchema : editInfoFormSchema}
       title={isContact ? 'Contact Me' : 'Edit your info'}
-      handle={() =>
+      handleClose={() =>
         isContact ? setContactOpen(false) : setEditInfoOpen(false)
       }
     >

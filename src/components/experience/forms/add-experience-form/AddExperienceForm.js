@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Input from '../../../shared/forms/input';
-import FilesInput from '../../../shared/forms/files-input';
+import Input from 'components/shared/forms/input';
+import FilesInput from 'components/shared/forms/files-input';
 
 const AddExperienceForm = ({ formik }) => (
   <>

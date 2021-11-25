@@ -60,11 +60,7 @@ const Header = ({ pageTitle, noFill, hide, openModal }) => {
           {pageTitle}
           <span>.</span>
         </h1>
-        <Button
-          handle={openModal}
-          text='Edit'
-          color="white"
-        />
+        <Button handle={openModal} text="Edit" color="white" />
       </div>
     </header>
   );

@@ -34,7 +34,7 @@ const Experience = () => {
       <FormWrapper
         initialValues={initialValues(experience)}
         schema={addExperienceFormSchema}
-        title={'Add experience'}
+        title="Add experience"
         handleClose={() => setAddExperienceOpen(false)}
       >
         {(formik) => <AddExperienceForm formik={formik} />}
