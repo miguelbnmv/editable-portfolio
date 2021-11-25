@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import required from '../../../../assets/icons/required.svg';
-import requiredError from '../../../../assets/icons/requiredError.svg';
+import required from 'assets/icons/required.svg';
+import requiredError from 'assets/icons/requiredError.svg';
 
 import { input, red, errorMessage } from './input.module.scss';
 

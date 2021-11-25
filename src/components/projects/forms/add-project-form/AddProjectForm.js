@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Input from '../../../shared/forms/input';
-import Textarea from '../../../shared/forms/textarea';
-import FilesInput from '../../../shared/forms/files-input';
+import Input from 'components/shared/forms/input';
+import Textarea from 'components/shared/forms/textarea';
+import FilesInput from 'components/shared/forms/files-input';
 
-import { double } from '../../../shared/modal/modal.module.scss';
+import { double } from 'components/shared/modal/modal.module.scss';
 
 const AddProjectForm = ({ formik }) => (
   <>

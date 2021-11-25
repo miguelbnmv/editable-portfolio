@@ -1,26 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { wrapper, controls, remove } from './list-element.module.scss';
+import Button from 'components/shared/elements/button';
 
-const Input = ({ name }) => (
+import { wrapper, controls } from './list-element.module.scss';
+
+const ListElement = ({ name, editHandle }) => (
   <div className={wrapper}>
     <span>{name}</span>
     <div className={controls}>
-      <button onClick={() => {}}>edit</button>
-      <button onClick={() => {}} className={remove}>
-        delete
-      </button>
+      <Button text="edit" color="borderless" handle={editHandle} />
+      <Button text="delete" color="borderless" handle={() => {}} />
     </div>
   </div>
 );
 
-export default Input;
+export default ListElement;
 
-Input.propTypes = {
-  label: PropTypes.string,
-  isRequired: PropTypes.bool,
+ListElement.propTypes = {
   name: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  placeholder: PropTypes.string,
+  editHandle: PropTypes.func.isRequired,
 };

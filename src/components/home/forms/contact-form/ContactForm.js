@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Input from '../../../shared/forms/input';
-import Textarea from '../../../shared/forms/textarea';
+import Input from 'components/shared/forms/input';
+import Textarea from 'components/shared/forms/textarea';
 
 const ContactForm = ({ formik }) => (
   <>

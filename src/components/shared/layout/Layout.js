@@ -1,10 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import Header from '../header';
 
 const Layout = ({ pageTitle, noFill, hide, children, openModal }) => (
   <>
-    <Header pageTitle={pageTitle} noFill={noFill} hide={hide} openModal={openModal} />
+    <Header
+      pageTitle={pageTitle}
+      noFill={noFill}
+      hide={hide}
+      openModal={openModal}
+    />
     {children}
   </>
 );

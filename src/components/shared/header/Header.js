@@ -21,8 +21,6 @@ const navigation = {
 const Header = ({ pageTitle, noFill, hide, openModal }) => {
   const navigate = useNavigate();
 
-  console.log(openModal)
-
   const getTitle = (index) => {
     if (noFill) return 'Projects';
     return navigation[pageTitle] ? navigation[pageTitle][index] : pageTitle;
@@ -62,11 +60,7 @@ const Header = ({ pageTitle, noFill, hide, openModal }) => {
           {pageTitle}
           <span>.</span>
         </h1>
-        <Button
-          handle={openModal}
-          text='Edit'
-          color="white"
-        />
+        <Button handle={openModal} text="Edit" color="white" />
       </div>
     </header>
   );

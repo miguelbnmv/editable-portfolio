@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Input from '../../../shared/forms/input';
+import Input from 'components/shared/forms/input';
 
 const RegisterForm = ({ formik }) => (
   <>
