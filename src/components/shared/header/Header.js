@@ -56,10 +56,12 @@ const Header = ({ pageTitle, noFill, hide, openModal }) => {
         ) : null}
       </div>
       <div className={pageInfo}>
-        <h1>
-          {pageTitle}
-          <span>.</span>
-        </h1>
+        {!hide ? (
+          <h1>
+            {pageTitle}
+            <span>.</span>
+          </h1>
+        ) : null}
         <Button handle={openModal} text="Edit" color="white" />
       </div>
     </header>

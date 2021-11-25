@@ -28,8 +28,7 @@
   }
 
   &.headerTransparent {
-    @include container(2rem 4rem, $background: transparent, $boxShadow: none);
-    position: absolute;
+    @include container(2rem 4rem, transparent, none);
 
     button:last-child {
       flex-direction: row;
@@ -37,10 +36,11 @@
   }
 
   &.hideHeader {
-    @include container(2rem 4rem, $background: transparent, $boxShadow: none);
+    @include container(2rem 4rem, transparent, none);
 
     .pageInfo {
-      display: none;
+      @include flex($justify: flex-end);
+      height: 5rem;
     }
   }
 }

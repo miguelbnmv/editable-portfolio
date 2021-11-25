@@ -4,26 +4,36 @@
     @include container(4rem);
     @include flex($direction: column, $justify: space-between, $align: flex-start);
     height: 100vh;
-    overflow: hidden;
 
     .about {
         @include flex($direction: column, $align: flex-start);
-        width: 50%;
         padding-top: 10rem;
 
-        >span {
-            color: $green;
+        p {
+            width: 60%;
         }
 
+        h1,
+        p {
+            margin-bottom: 3rem;
+        }
+
+        h3 {
+            margin-bottom: 0.5rem;
+        }
+
+
+        h1 span,
         h3 {
             color: $green;
         }
 
         button {
             flex-direction: row-reverse;
+            margin-bottom: 1rem;
         }
 
-        ul {
+        >div {
             @include flex($justify: flex-start);
 
             a {
@@ -34,14 +44,14 @@
 
     .imageGroup {
         position: absolute;
-        top: 20%;
+        top: 10%;
         right: -10%;
 
         img {
-            width: 75%;
+            width: 80%;
             position: absolute;
-            top: 3rem;
-            right: 9.5rem;
+            top: 4rem;
+            right: 10rem;
         }
 
         >div {
@@ -49,10 +59,9 @@
         }
 
         >div>div {
+            @include size(50rem, 50rem);
             border-radius: 50%;
-            border: 1px solid $white;
-            height: 40rem;
-            width: 40rem;
+            border: 0.0625rem solid $white;
         }
     }
 
