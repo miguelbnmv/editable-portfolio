@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
-import ListElement from 'components/shared/forms/list-element';
+import { Context } from 'context/userContext';
 
-import Data from 'assets/json/Projects.json';
+import ListElement from 'components/shared/forms/list-element';
 
 const MyProjectsForm = ({ handle }) => {
   const navigate = useNavigate();
+  const { projects } = useContext(Context);
 
   const editHandle = (id) => {
     handle();
@@ -16,7 +17,7 @@ const MyProjectsForm = ({ handle }) => {
 
   return (
     <>
-      {Data.map(({ name, id }) => (
+      {projects.map(({ name, id }) => (
         <ListElement name={name} key={id} editHandle={() => editHandle(id)} />
       ))}
     </>

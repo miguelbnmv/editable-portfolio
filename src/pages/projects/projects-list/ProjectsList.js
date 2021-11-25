@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+
+import { Context } from 'context/userContext';
 
 import Layout from 'components/shared/layout';
 import Modal from 'components/shared/modal';
@@ -13,16 +15,15 @@ import {
 } from 'components/projects/forms/add-project-form/utils';
 import MyProjectsForm from 'components/projects/forms/my-projects-form';
 
-import Data from 'assets/json/Projects.json';
-
 import { contentContainer } from './projects-list.module.scss';
 
 const ProjectsList = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [addProjectOpen, setAddProjectOpen] = useState(false);
   const [myProjectsOpen, setMyProjectsOpen] = useState(false);
-  const [searchParams] = useSearchParams();
-  const project = Data.find(
+  const { projects } = useContext(Context);
+  const project = projects.find(
     ({ id }) => id === parseInt(searchParams.get('id'))
   );
 
@@ -57,7 +58,7 @@ const ProjectsList = () => {
       <section className={contentContainer}>
         {addProjectOpen ? modal(true) : null}
         {myProjectsOpen ? modal(false) : null}
-        {Data.map((project) => (
+        {projects.map((project) => (
           <ProjectCard project={project} key={project.id} />
         ))}
       </section>

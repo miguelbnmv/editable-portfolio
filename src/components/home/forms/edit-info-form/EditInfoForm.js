@@ -82,7 +82,7 @@ const EditInfoForm = ({ formik }) => (
       />
       <Input
         name="userPhone"
-        type="number"
+        type="tel"
         value={formik.values.userPhone}
         handleChange={formik.handleChange}
         error={

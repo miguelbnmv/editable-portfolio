@@ -1,9 +1,10 @@
+import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import Masonry from 'react-masonry-css';
 
-import Layout from 'components/shared/layout/Layout';
+import { Context } from 'context/userContext';
 
-import Data from 'assets/json/Projects.json';
+import Layout from 'components/shared/layout/Layout';
 
 import {
   contentContainer,
@@ -22,7 +23,8 @@ import {
 
 const Project = () => {
   const { projectId } = useParams();
-  const project = Data.find(({ id }) => id === parseInt(projectId));
+  const { projects } = useContext(Context);
+  const project = projects.find(({ id }) => id === parseInt(projectId));
 
   const breakpointColumnsObj = {
     default: 2,

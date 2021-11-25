@@ -1,0 +1,134 @@
+{
+  "info": {
+    "name": "Kelvin Smith",
+    "image": "/images/projects/beathitbanner.jpg",
+    "bio": "A front-end developer at Redlight Software who loves to swim and wants to share his very good projects.",
+    "role": "Front-end developer",
+    "location": "Rome",
+    "email": "kelvin@redlight.dev",
+    "phone": "+351 911 010 123",
+    "social": {
+      "Linkedin": "",
+      "Github": "https://github.com/kelvinsmith",
+      "Instagram": "https://instagram.com/kelvinsmith",
+      "Behance": "",
+      "Dribble": "",
+      "Twitter": "https://twitter.com/kelvinsmith"
+    }
+  },
+  "projects": [
+    {
+      "id": 0,
+      "url": "beathit",
+      "name": "BeatHit",
+      "banner": "/images/projects/beathitbanner.jpg",
+      "about": {
+        "subject": "Music APP",
+        "platforms": "Web and Mobile",
+        "technologies": "React",
+        "year": "2019"
+      },
+      "quote": "BeatHit is a realy cool APP!",
+      "primaryDescription": {
+        "title": "Listen to Music Everywhere",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras a ex id lorem semper cursus. Nam a aliquam enim, non blandit ligula. Vivamus id pretium lacus. Phasellus consectetur urna sed lorem consequat, ac porttitor augue euismod. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus ut ligula quis nunc mollis tristique ut vitae justo. Phasellus blandit imperdiet augue non fringilla. Nulla porta sollicitudin aliquam. In venenatis in ante in suscipit. Nullam at nisi nec lacus varius.",
+        "image": "/images/projects/beathitprimary.jpg"
+      },
+      "secondaryDescription": {
+        "title": "An APP to explore",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras a ex id lorem semper cursus. Nam a aliquam enim, non blandit ligula. Vivamus id pretium lacus. Phasellus consectetur urna sed lorem consequat, ac porttitor augue euismod. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus ut ligula quis nunc mollis tristique ut vitae justo. Phasellus blandit imperdiet augue non fringilla. Nulla porta sollicitudin aliquam. In venenatis in ante in suscipit. Nullam at nisi nec lacus varius.",
+        "image": "/images/projects/beathitsecondary.jpg"
+      },
+      "gallery": {
+        "img0": "/images/projects/beathitgallery0.jpg",
+        "img1": "/images/projects/beathitgallery1.jpg",
+        "img2": "/images/projects/beathitgallery2.jpg",
+        "img3": "/images/projects/beathitgallery3.jpg",
+        "img4": "/images/projects/beathitgallery4.jpg"
+      }
+    },
+    {
+      "id": 1,
+      "url": "encryptedmessages",
+      "name": "Encrypted Messages",
+      "banner": "/images/projects/encmessagesbanner.jpg",
+      "about": {
+        "subject": "Social APP",
+        "platforms": "Mobile",
+        "technologies": "React Native",
+        "year": "2020"
+      },
+      "quote": "Encrypted Messages is an amazing APP!",
+      "primaryDescription": {
+        "title": "Share the Keys With Your Friends",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras a ex id lorem semper cursus. Nam a aliquam enim, non blandit ligula. Vivamus id pretium lacus. Phasellus consectetur urna sed lorem consequat, ac porttitor augue euismod. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus ut ligula quis nunc mollis tristique ut vitae justo. Phasellus blandit imperdiet augue non fringilla. Nulla porta sollicitudin aliquam. In venenatis in ante in suscipit. Nullam at nisi nec lacus varius.",
+        "image": "/images/projects/beathitprimary.jpg"
+      },
+      "secondaryDescription": {
+        "title": "Start Messaging",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras a ex id lorem semper cursus. Nam a aliquam enim, non blandit ligula. Vivamus id pretium lacus. Phasellus consectetur urna sed lorem consequat, ac porttitor augue euismod. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus ut ligula quis nunc mollis tristique ut vitae justo. Phasellus blandit imperdiet augue non fringilla. Nulla porta sollicitudin aliquam. In venenatis in ante in suscipit. Nullam at nisi nec lacus varius.",
+        "image": "/images/projects/beathitsecondary.jpg"
+      },
+      "gallery": {
+        "img0": "/images/projects/beathitgallery0.jpg",
+        "img1": "/images/projects/beathitgallery1.jpg",
+        "img2": "/images/projects/beathitgallery2.jpg",
+        "img3": "/images/projects/beathitgallery3.jpg",
+        "img4": "/images/projects/beathitgallery4.jpg"
+      }
+    },
+    {
+      "id": 2,
+      "url": "altabaixa",
+      "name": "Alta & Baixa",
+      "banner": "/images/projects/altabaixabanner.jpg",
+      "about": {
+        "subject": "Magazine",
+        "platforms": "Editorial and Web",
+        "technologies": "InDesign and JS",
+        "year": "2021"
+      },
+      "quote": "Alta & Baixa is beautiful!",
+      "primaryDescription": {
+        "title": "Find our Magazine!",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras a ex id lorem semper cursus. Nam a aliquam enim, non blandit ligula. Vivamus id pretium lacus. Phasellus consectetur urna sed lorem consequat, ac porttitor augue euismod. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus ut ligula quis nunc mollis tristique ut vitae justo. Phasellus blandit imperdiet augue non fringilla. Nulla porta sollicitudin aliquam. In venenatis in ante in suscipit. Nullam at nisi nec lacus varius.",
+        "image": "/images/projects/beathitprimary.jpg"
+      },
+      "secondaryDescription": {
+        "title": "Enjoy it!",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras a ex id lorem semper cursus. Nam a aliquam enim, non blandit ligula. Vivamus id pretium lacus. Phasellus consectetur urna sed lorem consequat, ac porttitor augue euismod. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus ut ligula quis nunc mollis tristique ut vitae justo. Phasellus blandit imperdiet augue non fringilla. Nulla porta sollicitudin aliquam. In venenatis in ante in suscipit. Nullam at nisi nec lacus varius.",
+        "image": "/images/projects/beathitsecondary.jpg"
+      },
+      "gallery": {
+        "img0": "/images/projects/beathitgallery0.jpg",
+        "img1": "/images/projects/beathitgallery1.jpg",
+        "img2": "/images/projects/beathitgallery2.jpg",
+        "img3": "/images/projects/beathitgallery3.jpg",
+        "img4": "/images/projects/beathitgallery4.jpg"
+      }
+    }
+  ],
+  "experiences": [
+    {
+      "id": 0,
+      "name": "Created my first robot",
+      "banner": "/images/projects/beathitbanner.jpg",
+      "date": "2019-07-09",
+      "images": []
+    },
+    {
+      "id": 1,
+      "name": "Started working at amazon",
+      "banner": "/images/projects/encmessagesbanner.jpg",
+      "date": "2019-03-23",
+      "images": []
+    },
+    {
+      "id": 2,
+      "name": "Launched my product",
+      "banner": "/images/projects/encmessagesbanner.jpg",
+      "date": "2020-04-12",
+      "images": []
+    }
+  ]
+}

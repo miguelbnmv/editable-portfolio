@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+
+import { Context } from 'context/userContext';
 
 import Layout from 'components/shared/layout';
 import Modal from 'components/shared/modal';
@@ -12,14 +14,14 @@ import {
 } from 'components/experience/forms/add-experience-form/utils';
 import MyExperienceForm from 'components/experience/forms/my-experience-form';
 
-import Data from 'assets/json/Experience.json';
-
 const Experience = () => {
   const navigate = useNavigate();
   const [addExperienceOpen, setAddExperienceOpen] = useState(false);
   const [myExperienceOpen, setMyExperienceOpen] = useState(false);
   const [searchParams] = useSearchParams();
-  const experience = Data.find(
+  const { experiences } = useContext(Context);
+
+  const experience = experiences.find(
     ({ id }) => id === parseInt(searchParams.get('id'))
   );
 
