@@ -6,20 +6,18 @@ body {
   background-color: $darkGray;
   color: $white;
   overflow: overlay;
+  overflow-x: hidden;
 
   h1 {
-    @include font($weight: 600, $line: 125%, $family: $sora);
-    font-size: $heading;
+    @include font(normal, 600, $heading, 125%, $sora);
   }
 
   h3 {
-    @include font($weight: 300, $line:150%, $family: $sora);
-    font-size: $title;
+    @include font(normal, 300, $title, 150%, $sora);
   }
 
   p {
-    @include font($line: 150%, $family: $playfair);
-    font-size: $longText;
+    @include font($size: $longText, $line: 150%, $family: $playfair);
   }
 
   a,

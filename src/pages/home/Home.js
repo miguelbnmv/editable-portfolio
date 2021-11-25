@@ -18,9 +18,9 @@ import {
   editInfoFormSchema,
 } from 'components/home/forms/edit-info-form/utils';
 
-import GithubIcon from 'assets/icons/Github.png';
-import InstagramIcon from 'assets/icons/Instagram.png';
-import TwitterIcon from 'assets/icons/Twitter.png';
+import GithubIcon from 'assets/icons/Github.svg';
+import InstagramIcon from 'assets/icons/Instagram.svg';
+import TwitterIcon from 'assets/icons/Twitter.svg';
 import Kelvin from 'assets/images/Kelvin.png';
 
 import {
@@ -54,7 +54,7 @@ const Home = () => {
   );
 
   return (
-    <Layout pageTitle="Home" hide>
+    <Layout pageTitle="Home" hide openModal={() => setEditInfoOpen(true)}>
       {contactOpen ? modal(true) : null}
       {editInfoOpen ? modal(false) : null}
       <section className={contentContainer}>
@@ -65,23 +65,15 @@ const Home = () => {
           <h3>Frontend developer</h3>
           <p>
             A front-end developer at Redlight Software who loves to swim and
-            wants to share his very good projects.
+            wants to share his <b>very good</b> projects.
           </p>
-          <br />
           <Button
             handle={() => setContactOpen(true)}
             text="Contact"
             img="right"
             color="green"
           />
-          <Button
-            handle={() => setEditInfoOpen(true)}
-            text="Edit"
-            color="white"
-          />
-          <br />
-
-          <ul>
+          <div>
             <a href="github.com">
               <img src={GithubIcon} alt="Github icon" />
             </a>
@@ -91,7 +83,7 @@ const Home = () => {
             <a href="twitter.com">
               <img src={TwitterIcon} alt="Twitter icon" />
             </a>
-          </ul>
+          </div>
         </div>
         <div className={imageGroup}>
           <div>
