@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import required from '../../../../assets/icons/required.svg';
-import requiredError from '../../../../assets/icons/requiredError.svg';
+import required from 'assets/icons/required.svg';
+import requiredError from 'assets/icons/requiredError.svg';
 
 import { textarea, red, errorMessage } from './textarea.module.scss';
 
@@ -29,7 +29,7 @@ const Textarea = ({
       onChange={handleChange}
       className={error ? red : null}
     />
-    <p className={errorMessage}>{error}</p>
+    <span className={errorMessage}>{error}</span>
   </div>
 );
 

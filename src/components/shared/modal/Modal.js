@@ -1,24 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import close from '../../../assets/icons/close.svg';
+import Button from 'components/shared/elements/button';
 
-import {
-  background,
-  modal,
-  header,
-  content,
-  footer,
-  submit,
-  white,
-  link,
-} from './modal.module.scss';
+import { background, header, content, footer, link } from './modal.module.scss';
 
 const Modal = ({
   children,
   title,
-  isSubmit,
-  onChange,
+  handleButton,
+  handleClose,
   footerContent,
   isSubmitting,
 }) => {
@@ -31,12 +22,10 @@ const Modal = ({
 
   return (
     <div className={background}>
-      <div className={modal}>
+      <aside>
         <div className={header}>
           <h3>{title}</h3>
-          <button onClick={onChange}>
-            <img alt="Close Icon" src={close} />
-          </button>
+          <Button handle={handleClose} img="close" color="close" />
         </div>
         <div id="content" className={content}>
           {children}
@@ -49,15 +38,16 @@ const Modal = ({
               : null,
           }}
         >
-          <input
-            type="submit"
-            className={`${submit} ${!isSubmit ? white : null}`}
-            value={isSubmit ? 'Submit' : 'Add'}
+          <Button
+            type={!handleButton ? 'submit' : 'button'}
+            handle={handleButton ? handleButton : null}
+            color={!handleButton ? 'green' : 'white'}
+            text={!handleButton ? 'Submit' : 'Add'}
             disabled={isSubmitting}
           />
           {footerContent ? <span className={link}>{footerContent}</span> : null}
         </div>
-      </div>
+      </aside>
     </div>
   );
 };

@@ -21,8 +21,6 @@ const navigation = {
 const Header = ({ pageTitle, noFill, hide, openModal }) => {
   const navigate = useNavigate();
 
-  console.log(openModal)
-
   const getTitle = (index) => {
     if (noFill) return 'Projects';
     return navigation[pageTitle] ? navigation[pageTitle][index] : pageTitle;

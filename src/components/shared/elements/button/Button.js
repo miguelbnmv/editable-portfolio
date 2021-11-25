@@ -1,14 +1,16 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import left from '../../../../assets/icons/left.svg';
-import right from '../../../../assets/icons/right.svg';
+import leftIcon from 'assets/icons/left.svg';
+import rightIcon from 'assets/icons/right.svg';
+import closeIcon from 'assets/icons/close.svg';
 
 import {
   button,
   green,
+  red,
   white,
   borderless,
-  red,
   close,
 } from './button.module.scss';
 
@@ -20,7 +22,7 @@ var classes = {
   close: close,
 };
 
-var icons = { left: left, right: right };
+var icons = { left: leftIcon, right: rightIcon, close: closeIcon };
 
 const Button = ({ color, handle, img, text, type = 'button', disabled }) => {
   return (
@@ -40,7 +42,7 @@ Button.propTypes = {
   color: PropTypes.string,
   handle: PropTypes.func,
   img: PropTypes.string,
-  text: PropTypes.string.isRequired,
+  text: PropTypes.string,
   type: PropTypes.string,
 };
 

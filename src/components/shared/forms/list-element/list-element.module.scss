@@ -3,7 +3,7 @@
 .wrapper {
   @include flex($justify: space-between);
   @include font($weight: 600);
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
   border-bottom: 0.225rem solid $darkGray;
   color: $white;
 
@@ -13,12 +13,16 @@
 
     button {
       @include font($weight: 300);
-      color: $white;
-      background-color: transparent;
 
-      &.remove {
-        margin-left: 1rem;
+      &:last-child {
+        margin-left: 0.5rem;
         color: $red;
+
+        &:hover {
+          border-color: $red;
+          color: $white;
+          background-color: $red;
+        }
       }
     }
   }

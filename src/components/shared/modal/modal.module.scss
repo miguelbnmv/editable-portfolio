@@ -1,4 +1,4 @@
-@import '/src/styles/mixins.scss';
+@import 'styles/mixins.scss';
 
 .background {
   @include flex();
@@ -9,7 +9,7 @@
   z-index: 2;
   background-color: rgba($color: $darkGray, $alpha: 0.8);
 
-  .modal {
+  aside {
     width: 50%;
     background-color: $gray;
 
@@ -31,11 +31,6 @@
         h3 {
           font-size: 1.5rem;
         }
-      }
-
-      button {
-        background-color: transparent;
-        padding: 0.5rem;
       }
     }
 
@@ -70,16 +65,10 @@
         box-shadow: 0 -0.25rem 2.5rem 0.5rem rgba(0, 0, 0, 0.25);
       }
 
-      .submit {
+      button {
         @include size(100%, 3rem);
-        @include font($weight: 300);
-        background-color: $green;
-        text-align: center;
-        cursor: pointer;
-
-        &.white {
-          background-color: $white;
-        }
+        font-size: 1rem;
+        text-transform: capitalize;
       }
 
       .link {

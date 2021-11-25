@@ -1,17 +1,30 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
-import ListElement from '../../../shared/forms/list-element';
+import ListElement from 'components/shared/forms/list-element';
 
-const MyProjectsForm = () => (
-  <>
-    <ListElement name="Encrypted Messages" />
-    <ListElement name="BeatHit" />
-    <ListElement name="11 Champions" />
-    <ListElement name="Alta & Baixa" />
-    <ListElement name="APPDA" />
-    <ListElement name="Porto BC" />
-    <ListElement name="Shift Appens" />
-  </>
-);
+import Data from 'assets/json/Projects.json';
+
+const MyProjectsForm = ({ handle }) => {
+  const navigate = useNavigate();
+
+  const editHandle = (id) => {
+    handle();
+    navigate(`/projects?id=${id}`);
+  };
+
+  return (
+    <>
+      {Data.map(({ name, id }) => (
+        <ListElement name={name} key={id} editHandle={() => editHandle(id)} />
+      ))}
+    </>
+  );
+};
 
 export default MyProjectsForm;
+
+MyProjectsForm.propTypes = {
+  handle: PropTypes.func.isRequired,
+};
