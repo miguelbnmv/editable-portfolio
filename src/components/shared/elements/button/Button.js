@@ -28,7 +28,7 @@ const Button = ({ color, handle, img, text, type = 'button', disabled }) => {
   return (
     <button
       type={type}
-      className={`${button} ${classes[color]}`}
+      className={`${button} ${color ? classes[color] : ''}`}
       onClick={handle}
       disabled={disabled}
     >

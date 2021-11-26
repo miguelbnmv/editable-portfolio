@@ -14,20 +14,17 @@
     -webkit-user-select: none;
   }
 
-  img {
-    position: absolute;
-    height: 100%;
-    opacity: 0;
-    z-index: -1;
+  &:hover button {
+    color: $white;
   }
+}
 
-  &:hover {
-    img {
-      opacity: 1;
-    }
-
-    button {
-      color: $white;
-    }
-  }
+.cursorFollow {
+  position: absolute;
+  background: url('/assets/images/placeholder.svg') no-repeat 50% 50%;
+  background-size: cover;
+  width: 60rem;
+  height: 60rem;
+  user-select: none;
+  pointer-events: none;
 }
