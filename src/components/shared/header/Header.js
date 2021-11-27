@@ -8,7 +8,6 @@ import {
   header,
   headerTransparent,
   hideHeader,
-  btnWrapper,
   pageInfo,
 } from './header.module.scss';
 
@@ -39,7 +38,7 @@ const Header = ({ pageTitle, noFill, hide, openModal }) => {
         noFill ? headerTransparent : hide ? hideHeader : null
       }`}
     >
-      <div className={btnWrapper}>
+      <nav>
         <Button
           handle={() => navigate(getPath(0))}
           text={getTitle(0)}
@@ -54,7 +53,7 @@ const Header = ({ pageTitle, noFill, hide, openModal }) => {
             color="borderless"
           />
         ) : null}
-      </div>
+      </nav>
       <div className={pageInfo}>
         {!hide ? (
           <h1>

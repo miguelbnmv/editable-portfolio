@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Header from '../header';
+import Navigation from '../navigation';
 
 const Layout = ({ pageTitle, noFill, hide, children, openModal }) => (
   <>
@@ -12,6 +13,7 @@ const Layout = ({ pageTitle, noFill, hide, children, openModal }) => (
       openModal={openModal}
     />
     {children}
+    <Navigation />
   </>
 );
 

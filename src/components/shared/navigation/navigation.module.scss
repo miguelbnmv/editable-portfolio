@@ -1,0 +1,16 @@
+@import 'styles/mixins.scss';
+
+.nav {
+  @include container(2rem, $background: $darkGray, $boxShadow: $shadow);
+  @include flex($justify: space-between);
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+
+  @media only screen and (max-width: $tablet) {
+    display: flex;
+  }
+}

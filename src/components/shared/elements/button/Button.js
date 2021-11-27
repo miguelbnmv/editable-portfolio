@@ -4,6 +4,10 @@ import PropTypes from 'prop-types';
 import leftIcon from 'assets/icons/left.svg';
 import rightIcon from 'assets/icons/right.svg';
 import closeIcon from 'assets/icons/close.svg';
+import projectsIcon from 'assets/icons/projects.svg';
+import experienceIcon from 'assets/icons/experience.svg';
+import homeIcon from 'assets/icons/home.svg';
+import settingsIcon from 'assets/icons/settings.svg';
 
 import {
   button,
@@ -11,7 +15,7 @@ import {
   red,
   white,
   borderless,
-  close,
+  icon,
 } from './button.module.scss';
 
 var classes = {
@@ -19,10 +23,18 @@ var classes = {
   red: red,
   white: white,
   borderless: borderless,
-  close: close,
+  icon: icon,
 };
 
-var icons = { left: leftIcon, right: rightIcon, close: closeIcon };
+var icons = {
+  left: leftIcon,
+  right: rightIcon,
+  close: closeIcon,
+  projects: projectsIcon,
+  experience: experienceIcon,
+  home: homeIcon,
+  settings: settingsIcon,
+};
 
 const Button = ({ color, handle, img, text, type = 'button', disabled }) => {
   return (
