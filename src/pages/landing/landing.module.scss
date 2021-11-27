@@ -1,0 +1,55 @@
+@import 'styles/mixins.scss';
+
+
+.landing {
+  @include flex(column);
+  @include size(100vw, 100vh);
+  position: relative;
+
+  @media only screen and (max-width: $tablet) {
+    @include flex(column, $align: flex-start);
+    @include container(2rem);
+  }
+
+  h1 {
+    z-index: 1;
+    font-size: 10rem;
+    text-transform: uppercase;
+    text-align: center;
+
+    @media only screen and (max-width: $desktop) {
+      font-size: 8rem;
+    }
+
+    @media only screen and (max-width: $tablet) {
+      font-size: 4rem;
+      text-align: left;
+    }
+
+    @media only screen and (max-width: $mobile) {
+      font-size: 3rem;
+    }
+  }
+
+  .circle {
+    @include size(30rem, 30rem);
+    @include absolute($top: 10%, $left: 15%);
+    border: 0.5rem solid $green;
+    border-radius: 50%;
+
+    @media only screen and (max-width: $mobile) {
+      @include size(20rem, 20rem);
+    }
+  }
+
+  .buttons {
+    @include grid(4rem, 1fr / 1fr 1fr);
+    margin-top: 4rem;
+
+    @media only screen and (max-width: $tablet) {
+      @include grid(2rem, 1fr 1fr / 1fr);
+      width: 100%;
+      margin-top: 2rem;
+    }
+  }
+}
