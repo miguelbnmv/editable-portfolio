@@ -60,23 +60,17 @@
       .about {
         @include size(27rem, 27rem);
         @include flex($direction: column, $justify: space-evenly);
+        @include absolute($top: 15%, $left: -5%);
         border: 0.125rem solid $white;
         border-radius: 50%;
 
-        position: absolute;
-        top: 15rem;
-        left: -5rem;
-
         &::after {
           @include size(100%, 100%);
+          @include absolute($top: -1.6%, $right: -1%);
           content: '';
           border: 0.125rem solid $white;
           border-radius: 50%;
-
-          position: absolute;
           transform: scale(1.125, 1.125);
-          top: -1.6rem;
-          right: -1rem;
         }
 
         .aboutCategory {
@@ -98,16 +92,15 @@
       @include flex($justify: space-between, $align: flex-start);
 
       img {
-        width: 45%;
+        @include size(45%, 25rem);
         min-width: 45%;
-        height: 25rem;
         object-fit: cover;
         margin-top: 7.5rem;
       }
 
       .secondaryDescriptionContent {
-        margin-left: -3.5rem;
         width: 80%;
+        margin-left: -3.5rem;
       }
     }
 

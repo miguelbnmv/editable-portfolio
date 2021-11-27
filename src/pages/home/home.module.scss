@@ -43,15 +43,11 @@
   }
 
   .imageGroup {
-    position: absolute;
-    top: 10%;
-    right: -10%;
+    @include absolute($top: 10%, $right: -10%);
 
     img {
+      @include absolute($top: 4%, $right: 10%);
       width: 80%;
-      position: absolute;
-      top: 4rem;
-      right: 10rem;
     }
 
     >div {
