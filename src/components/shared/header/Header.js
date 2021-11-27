@@ -28,9 +28,7 @@ const Header = ({ pageTitle, noFill, hide, openModal }) => {
 
   const getPath = (index) => {
     if (noFill) return '/projects';
-    return navigation[pageTitle][index] === 'home'
-      ? '/'
-      : '/' + navigation[pageTitle][index];
+    return '/' + navigation[pageTitle][index];
   };
 
   return (
