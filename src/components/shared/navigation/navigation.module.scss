@@ -1,7 +1,7 @@
 @import 'styles/mixins.scss';
 
 .nav {
-  @include container(2rem, $background: $darkGray, $boxShadow: $shadow);
+  @include container(1.5rem 2rem, $background: $darkGray, $boxShadow: $shadow);
   @include flex($justify: space-between);
   display: none;
   position: fixed;
