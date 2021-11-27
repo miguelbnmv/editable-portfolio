@@ -7,7 +7,7 @@ import Button from '../elements/button/Button';
 import {
   header,
   headerTransparent,
-  hideHeader,
+  hideTitle,
   pageInfo,
 } from './header.module.scss';
 
@@ -33,7 +33,7 @@ const Header = ({ pageTitle, noFill, hide, openModal }) => {
   return (
     <header
       className={`${header} ${
-        noFill ? headerTransparent : hide ? hideHeader : null
+        noFill ? headerTransparent : hide ? hideTitle : null
       }`}
     >
       <nav>
