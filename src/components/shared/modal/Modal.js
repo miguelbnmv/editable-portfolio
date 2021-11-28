@@ -25,7 +25,7 @@ const Modal = ({
       <aside>
         <div className={header}>
           <h3>{title}</h3>
-          <Button handle={handleClose} img="close" color="close" />
+          <Button handle={handleClose} img="close" color="icon" />
         </div>
         <div id="content" className={content}>
           {children}

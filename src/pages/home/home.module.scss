@@ -2,66 +2,95 @@
 
 .contentContainer {
   @include container(4rem);
-  @include flex($direction: column, $justify: space-between, $align: flex-start);
-  height: 100vh;
+  @include flex(row, space-between, flex-end);
+  min-height: 100vh;
+
+  @media only screen and (max-width: $tablet) {
+    @include container(2rem 2rem 8rem);
+    @include flex(column-reverse, center, flex-end);
+  }
 
   .about {
     @include flex($direction: column, $align: flex-start);
-    padding-top: 10rem;
-
-    p {
-      width: 60%;
-    }
-
-    h1,
-    p {
-      margin-bottom: 3rem;
-    }
-
-    h3 {
-      margin-bottom: 0.5rem;
-    }
-
 
     h1 span,
     h3 {
       color: $green;
     }
 
-    button {
-      flex-direction: row-reverse;
-      margin-bottom: 1rem;
+    p {
+      width: 60%;
+
+      @media only screen and (max-width: $tablet) {
+        @include font(normal, 300, 1rem, 1.5rem);
+        width: 100%;
+      }
     }
 
-    >div {
+    h3 {
+      margin: 3rem 0 0.5rem;
+
+      @media only screen and (max-width: $tablet) {
+        @include font($size: 1.5rem, $line: 2rem);
+        margin: 1.5rem 0 0.5rem;
+      }
+    }
+
+    >button {
+      flex-direction: row-reverse;
+      margin-top: 4rem;
+
+      @media only screen and (max-width: $tablet) {
+        margin-top: 2rem;
+      }
+    }
+
+    >div:not(.footer) {
       @include flex($justify: flex-start);
+      margin: 1rem 0 8rem;
+
+      @media only screen and (max-width: $tablet) {
+        margin-bottom: 0;
+      }
 
       a {
         padding-right: 1rem;
       }
     }
+
+    .footer {
+      @include flex($justify: flex-start);
+  
+      @media only screen and (max-width: $tablet) {
+        display: none;
+      }
+    }
   }
 
   .imageGroup {
-    @include absolute($top: 10%, $right: -10%);
+    position: relative;
+    align-self: center;
+    margin-bottom: 2rem;
 
     img {
-      @include absolute($top: 4%, $right: 10%);
-      width: 80%;
+      width: 30rem;
+
+      @media only screen and (max-width: $tablet) {
+        width: 15rem;
+      }
     }
 
-    >div {
-      position: relative;
-    }
-
-    >div>div {
-      @include size(50rem, 50rem);
-      border-radius: 50%;
+    &::after {
+      @include size(150%, 150%);
+      @include absolute($top: -15%, $right: -48.3%);
+      content: '';
       border: 0.0625rem solid $white;
-    }
-  }
+      border-radius: 50%;
 
-  .footer {
-    @include flex($justify: flex-start);
+      @media only screen and (max-width: $tablet) {
+        @include size(125%, 125%);
+        @include absolute($top: -24%, $right: -20%);
+      }
+    }
   }
 }
