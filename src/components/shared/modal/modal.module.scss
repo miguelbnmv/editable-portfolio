@@ -4,7 +4,7 @@
   @include flex();
   @include size(100vw, 100vh);
   @include absolute($top: 0, $left: 0);
-  z-index: 2;
+  z-index: 4;
   background-color: rgba($color: $darkGray, $alpha: 0.8);
 
   aside {
@@ -14,6 +14,7 @@
     @media only screen and (max-width: $tablet) {
       @include size(100%, 100%);
       @include flex(column, space-between, initial);
+      position: fixed;
     }
 
     .header {
