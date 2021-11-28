@@ -1,10 +1,17 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Masonry from 'react-masonry-css';
 
 import { Context } from 'context/userContext';
 
 import Layout from 'components/shared/layout/Layout';
+import FormWrapper from 'components/shared/forms/form-wrapper';
+
+import AddProjectForm from 'components/projects/forms/add-project-form';
+import {
+  initialValues,
+  addProjectFormSchema,
+} from 'components/projects/forms/add-project-form/utils';
 
 import {
   contentContainer,
@@ -18,6 +25,7 @@ import {
 } from './project.module.scss';
 
 const Project = () => {
+  const [editProject, setEditProject] = useState(false);
   const { projectId } = useParams();
   const { projects } = useContext(Context);
   const project = projects.find(({ id }) => id === parseInt(projectId));
@@ -27,8 +35,24 @@ const Project = () => {
     800: 1,
   };
 
+  const modal = () => (
+    <FormWrapper
+      initialValues={initialValues(project)}
+      schema={addProjectFormSchema}
+      title={project.name}
+      handleClose={() => setEditProject(false)}
+    >
+      {(formik) => <AddProjectForm formik={formik} />}
+    </FormWrapper>
+  );
+
   return (
-    <Layout pageTitle={project.name} noFill>
+    <Layout
+      pageTitle={project.name}
+      noFill
+      openModal={() => setEditProject(true)}
+    >
+      {editProject ? modal(true) : null}
       <div className={contentContainer}>
         <div className={hero}>
           <img src={project.banner} alt="project-banner" />
@@ -81,11 +105,9 @@ const Project = () => {
             className={masonry}
             columnClassName={masonryColumn}
           >
-            <img src={project.gallery.img0} alt="project-img" />
-            <img src={project.gallery.img1} alt="project-img" />
-            <img src={project.gallery.img2} alt="project-img" />
-            <img src={project.gallery.img3} alt="project-img" />
-            <img src={project.gallery.img4} alt="project-img" />
+            {project.gallery.map((img) => (
+              <img src={img} alt="project-img" />
+            ))}
           </Masonry>
         </div>
       </div>
