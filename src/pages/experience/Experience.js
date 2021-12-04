@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { Context } from 'context/userContext';
@@ -14,12 +14,33 @@ import {
 } from 'components/experience/forms/add-experience-form/utils';
 import MyExperienceForm from 'components/experience/forms/my-experience-form';
 
+import * as Carousel from 'components/experience/carousel';
+
+import { contentContainer, ball, green } from './experience.module.scss';
+
+const allMonths = [
+  'Jan',
+  'Fev',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
 const Experience = () => {
   const navigate = useNavigate();
   const [addExperienceOpen, setAddExperienceOpen] = useState(false);
   const [myExperienceOpen, setMyExperienceOpen] = useState(false);
   const [searchParams] = useSearchParams();
   const { experiences } = useContext(Context);
+  const months = useMemo(() => [], []);
+  const years = useMemo(() => [], []);
 
   const experience = experiences.find(
     ({ id }) => id === parseInt(searchParams.get('id'))
@@ -30,6 +51,14 @@ const Experience = () => {
     setAddExperienceOpen(true);
     navigate(`/experience`);
   };
+
+  experiences.map(({ date }) => {
+    const currentDate = new Date(date);
+    const year = currentDate.getFullYear();
+    if (!years?.includes(year)) years.push(year);
+    months.push(year + '_' + currentDate.getMonth());
+    return null;
+  });
 
   const modal = (isList) =>
     isList ? (
@@ -53,10 +82,33 @@ const Experience = () => {
 
   return (
     <Layout pageTitle="Experience" openModal={() => setMyExperienceOpen(true)}>
-      <section>
+      <section className={contentContainer}>
         {addExperienceOpen ? modal(true) : null}
         {myExperienceOpen ? modal(false) : null}
-        <h1>Experience.</h1>
+        <Carousel.Component
+          options={{
+            type: 'carousel',
+            perView: 5,
+            focusAt: 'center',
+            startAt: '2',
+            gap: 0,
+          }}
+          years={years}
+        >
+          {years.map((y) => {
+            return allMonths.map((m, i) => {
+              const hasExperience = months.find((x) => x === y + '_' + i);
+              return (
+                <Carousel.Slide key={i}>
+                  <span id={y + '_' + m}>{m}</span>
+                  <div
+                    className={`${ball} ${hasExperience ? green : null}`}
+                  ></div>
+                </Carousel.Slide>
+              );
+            });
+          })}
+        </Carousel.Component>
       </section>
     </Layout>
   );

@@ -106,7 +106,7 @@ const Project = () => {
             columnClassName={masonryColumn}
           >
             {project.gallery.map((img) => (
-              <img src={img} alt="project-img" />
+              <img src={img} alt="project-img" key={img} />
             ))}
           </Masonry>
         </div>

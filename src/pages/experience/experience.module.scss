@@ -1,0 +1,32 @@
+@import 'styles/mixins.scss';
+
+.contentContainer {
+  @include container(15rem 0 5rem);
+  @include flex(column, flex-end, flex-end);
+  min-height: 100vh;
+
+  @media only screen and (max-width: $tablet) {
+    @include container(6rem 0);
+  }
+
+  h2 {
+    @include font(normal, 800, 16rem, 16rem);
+    margin-top: 8rem;
+    white-space: nowrap;
+    text-transform: uppercase;
+    text-shadow: -0.125rem -0.125rem 0 $white, 0.125rem -0.125rem 0 $white, -0.125rem 0.125rem 0 $white, 0.125rem 0.125rem 0 $white;
+    color: $darkGray;
+    -webkit-user-select: none;
+  }
+}
+
+.ball {
+  @include size(1rem, 1rem);
+  border-radius: 50%;
+  background-color: $lightGray;
+  z-index: 2;
+
+  &.green {
+    background-color: $green;
+  }
+}
