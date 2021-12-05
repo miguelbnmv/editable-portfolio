@@ -3,90 +3,21 @@
 
 .landing {
   @include container(4rem, $white);
-  @include flex(row, flex-start, center);
+  @include flex($justify: flex-start);
   @include size(100vw, 100vh);
+  overflow: hidden;
   position: relative;
   color: $darkGray;
-  overflow: hidden;
 
   @media only screen and (max-width: $tablet) {
     @include flex(column, $align: flex-start);
     @include container(2rem, $white);
   }
 
-  .landingInfo {
-    width: 60%;
-    z-index: 1;
-    
-    @media only screen and (max-width: $mobile) {
-    width: 100%;
-    }
-    
-    h1 {
-      font-size: 6.25rem;
-      text-transform: uppercase;
-      text-align: left;
-      line-height: 110%;
-  
-      @media only screen and (max-width: $desktop) {
-        font-size: 5.25rem;
-      }
-  
-      @media only screen and (max-width: $tablet) {
-        font-size: 3.5rem;
-        text-align: left;
-      }
-  
-      @media only screen and (max-width: $mobile) {
-        font-size: 2.5rem;
-      }
-    }
-  
-    h3 {
-      font-size: 1.8rem;
-      margin: 2rem 0;
-
-      @media only screen and (max-width: $desktop) {
-        font-size: 1.5rem;
-      }
-  
-      @media only screen and (max-width: $tablet) {
-        font-size: 1.25rem;
-      }
-  
-      @media only screen and (max-width: $mobile) {
-        font-size: 1rem;
-      }
-    }
-
-    h3 span{
-      color: $green;
-    }
-  }
-
-  .landingImage {
-    width: 55rem;
-    position: absolute;
-    right: 0;
-    z-index: 1;
-
-    @media only screen and (max-width: $desktop) {
-      width: 40rem;
-    }
-
-    @media only screen and (max-width: $tablet) {
-      width: 35rem;
-    }
-
-    @media only screen and (max-width: $mobile) {
-      display: none;
-    }
-  }
-
   .circle {
     @include size(60rem, 60rem);
     @include absolute($top: -50%, $right: -30%);
-    border: 1.875rem solid $green;
+    border: 2rem solid $green;
     border-radius: 50%;
 
     @media only screen and (max-width: $desktop) {
@@ -96,23 +27,76 @@
 
     @media only screen and (max-width: $tablet) {
       @include size(35rem, 35rem);
-      @include absolute($top: -8%, $right: -30%);
+      @include absolute($top: -10%, $right: -30%);
     }
 
     @media only screen and (max-width: $mobile) {
-      @include size(35rem, 35rem);
       @include absolute($top: -20%, $left: -70%);
+    }
+  }
+
+  .landingInfo {
+    width: 60%;
+    z-index: 2;
+
+    @media only screen and (max-width: $tablet) {
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 5rem;
+      line-height: 110%;
+      text-transform: uppercase;
+
+      @media only screen and (max-width: $tablet) {
+        font-size: 3rem;
+      }
+
+      @media only screen and (max-width: $mobile) {
+        font-size: 2.5rem;
+      }
+    }
+
+    h3 {
+      margin: 2rem 0;
+      font-size: 2rem;
+
+      @media only screen and (max-width: $desktop) {
+        font-size: 1.5rem;
+      }
+
+      @media only screen and (max-width: $mobile) {
+        font-size: 1rem;
+      }
+    }
+
+    h3 span {
+      color: $green;
+    }
+  }
+
+  .landingImage {
+    width: 55rem;
+    position: absolute;
+    right: 0;
+
+    @media only screen and (max-width: $desktop) {
+      width: 40rem;
+    }
+
+    @media only screen and (max-width: $tablet) {
+      display: none;
     }
   }
 
   .buttons {
     @include flex($justify: flex-start);
-    gap: 1rem;
+    gap: 2rem;
 
-    button{
-      width: fit-content;
-      &:first-child:hover, &:last-child{
-        background-color: transparent;
+    button {
+      &:first-child:hover,
+      &:last-child {
+        background-color: $white;
       }
 
       @media only screen and (max-width: $mobile) {
@@ -120,10 +104,8 @@
       }
     }
 
-    @media only screen and (max-width: $tablet) {
-      @include flex($direction: column , $align: flex-start);
-      width: 100%;
-      margin-top: 2rem;
+    @media only screen and (max-width: $mobile) {
+      @include flex(column, center, flex-start);
     }
   }
 }

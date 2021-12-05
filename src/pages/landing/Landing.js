@@ -14,8 +14,13 @@ import {
 } from 'components/landing-page/forms/login-form/utils';
 import LoginForm from 'components/landing-page/forms/login-form';
 
-import { landing, circle, buttons, landingInfo, landingImage } from './landing.module.scss';
-import infoElement from 'components/home/info-element';
+import {
+  landing,
+  circle,
+  buttons,
+  landingInfo,
+  landingImage,
+} from './landing.module.scss';
 
 import MockupLanding from 'assets/images/MockupLanding.png';
 
@@ -80,21 +85,24 @@ const Experience = () => {
           <br />
           Portfolio
         </h1>
-        <h3>The platform that makes it easy to create your  
-          personal portfolio site in just a few minutes. Create yours <span>now</span>!</h3>
-
+        <h3>
+          The platform that makes it easy to create your personal portfolio site
+          in just a few minutes. Create yours <span>now</span>!
+        </h3>
         <div className={buttons}>
-          <Button text="Register" color="green" handle={() => handleButton(false)} />
-           <Button
-            text="Login"
+          <Button
+            text="Register"
             color="green"
             handle={() => handleButton(true)}
           />
+          <Button
+            text="Login"
+            color="green"
+            handle={() => handleButton(false)}
+          />
         </div>
       </div>
-      <div className={landingImage}>
-        <img src={MockupLanding} alt="Mockup" />
-      </div>
+      <img src={MockupLanding} alt="Mockup" className={landingImage} />
     </section>
   );
 };
