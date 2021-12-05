@@ -4,11 +4,13 @@ import PropTypes from 'prop-types';
 import Input from 'components/shared/forms/input';
 import Textarea from 'components/shared/forms/textarea';
 import FilesInput from 'components/shared/forms/files-input';
+import FormTitle from 'components/shared/forms/form-title';
 
 import { double } from 'components/shared/modal/modal.module.scss';
 
 const AddProjectForm = ({ formik }) => (
   <>
+    <FormTitle text="general" />
     <Input
       name="projectTitle"
       type="text"
@@ -23,19 +25,77 @@ const AddProjectForm = ({ formik }) => (
       label="Title"
       isRequired
     />
-    <Textarea
-      name="projectDescription"
-      value={formik.values.projectDescription}
+    <Input
+      name="projectQuote"
+      type="text"
+      value={formik.values.projectQuote}
       handleChange={formik.handleChange}
       error={
-        formik.errors?.projectDescription &&
-        formik.touched?.projectDescription &&
-        formik.errors?.projectDescription
+        formik.errors?.projectQuote &&
+        formik.touched?.projectQuote &&
+        formik.errors?.projectQuote
       }
-      placeholder="Give a description to your project"
+      placeholder="Insert the quote of your project"
+      label="Quote"
+      isRequired
+    />
+    <FormTitle text="first description" />
+    <Input
+      name="projectFirstDescriptionTitle"
+      type="text"
+      value={formik.values.projectFirstDescriptionTitle}
+      handleChange={formik.handleChange}
+      error={
+        formik.errors?.projectFirstDescriptionTitle &&
+        formik.touched?.projectFirstDescriptionTitle &&
+        formik.errors?.projectFirstDescriptionTitle
+      }
+      placeholder="Insert the title of the first description"
+      label="Title"
+      isRequired
+    />
+    <Textarea
+      name="projectFirstDescription"
+      value={formik.values.projectFirstDescription}
+      handleChange={formik.handleChange}
+      error={
+        formik.errors?.projectFirstDescription &&
+        formik.touched?.projectFirstDescription &&
+        formik.errors?.projectFirstDescription
+      }
+      placeholder="Give an initial description of your project"
       label="Description"
       isRequired
     />
+    <FormTitle text="second description" />
+    <Input
+      name="projectSecondDescriptionTitle"
+      type="text"
+      value={formik.values.projectSecondDescriptionTitle}
+      handleChange={formik.handleChange}
+      error={
+        formik.errors?.projectSecondDescriptionTitle &&
+        formik.touched?.projectSecondDescriptionTitle &&
+        formik.errors?.projectSecondDescriptionTitle
+      }
+      placeholder="Insert the title of the second description"
+      label="Title"
+      isRequired
+    />
+    <Textarea
+      name="projectSecondDescription"
+      value={formik.values.projectSecondDescription}
+      handleChange={formik.handleChange}
+      error={
+        formik.errors?.projectSecondDescription &&
+        formik.touched?.projectSecondDescription &&
+        formik.errors?.projectSecondDescription
+      }
+      placeholder="Give a final description of your project"
+      label="Description"
+      isRequired
+    />
+    <FormTitle text="about" />
     <div className={double}>
       <Input
         name="projectSubject"
@@ -92,6 +152,7 @@ const AddProjectForm = ({ formik }) => (
         label="Technologies"
       />
     </div>
+    <FormTitle text="gallery" />
     <FilesInput name="projectImages" label="Upload images (4 max)" />
   </>
 );

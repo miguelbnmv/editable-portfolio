@@ -39,13 +39,13 @@
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras a ex id lorem semper cursus. Nam a aliquam enim, non blandit ligula. Vivamus id pretium lacus. Phasellus consectetur urna sed lorem consequat, ac porttitor augue euismod. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus ut ligula quis nunc mollis tristique ut vitae justo. Phasellus blandit imperdiet augue non fringilla. Nulla porta sollicitudin aliquam. In venenatis in ante in suscipit. Nullam at nisi nec lacus varius.",
         "image": "/images/projects/beathitsecondary.jpg"
       },
-      "gallery": {
-        "img0": "/images/projects/beathitgallery0.jpg",
-        "img1": "/images/projects/beathitgallery1.jpg",
-        "img2": "/images/projects/beathitgallery2.jpg",
-        "img3": "/images/projects/beathitgallery3.jpg",
-        "img4": "/images/projects/beathitgallery4.jpg"
-      }
+      "gallery": [
+        "/images/projects/beathitgallery0.jpg",
+        "/images/projects/beathitgallery1.jpg",
+        "/images/projects/beathitgallery2.jpg",
+        "/images/projects/beathitgallery3.jpg",
+        "/images/projects/beathitgallery4.jpg"
+      ]
     },
     {
       "id": 1,
@@ -69,13 +69,13 @@
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras a ex id lorem semper cursus. Nam a aliquam enim, non blandit ligula. Vivamus id pretium lacus. Phasellus consectetur urna sed lorem consequat, ac porttitor augue euismod. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus ut ligula quis nunc mollis tristique ut vitae justo. Phasellus blandit imperdiet augue non fringilla. Nulla porta sollicitudin aliquam. In venenatis in ante in suscipit. Nullam at nisi nec lacus varius.",
         "image": "/images/projects/beathitsecondary.jpg"
       },
-      "gallery": {
-        "img0": "/images/projects/beathitgallery0.jpg",
-        "img1": "/images/projects/beathitgallery1.jpg",
-        "img2": "/images/projects/beathitgallery2.jpg",
-        "img3": "/images/projects/beathitgallery3.jpg",
-        "img4": "/images/projects/beathitgallery4.jpg"
-      }
+      "gallery": [
+        "/images/projects/beathitgallery0.jpg",
+        "/images/projects/beathitgallery1.jpg",
+        "/images/projects/beathitgallery2.jpg",
+        "/images/projects/beathitgallery3.jpg",
+        "/images/projects/beathitgallery4.jpg"
+      ]
     },
     {
       "id": 2,
@@ -99,13 +99,13 @@
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras a ex id lorem semper cursus. Nam a aliquam enim, non blandit ligula. Vivamus id pretium lacus. Phasellus consectetur urna sed lorem consequat, ac porttitor augue euismod. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus ut ligula quis nunc mollis tristique ut vitae justo. Phasellus blandit imperdiet augue non fringilla. Nulla porta sollicitudin aliquam. In venenatis in ante in suscipit. Nullam at nisi nec lacus varius.",
         "image": "/images/projects/beathitsecondary.jpg"
       },
-      "gallery": {
-        "img0": "/images/projects/beathitgallery0.jpg",
-        "img1": "/images/projects/beathitgallery1.jpg",
-        "img2": "/images/projects/beathitgallery2.jpg",
-        "img3": "/images/projects/beathitgallery3.jpg",
-        "img4": "/images/projects/beathitgallery4.jpg"
-      }
+      "gallery": [
+        "/images/projects/beathitgallery0.jpg",
+        "/images/projects/beathitgallery1.jpg",
+        "/images/projects/beathitgallery2.jpg",
+        "/images/projects/beathitgallery3.jpg",
+        "/images/projects/beathitgallery4.jpg"
+      ]
     }
   ],
   "experiences": [

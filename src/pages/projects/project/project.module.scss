@@ -3,10 +3,22 @@
 .contentContainer {
   overflow: hidden;
 
+  h3 {
+    color: $green;
+  }
+
+  p {
+    margin-top: 1rem;
+  }
+
   .hero {
-    @include flex($direction:column, $justify:flex-end);
+    @include flex(column, flex-end);
     height: 75vh;
     position: relative;
+
+    @media only screen and (max-width: $tablet) {
+      height: 30vh;
+    }
 
     img {
       @include size(100%, 100%);
@@ -17,112 +29,141 @@
 
     h1 {
       @include font(normal, 800, 16rem, 100%);
-      z-index: 2;
+      z-index: 1;
       white-space: nowrap;
       text-transform: uppercase;
       text-shadow: -0.125rem -0.125rem 0 $white, 0.125rem -0.125rem 0 $white, -0.125rem 0.125rem 0 $white, 0.125rem 0.125rem 0 $white;
       color: $darkGray;
       opacity: 0.3;
       -webkit-user-select: none;
+
+      @media only screen and (max-width: $tablet) {
+        display: none;
+      }
     }
   }
 
   .main {
     overflow: hidden;
 
-    h1 {
-      font-weight: 600;
-      margin-top: 4rem;
-    }
+    .primaryBio {
+      @include flex(row, space-between, flex-end);
+      @include container(8rem 4rem);
 
-    h3 {
-      color: $green;
-    }
-
-    p {
-      margin-top: 2rem;
-    }
-
-    .primaryDescription {
-      position: relative;
-
-      .primaryDescriptionContent {
-        @include container(8rem 4rem);
-        width: 65%;
-        float: right;
+      @media only screen and (max-width: $tablet) {
+        @include flex(column-reverse, space-between, flex-start);
+        @include container(4rem 2rem);
       }
 
-      img {
-        @include size(100%, 80vh);
-        object-fit: cover;
+      >div {
+        @include flex(column, center, flex-end);
+        width: 60%;
+        text-align: right;
+
+        @media only screen and (max-width: $tablet) {
+          @include flex(column, center, flex-start);
+          width: 100%;
+          text-align: left;
+        }
+
+        h4 {
+          @include font(normal, 600, 5rem, 5rem);
+          margin-top: 6rem;
+
+          @media only screen and (max-width: $tablet) {
+            @include font(normal, 600, 3rem, 4rem);
+          }
+        }
       }
 
       .about {
         @include size(27rem, 27rem);
         @include flex($direction: column, $justify: space-evenly);
-        border: 0.125rem solid $white;
+        position: relative;
+        border: 0.0625rem solid $white;
         border-radius: 50%;
+        margin-left: -5rem;
 
-        position: absolute;
-        top: 15rem;
-        left: -5rem;
-
-        &::after {
-          @include size(100%, 100%);
-          content: '';
-          border: 0.125rem solid $white;
-          border-radius: 50%;
-
-          position: absolute;
-          transform: scale(1.125, 1.125);
-          top: -1.6rem;
-          right: -1rem;
+        @media only screen and (max-width: $tablet) {
+          margin: 8rem 0 0 -9rem;
         }
 
-        .aboutCategory {
+        &::after {
+          @include size(115%, 115%);
+          @include absolute($top: -13%, $right: -13%);
+          content: '';
+          border: 0.0625rem solid $white;
+          border-radius: 50%;
+        }
+
+        >div {
           @include flex(column);
+          color: $white;
 
-          span {
+          span:last-child {
             color: $green;
-
-            &:last-child {
-              color: $white;
-            }
           }
         }
       }
     }
 
-    .secondaryDescription {
+    >img {
+      @include size(100%, 80vh);
+      object-fit: cover;
+
+      @media only screen and (max-width: $tablet) {
+        display: none;
+      }
+    }
+
+    .secondaryBio {
       @include container(8rem 4rem);
       @include flex($justify: space-between, $align: flex-start);
 
-      img {
-        width: 45%;
-        min-width: 45%;
-        height: 25rem;
-        object-fit: cover;
-        margin-top: 7.5rem;
+      @media only screen and (max-width: $tablet) {
+        @include container(2rem);
+        @include flex(column);
       }
 
-      .secondaryDescriptionContent {
-        margin-left: -3.5rem;
+      img {
+        @include size(45%, 25rem);
+        min-width: 45%;
+        object-fit: cover;
+        margin-top: 7.5rem;
+
+        @media only screen and (max-width: $tablet) {
+          @include size(100%, 25rem);
+          min-width: 100%;
+          margin: 0 0 2rem 0;
+        }
+      }
+
+      >div {
         width: 80%;
+        margin-left: -3.5rem;
+
+        @media only screen and (max-width: $tablet) {
+          width: 100%;
+          margin-left: 0;
+        }
       }
     }
 
-    .gallery {
+    .masonry {
       @include flex();
-      @include container(8rem 4rem);
+      width: 80%;
+      margin: 4rem auto;
 
-      .myMasonryGrid {
-        display: flex;
-        width: 80%;
+      @media only screen and (max-width: $tablet) {
+        width: calc(100% - 4rem);
+        margin: 2rem 2rem 8rem;
+      }
 
-        .myMasonryGridColumn {
-          img {
-            padding: 0.5rem;
-          }
+      .masonryColumn img {
+        padding: 0.5rem;
+
+        @media only screen and (max-width: $tablet) {
+          padding: 0.5rem 0;
         }
       }
     }

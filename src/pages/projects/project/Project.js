@@ -1,27 +1,31 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Masonry from 'react-masonry-css';
 
 import { Context } from 'context/userContext';
 
 import Layout from 'components/shared/layout/Layout';
+import FormWrapper from 'components/shared/forms/form-wrapper';
+
+import AddProjectForm from 'components/projects/forms/add-project-form';
+import {
+  initialValues,
+  addProjectFormSchema,
+} from 'components/projects/forms/add-project-form/utils';
 
 import {
   contentContainer,
   hero,
   main,
-  primaryDescription,
-  primaryDescriptionContent,
+  primaryBio,
   about,
-  aboutCategory,
-  secondaryDescription,
-  secondaryDescriptionContent,
-  gallery,
-  myMasonryGrid,
-  myMasonryGridColumn,
+  secondaryBio,
+  masonry,
+  masonryColumn,
 } from './project.module.scss';
 
 const Project = () => {
+  const [editProject, setEditProject] = useState(false);
   const { projectId } = useParams();
   const { projects } = useContext(Context);
   const project = projects.find(({ id }) => id === parseInt(projectId));
@@ -31,8 +35,24 @@ const Project = () => {
     800: 1,
   };
 
+  const modal = () => (
+    <FormWrapper
+      initialValues={initialValues(project)}
+      schema={addProjectFormSchema}
+      title={project.name}
+      handleClose={() => setEditProject(false)}
+    >
+      {(formik) => <AddProjectForm formik={formik} />}
+    </FormWrapper>
+  );
+
   return (
-    <Layout pageTitle={project.name} noFill>
+    <Layout
+      pageTitle={project.name}
+      noFill
+      openModal={() => setEditProject(true)}
+    >
+      {editProject ? modal(true) : null}
       <div className={contentContainer}>
         <div className={hero}>
           <img src={project.banner} alt="project-banner" />
@@ -41,58 +61,54 @@ const Project = () => {
           </h1>
         </div>
         <div className={main}>
-          <div className={primaryDescription}>
-            <div className={primaryDescriptionContent}>
-              <h3>{project.primaryDescription.title}</h3>
-              <p>{project.primaryDescription.description}</p>
-              <h1>"{project.quote}"</h1>
-            </div>
+          <div className={primaryBio}>
             <div className={about}>
-              <div className={aboutCategory}>
+              <div>
                 <span>Subject</span>
                 <span>{project.about.subject}</span>
               </div>
-              <div className={aboutCategory}>
+              <div>
                 <span>Platforms</span>
                 <span>{project.about.platforms}</span>
               </div>
-              <div className={aboutCategory}>
+              <div>
                 <span>Technologies</span>
                 <span>{project.about.technologies}</span>
               </div>
-              <div className={aboutCategory}>
+              <div>
                 <span>Year</span>
                 <span>{project.about.year}</span>
               </div>
             </div>
-            <img
-              src={project.primaryDescription.image}
-              alt="description-illustration"
-            />
+            <div>
+              <h3>{project.primaryDescription.title}</h3>
+              <p>{project.primaryDescription.description}</p>
+              <h4>"{project.quote}"</h4>
+            </div>
           </div>
-          <div className={secondaryDescription}>
+          <img
+            src={project.primaryDescription.image}
+            alt="description-illustration"
+          />
+          <div className={secondaryBio}>
             <img
               src={project.secondaryDescription.image}
               alt="description-illustration"
             />
-            <div className={secondaryDescriptionContent}>
+            <div>
               <h3>{project.secondaryDescription.title}</h3>
               <p>{project.secondaryDescription.description}</p>
             </div>
           </div>
-          <div className={gallery}>
-            <Masonry
-              breakpointCols={breakpointColumnsObj}
-              className={myMasonryGrid}
-              columnClassName={myMasonryGridColumn}
-            >
-              <img src={project.gallery.img0} alt="project-img" />
-              <img src={project.gallery.img1} alt="project-img" />
-              <img src={project.gallery.img2} alt="project-img" />
-              <img src={project.gallery.img3} alt="project-img" />
-              <img src={project.gallery.img4} alt="project-img" />
-            </Masonry>
-          </div>
+          <Masonry
+            breakpointCols={breakpointColumnsObj}
+            className={masonry}
+            columnClassName={masonryColumn}
+          >
+            {project.gallery.map((img) => (
+              <img src={img} alt="project-img" />
+            ))}
+          </Masonry>
         </div>
       </div>
     </Layout>

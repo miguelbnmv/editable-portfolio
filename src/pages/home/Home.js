@@ -90,17 +90,14 @@ const Home = () => {
               }
             })}
           </div>
-        </div>
-        <div className={imageGroup}>
-          <div>
-            <img src={Kelvin} alt="User" />
-            <div></div>
+          <div className={footer}>
+            <InfoElement label="E-mail" content={info?.email} />
+            <InfoElement label="Phone" content={info?.phone} />
+            <InfoElement label="Location" content={info?.location} />
           </div>
         </div>
-        <div className={footer}>
-          <InfoElement label="E-mail" content={info?.email} />
-          <InfoElement label="Phone" content={info?.phone} />
-          <InfoElement label="Location" content={info?.location} />
+        <div className={imageGroup}>
+          <img src={Kelvin} alt="User" />
         </div>
       </section>
     </Layout>

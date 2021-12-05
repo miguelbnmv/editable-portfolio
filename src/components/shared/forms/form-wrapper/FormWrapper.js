@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 
 import Modal from 'components/shared/modal';
 
-const FormWrapper = ({ children, initialValues, schema, title, handleClose }) => (
+const FormWrapper = ({ children, initialValues, schema, title, handleClose, footerContent }) => (
   <>
     <Formik
       initialValues={initialValues}
@@ -18,6 +18,7 @@ const FormWrapper = ({ children, initialValues, schema, title, handleClose }) =>
             isSubmitting={formik.isSubmitting}
             handleClose={handleClose}
             isSubmit
+            footerContent={footerContent}
           >
             {children(formik)}
           </Modal>
@@ -35,4 +36,5 @@ FormWrapper.propTypes = {
   schema: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   handleClose: PropTypes.func.isRequired,
+  footerContent: PropTypes.node,
 };

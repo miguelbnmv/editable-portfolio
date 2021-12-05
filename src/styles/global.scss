@@ -10,6 +10,10 @@ body {
 
   h1 {
     @include font(normal, 600, $heading, 125%, $sora);
+
+    @media only screen and (max-width: $tablet) {
+      font-size: 2rem;
+    }
   }
 
   h3 {

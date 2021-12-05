@@ -14,7 +14,7 @@
     >div:last-child {
       @include size(100%, 100%);
       @include flex();
-      border: 1px dashed $lightGray;
+      border: 0.0625rem dashed $lightGray;
       color: $lightGray;
     }
   }
@@ -24,7 +24,7 @@
 
     &:focus {
       outline: none;
-      border: 1px solid $green;
+      border: 0.0625rem solid $green;
     }
   }
 }

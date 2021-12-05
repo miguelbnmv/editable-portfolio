@@ -17,6 +17,21 @@
   align-items: $align;
 }
 
+@mixin grid($gap: 1rem, $grid: $grid) {
+  display: grid;
+  gap: $gap;
+  grid: $grid;
+}
+
+@mixin absolute($top: inherit, $right: inherit, $bottom: inherit, $left: inherit) {
+  position: absolute;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+
 @mixin size($width: $width, $height: $height) {
   width: $width;
   height: $height;

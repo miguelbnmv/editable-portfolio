@@ -1,17 +1,26 @@
 @import 'styles/mixins.scss';
 
 .card {
-  @include size(100%, 40vh);
-  position: relative;
-  padding: 5rem 0;
+  width: 100%;
+  padding: 4rem 0;
+  margin-right: 4rem;
+
+
+  @media only screen and (max-width: $tablet) {
+    padding: 2rem 0;
+  }
 
   button {
-    @include font(normal, 800, 16rem, 9.375rem);
+    @include font(normal, 800, 16rem, 16rem);
     white-space: nowrap;
     text-transform: uppercase;
     text-shadow: -0.125rem -0.125rem 0 $white, 0.125rem -0.125rem 0 $white, -0.125rem 0.125rem 0 $white, 0.125rem 0.125rem 0 $white;
     color: $darkGray;
     -webkit-user-select: none;
+
+    @media only screen and (max-width: $tablet) {
+      @include font(normal, 800, 10rem, 10rem);
+    }
   }
 
   &:hover button {

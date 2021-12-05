@@ -7,8 +7,7 @@ import Button from '../elements/button/Button';
 import {
   header,
   headerTransparent,
-  hideHeader,
-  btnWrapper,
+  hideTitle,
   pageInfo,
 } from './header.module.scss';
 
@@ -28,18 +27,16 @@ const Header = ({ pageTitle, noFill, hide, openModal }) => {
 
   const getPath = (index) => {
     if (noFill) return '/projects';
-    return navigation[pageTitle][index] === 'home'
-      ? '/'
-      : '/' + navigation[pageTitle][index];
+    return '/' + navigation[pageTitle][index];
   };
 
   return (
     <header
       className={`${header} ${
-        noFill ? headerTransparent : hide ? hideHeader : null
+        noFill ? headerTransparent : hide ? hideTitle : null
       }`}
     >
-      <div className={btnWrapper}>
+      <nav>
         <Button
           handle={() => navigate(getPath(0))}
           text={getTitle(0)}
@@ -54,7 +51,7 @@ const Header = ({ pageTitle, noFill, hide, openModal }) => {
             color="borderless"
           />
         ) : null}
-      </div>
+      </nav>
       <div className={pageInfo}>
         {!hide ? (
           <h1>

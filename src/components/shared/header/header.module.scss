@@ -1,13 +1,21 @@
 @import 'styles/mixins.scss';
 
 .header {
-  @include container(2rem 4rem, $background: $darkGray, $boxShadow: $shadow);
+  @include container(2rem 4rem, $darkGray, $shadow);
   position: fixed;
   z-index: 2;
   width: 100%;
 
-  .btnWrapper {
+  @media only screen and (max-width: $tablet) {
+    @include container(1.5rem 2rem, $darkGray, $shadow);
+  }
+
+  nav {
     @include flex($justify: space-between);
+
+    @media only screen and (max-width: $tablet) {
+      display: none;
+    }
 
     button:last-child {
       flex-direction: row-reverse;
@@ -17,6 +25,10 @@
   .pageInfo {
     @include flex($justify: space-between);
     margin-top: 2rem;
+
+    @media only screen and (max-width: $tablet) {
+      margin-top: 0;
+    }
 
     h1 {
       line-height: 100%;
@@ -30,12 +42,16 @@
   &.headerTransparent {
     @include container(2rem 4rem, transparent, none);
 
+    @media only screen and (max-width: $tablet) {
+      @include container(1.5rem 2rem, transparent, none);
+    }
+
     button:last-child {
       flex-direction: row;
     }
   }
 
-  &.hideHeader {
+  &.hideTitle {
     @include container(2rem 4rem, transparent, none);
 
     .pageInfo {
