@@ -14,7 +14,15 @@ import {
 } from 'components/landing-page/forms/login-form/utils';
 import LoginForm from 'components/landing-page/forms/login-form';
 
-import { landing, circle, buttons } from './landing.module.scss';
+import {
+  landing,
+  circle,
+  buttons,
+  landingInfo,
+  landingImage,
+} from './landing.module.scss';
+
+import MockupLanding from 'assets/images/MockupLanding.png';
 
 const Experience = () => {
   const [loginOpen, setLoginOpen] = useState(false);
@@ -70,20 +78,31 @@ const Experience = () => {
     <section className={landing}>
       {loginOpen ? modal(false) : null}
       {registerOpen ? modal(true) : null}
-      <h1>
-        Editable
-        <br />
-        Portfolio
-      </h1>
       <div className={circle}></div>
-      <div className={buttons}>
-        <Button text="Login" color="green" handle={() => handleButton(false)} />
-        <Button
-          text="Register"
-          color="green"
-          handle={() => handleButton(true)}
-        />
+      <div className={landingInfo}>
+        <h1>
+          Editable
+          <br />
+          Portfolio
+        </h1>
+        <h3>
+          The platform that makes it easy to create your personal portfolio site
+          in just a few minutes. Create yours <span>now</span>!
+        </h3>
+        <div className={buttons}>
+          <Button
+            text="Register"
+            color="green"
+            handle={() => handleButton(true)}
+          />
+          <Button
+            text="Login"
+            color="green"
+            handle={() => handleButton(false)}
+          />
+        </div>
       </div>
+      <img src={MockupLanding} alt="Mockup" className={landingImage} />
     </section>
   );
 };
