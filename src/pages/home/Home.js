@@ -1,4 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
+import Parallax from 'parallax-js';
 
 import GithubIcon from 'assets/icons/Github.svg';
 import InstagramIcon from 'assets/icons/Instagram.svg';
@@ -37,9 +38,18 @@ const icons = {
 };
 
 const Home = () => {
+  const scene = useRef(null);
   const [contactOpen, setContactOpen] = useState(false);
   const [editInfoOpen, setEditInfoOpen] = useState(false);
   const { info } = useContext(Context);
+
+  useEffect(() => {
+    const parallaxInstance = new Parallax(scene.current);
+
+    parallaxInstance.enable();
+
+    return () => parallaxInstance.disable();
+  }, []);
 
   const modal = (isContact) => (
     <FormWrapper
@@ -96,8 +106,9 @@ const Home = () => {
             <InfoElement label="Location" content={info?.location} />
           </div>
         </div>
-        <div className={imageGroup}>
-          <img src={Kelvin} alt="User" />
+        <div ref={scene} className={imageGroup}>
+          <img data-depth="0.2" src={Kelvin} alt="User" />
+          <div data-depth="0.6"></div>
         </div>
       </section>
     </Layout>
