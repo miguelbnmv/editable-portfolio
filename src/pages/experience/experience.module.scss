@@ -3,25 +3,23 @@
 .contentContainer {
   @include container(0);
   @include flex(column, center, flex-end);
-  height: 100vh;
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
+  height: 100vh;
 
   @media only screen and (max-width: $tablet) {
     @include container(6rem 0);
   }
 
   h2 {
+    @include absolute($bottom: 0);
     @include font(normal, 800, 16rem, 16rem);
-    white-space: nowrap;
-    text-transform: uppercase;
-    text-shadow: -0.125rem -0.125rem 0 $white, 0.125rem -0.125rem 0 $white, -0.125rem 0.125rem 0 $white, 0.125rem 0.125rem 0 $white;
-    color: $darkGray;
-    -webkit-user-select: none;
-    position: absolute;
-    display: inline-block;
-    z-index: 0;
-    bottom: -3rem;
+    @include strokeText();
+
+    @media only screen and (max-width: $tablet) {
+      @include absolute($bottom: 8rem);
+      @include font(normal, 800, 8rem, 8rem);
+    }
   }
 }
 
@@ -33,7 +31,6 @@
     @include size(1rem, 1rem);
     border-radius: 50%;
     background-color: $lightGray;
-    z-index: 3;
 
     &.green {
       background-color: $green;
@@ -44,45 +41,47 @@
 .experiencePop {
   @include flex(column, center, center);
   @include size(100vw, 100vh);
-  @include absolute($top: 0, $left: 0);
-  position: fixed !important;
-  z-index: 4;
+  @include absolute(0, $left: 0);
+  display: none;
 
   .innerPop {
     @include flex(column, space-between, center);
-    background-color: $darkGray;
-    border: 0.125rem solid $green;
-    width: 30rem;
-    height: 30rem;
-    border-radius: 100%;
-    z-index: 5;
-    overflow: hidden;
+    @include size(30rem, 30rem);
     position: relative !important;
+    overflow: hidden;
+    border: 0.125rem solid $green;
+    border-radius: 50%;
+    background-color: $darkGray;
 
-    .experienceImage {
-      border-radius: 100%;
-      position: absolute !important;
-      width: 30rem;
-      margin: 0;
-      height: 15rem;
-      overflow: hidden;
+    @media only screen and (max-width: $tablet) {
+      @include size(15rem, 15rem);
+    }
 
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
+    img {
+      @include size(100%, 50%);
+      object-fit: cover;
     }
 
     .experienceInfo {
-      @include flex(column, center, center);
-      position: absolute !important;
-      top: 62%;
+      @include absolute(62%);
       transform: translateY(-50%);
+      text-align: center;
+
+      @media only screen and (max-width: $tablet) {
+        @include absolute(65%);
+
+        h3 {
+          font-size: 1rem;
+        }
+      }
 
       span {
         color: $green;
-        font-size: 1.4rem;
+        font-size: 1.5rem;
+
+        @media only screen and (max-width: $tablet) {
+          font-size: 1rem;
+        }
       }
     }
   }

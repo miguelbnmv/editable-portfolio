@@ -15,7 +15,15 @@ import MyExperienceForm from 'components/experience/forms/my-experience-form';
 
 import * as Carousel from 'components/experience/carousel';
 
-import { contentContainer, monthWrapper, ball, green, experiencePop, innerPop, experienceImage, experienceInfo } from './experience.module.scss';
+import {
+  contentContainer,
+  monthWrapper,
+  ball,
+  green,
+  experiencePop,
+  innerPop,
+  experienceInfo,
+} from './experience.module.scss';
 
 const allMonths = [
   'Jan',
@@ -58,8 +66,6 @@ const Experience = () => {
     months.push(year + '_' + currentDate.getMonth());
     return null;
   });
-
-  // console.log(window.innerWidth);
 
   const modal = (isList) =>
     isList ? (
@@ -104,23 +110,22 @@ const Experience = () => {
                   <div className={`${monthWrapper} ${'monthWrapper'}`}>
                     <span id={y + '_' + m}>{m}</span>
                     <div
-                      className={`${ball} ${'ball'} ${hasExperience ? green : null}`}
-                    >
-                    </div>
+                      className={`${ball} ${'ball'} ${
+                        hasExperience ? green : null
+                      }`}
+                    ></div>
                   </div>
-                  {hasExperience ?
-                  <div className={`${experiencePop} ${'experiencePop'}`}>
-                    <div className={innerPop}>
-                      <div className={experienceImage}>
+                  {hasExperience ? (
+                    <div className={`${experiencePop} ${'experiencePop'}`}>
+                      <div className={innerPop}>
                         <img src={experiences[0].banner} alt="User" />
-                      </div>
-                      <div className={experienceInfo}>
-                        <span id={y + '_' + m}>{m}</span>
-                        <h3>{experiences[0].name}</h3>
+                        <div className={experienceInfo}>
+                          <span>{m}</span>
+                          <h3>{experiences[0].name}</h3>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  : null}
+                  ) : null}
                 </Carousel.Slide>
               );
             });

@@ -1,8 +1,8 @@
 @import 'styles/mixins.scss';
 
 .timeline {
-  height: 100%;
   position: absolute !important;
+  height: 100%;
   cursor: grab;
 
   &:active {
@@ -14,12 +14,8 @@
   }
 
   .line {
-    width: 100vw;
-    height: 0.0625rem;
-    position: absolute !important;
-    top: 50%;
-    transform: translateY(-50%);
-    margin: 0;
+    @include size(100vw, 0.0625rem);
+    @include absolute(50%);
     background-color: rgba($color: $white, $alpha: 0.3);
   }
 }
