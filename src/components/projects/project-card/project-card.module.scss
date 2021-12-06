@@ -5,7 +5,6 @@
   padding: 4rem 0;
   margin-right: 4rem;
 
-
   @media only screen and (max-width: $tablet) {
     padding: 2rem 0;
   }
@@ -26,14 +25,4 @@
   &:hover button {
     color: $white;
   }
-}
-
-.cursorFollow {
-  position: absolute;
-  background: url('/assets/images/placeholder.svg') no-repeat 50% 50%;
-  background-size: cover;
-  width: 60rem;
-  height: 60rem;
-  user-select: none;
-  pointer-events: none;
 }

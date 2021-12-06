@@ -3,7 +3,7 @@
 .header {
   @include container(2rem 4rem, $darkGray, $shadow);
   position: fixed;
-  z-index: 2;
+  z-index: 3;
   width: 100%;
 
   @media only screen and (max-width: $tablet) {
