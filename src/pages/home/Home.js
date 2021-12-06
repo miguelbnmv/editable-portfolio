@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
-import Parallax from 'parallax-js';
+import React, { useState, useContext } from 'react';
+import useMightyMouse from 'react-hook-mighty-mouse';
 
 import GithubIcon from 'assets/icons/Github.svg';
 import InstagramIcon from 'assets/icons/Instagram.svg';
@@ -38,18 +38,22 @@ const icons = {
 };
 
 const Home = () => {
-  const scene = useRef(null);
   const [contactOpen, setContactOpen] = useState(false);
   const [editInfoOpen, setEditInfoOpen] = useState(false);
   const { info } = useContext(Context);
 
-  useEffect(() => {
-    const parallaxInstance = new Parallax(scene.current);
+  const {
+    selectedElement: {
+      position: { angle },
+    },
+  } = useMightyMouse(true, 'placeholder', {
+    x: -window.innerWidth / 3,
+    y: -window.innerHeight / 3,
+  });
 
-    parallaxInstance.enable();
+  const rotate = `rotate(${angle}deg)`;
 
-    return () => parallaxInstance.disable();
-  }, []);
+  const rotate2 = `rotate(${-angle}deg)`;
 
   const modal = (isContact) => (
     <FormWrapper
@@ -106,9 +110,12 @@ const Home = () => {
             <InfoElement label="Location" content={info?.location} />
           </div>
         </div>
-        <div ref={scene} className={imageGroup}>
-          <img data-depth="0.2" src={Kelvin} alt="User" />
-          <div data-depth="0.6"></div>
+        <div
+          id="placeholder"
+          className={imageGroup}
+          style={{ transform: rotate }}
+        >
+          <img src={Kelvin} alt="User" style={{ transform: rotate2 }} />
         </div>
       </section>
     </Layout>
