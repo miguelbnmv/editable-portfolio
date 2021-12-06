@@ -5,7 +5,6 @@
   padding: 4rem 0;
   margin-right: 4rem;
 
-
   @media only screen and (max-width: $tablet) {
     padding: 2rem 0;
   }
@@ -23,20 +22,7 @@
     }
   }
 
-  img {
-    position: absolute;
-    height: 100%;
-    opacity: 0;
-    z-index: -1;
-  }
-
-  &:hover {
-    img {
-      opacity: 1;
-    }
-
-    button {
-      color: $white;
-    }
+  &:hover button {
+    color: $white;
   }
 }
