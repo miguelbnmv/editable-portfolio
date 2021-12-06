@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Ticker from 'react-ticker';
 import { useNavigate } from 'react-router-dom';
 
@@ -29,3 +30,9 @@ const ProjectCard = ({ project, setActiveIndex, index }) => {
 };
 
 export default ProjectCard;
+
+ProjectCard.propTypes = {
+  project: PropTypes.object.isRequired,
+  setActiveIndex: PropTypes.func,
+  index: PropTypes.number,
+};

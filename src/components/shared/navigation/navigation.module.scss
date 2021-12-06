@@ -3,10 +3,8 @@
 .nav {
   @include container(1.5rem 2rem, $background: $darkGray, $boxShadow: $shadow);
   @include flex($justify: space-between);
+  @include position(fixed, $bottom: 0, $left: 0);
   display: none;
-  position: fixed;
-  bottom: 0;
-  left: 0;
   z-index: 2;
   width: 100%;
 

@@ -51,9 +51,8 @@ const Home = () => {
     y: -window.innerHeight / 3,
   });
 
-  const rotate = `rotate(${angle}deg)`;
-
-  const rotate2 = `rotate(${-angle}deg)`;
+  const rotateWrapper = `rotate(${angle}deg)`;
+  const rotateImage = `rotate(${-angle}deg)`;
 
   const modal = (isContact) => (
     <FormWrapper
@@ -113,9 +112,9 @@ const Home = () => {
         <div
           id="placeholder"
           className={imageGroup}
-          style={{ transform: rotate }}
+          style={{ transform: rotateWrapper }}
         >
-          <img src={Kelvin} alt="User" style={{ transform: rotate2 }} />
+          <img src={Kelvin} alt="User" style={{ transform: rotateImage }} />
         </div>
       </section>
     </Layout>

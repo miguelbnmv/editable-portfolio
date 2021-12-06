@@ -23,8 +23,8 @@
   grid: $grid;
 }
 
-@mixin absolute($top: inherit, $right: inherit, $bottom: inherit, $left: inherit) {
-  position: absolute !important;
+@mixin position($position: absolute, $top: inherit, $right: inherit, $bottom: inherit, $left: inherit) {
+  position: $position !important;
   top: $top;
   right: $right;
   bottom: $bottom;
