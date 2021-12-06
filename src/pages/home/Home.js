@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import useMightyMouse from 'react-hook-mighty-mouse';
 
 import GithubIcon from 'assets/icons/Github.svg';
 import InstagramIcon from 'assets/icons/Instagram.svg';
@@ -40,6 +41,19 @@ const Home = () => {
   const [contactOpen, setContactOpen] = useState(false);
   const [editInfoOpen, setEditInfoOpen] = useState(false);
   const { info } = useContext(Context);
+
+  const {
+    selectedElement: {
+      position: { angle },
+    },
+  } = useMightyMouse(true, 'placeholder', {
+    x: -window.innerWidth / 3,
+    y: -window.innerHeight / 3,
+  });
+
+  const rotate = `rotate(${angle}deg)`;
+
+  const rotate2 = `rotate(${-angle}deg)`;
 
   const modal = (isContact) => (
     <FormWrapper
@@ -96,8 +110,12 @@ const Home = () => {
             <InfoElement label="Location" content={info?.location} />
           </div>
         </div>
-        <div className={imageGroup}>
-          <img src={Kelvin} alt="User" />
+        <div
+          id="placeholder"
+          className={imageGroup}
+          style={{ transform: rotate }}
+        >
+          <img src={Kelvin} alt="User" style={{ transform: rotate2 }} />
         </div>
       </section>
     </Layout>
