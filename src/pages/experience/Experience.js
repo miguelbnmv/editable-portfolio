@@ -1,6 +1,5 @@
 import React, { useState, useContext, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-
 import { Context } from 'context/userContext';
 
 import Layout from 'components/shared/layout';
@@ -16,7 +15,7 @@ import MyExperienceForm from 'components/experience/forms/my-experience-form';
 
 import * as Carousel from 'components/experience/carousel';
 
-import { contentContainer, ball, green } from './experience.module.scss';
+import { contentContainer, monthWrapper, ball, green, experiencePop, innerPop, experienceImage, experienceInfo } from './experience.module.scss';
 
 const allMonths = [
   'Jan',
@@ -60,6 +59,8 @@ const Experience = () => {
     return null;
   });
 
+  // console.log(window.innerWidth);
+
   const modal = (isList) =>
     isList ? (
       <FormWrapper
@@ -100,10 +101,26 @@ const Experience = () => {
               const hasExperience = months.find((x) => x === y + '_' + i);
               return (
                 <Carousel.Slide key={i}>
-                  <span id={y + '_' + m}>{m}</span>
-                  <div
-                    className={`${ball} ${hasExperience ? green : null}`}
-                  ></div>
+                  <div className={`${monthWrapper} ${'monthWrapper'}`}>
+                    <span id={y + '_' + m}>{m}</span>
+                    <div
+                      className={`${ball} ${'ball'} ${hasExperience ? green : null}`}
+                    >
+                    </div>
+                  </div>
+                  {hasExperience ?
+                  <div className={`${experiencePop} ${'experiencePop'}`}>
+                    <div className={innerPop}>
+                      <div className={experienceImage}>
+                        <img src={experiences[0].banner} alt="User" />
+                      </div>
+                      <div className={experienceInfo}>
+                        <span id={y + '_' + m}>{m}</span>
+                        <h3>{experiences[0].name}</h3>
+                      </div>
+                    </div>
+                  </div>
+                  : null}
                 </Carousel.Slide>
               );
             });

@@ -1,16 +1,25 @@
 @import 'styles/mixins.scss';
 
 .timeline {
-  position: relative;
+  height: 100%;
+  position: absolute !important;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
 
   .slides {
-    z-index: 2;
+    height: 100%;
   }
 
   .line {
-    @include absolute(2rem, 0);
     width: 100vw;
     height: 0.0625rem;
+    position: absolute !important;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
     background-color: rgba($color: $white, $alpha: 0.3);
   }
 }
