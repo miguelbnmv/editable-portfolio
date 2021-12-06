@@ -5,7 +5,7 @@ import Button from '../elements/button/Button';
 
 import { nav } from './navigation.module.scss';
 
-const Header = () => {
+const Navigation = () => {
   const navigate = useNavigate();
 
   return (
@@ -21,9 +21,8 @@ const Header = () => {
         img="experience"
         color="icon"
       />
-      <Button handle={() => navigate('/')} img="settings" color="icon" />
     </nav>
   );
 };
 
-export default Header;
+export default Navigation;

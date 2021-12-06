@@ -3,8 +3,8 @@
 .contentContainer {
   @include container(4rem);
   @include grid(0, 1fr / 1fr 25rem);
-  min-height: 100vh;
   overflow: hidden;
+  min-height: 100vh;
 
   @media only screen and (max-width: $tablet) {
     @include container(2rem 2rem 8rem);
@@ -79,19 +79,19 @@
 
     @media only screen and (max-width: $tablet) {
       @include size(15rem, 15rem);
-      margin-right: 0;
       grid-row: 1;
+      margin-right: 0;
     }
 
     img {
       @include size(30rem, 30rem);
-      @include absolute(1.5rem, $left: 1rem);
+      @include position($top: 1.5rem, $left: 1rem);
       border-radius: 50%;
       object-fit: cover;
 
       @media only screen and (max-width: $tablet) {
         @include size(11rem, 11rem);
-        @include absolute(-0.05rem, $left: 1.5rem);
+        @include position($top: -0.05rem, $left: 1.5rem);
       }
     }
   }

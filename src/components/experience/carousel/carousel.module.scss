@@ -15,7 +15,7 @@
 
   .line {
     @include size(100vw, 0.0625rem);
-    @include absolute(50%);
+    @include position($top: 50%);
     background-color: rgba($color: $white, $alpha: 0.3);
   }
 }

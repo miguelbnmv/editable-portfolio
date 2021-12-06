@@ -13,8 +13,8 @@
 
   .hero {
     @include flex(column, flex-end);
-    height: 75vh;
     position: relative;
+    height: 75vh;
 
     @media only screen and (max-width: $tablet) {
       height: 30vh;
@@ -76,9 +76,9 @@
         @include size(27rem, 27rem);
         @include flex($direction: column, $justify: space-evenly);
         position: relative;
+        margin-left: -5rem;
         border: 0.0625rem solid $white;
         border-radius: 50%;
-        margin-left: -5rem;
 
         @media only screen and (max-width: $tablet) {
           margin: 8rem 0 0 -9rem;
@@ -86,7 +86,7 @@
 
         &::after {
           @include size(115%, 115%);
-          @include absolute($top: -13%, $right: -13%);
+          @include position($top: -13%, $right: -13%);
           content: '';
           border: 0.0625rem solid $white;
           border-radius: 50%;
@@ -124,8 +124,8 @@
       img {
         @include size(45%, 25rem);
         min-width: 45%;
-        object-fit: cover;
         margin-top: 7.5rem;
+        object-fit: cover;
 
         @media only screen and (max-width: $tablet) {
           @include size(100%, 25rem);

@@ -7,7 +7,6 @@ import closeIcon from 'assets/icons/close.svg';
 import projectsIcon from 'assets/icons/projects.svg';
 import experienceIcon from 'assets/icons/experience.svg';
 import homeIcon from 'assets/icons/home.svg';
-import settingsIcon from 'assets/icons/settings.svg';
 
 import {
   button,
@@ -33,7 +32,6 @@ var icons = {
   projects: projectsIcon,
   experience: experienceIcon,
   home: homeIcon,
-  settings: settingsIcon,
 };
 
 const Button = ({ color, handle, img, text, type = 'button', disabled }) => {

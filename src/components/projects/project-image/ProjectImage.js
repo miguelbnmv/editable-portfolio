@@ -1,4 +1,5 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 import { isActive } from 'pages/projects/projects-list/projects-list.module.scss';
 
@@ -46,3 +47,10 @@ const ProjectImage = ({ url, active, x, y }) => {
 };
 
 export default ProjectImage;
+
+ProjectImage.propTypes = {
+  url: PropTypes.string.isRequired,
+  active: PropTypes.bool,
+  x: PropTypes.number,
+  y: PropTypes.number,
+};

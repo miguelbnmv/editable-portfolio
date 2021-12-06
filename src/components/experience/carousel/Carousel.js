@@ -57,7 +57,8 @@ export const Carousel = forwardRef(({ options, children, years }, ref) => {
           }
           @media only screen and (max-width: 48rem) {
             .glide{
-              height:90vh;
+              height: calc(100% - 10.5rem);
+              bottom: initial;
             }
           }
           .glide * {

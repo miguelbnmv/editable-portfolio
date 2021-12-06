@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import MockupLanding from 'assets/images/MockupLanding.png';
+
 import Button from 'components/shared/elements/button';
 import FormWrapper from 'components/shared/forms/form-wrapper';
 
@@ -22,9 +24,7 @@ import {
   landingImage,
 } from './landing.module.scss';
 
-import MockupLanding from 'assets/images/MockupLanding.png';
-
-const Experience = () => {
+const Landing = () => {
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
 
@@ -107,4 +107,4 @@ const Experience = () => {
   );
 };
 
-export default Experience;
+export default Landing;
