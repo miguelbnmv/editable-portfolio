@@ -2,12 +2,14 @@
 
 .contentContainer {
   @include container(4rem);
-  @include flex(row, space-between, flex-end);
+  @include grid(0, 1fr / 1fr 25rem);
   min-height: 100vh;
+  overflow: hidden;
 
   @media only screen and (max-width: $tablet) {
     @include container(2rem 2rem 8rem);
-    @include flex(column-reverse, center, flex-end);
+    @include grid(0, auto 1fr / 1fr);
+    overflow-y: auto;
   }
 
   .about {
@@ -60,7 +62,7 @@
 
     .footer {
       @include flex($justify: flex-start);
-  
+
       @media only screen and (max-width: $tablet) {
         display: none;
       }
@@ -68,28 +70,28 @@
   }
 
   .imageGroup {
+    @include size(40rem, 40rem);
     position: relative;
     align-self: center;
-    margin-bottom: 2rem;
+    margin: 0 -15rem 2rem 0;
+    border-radius: 50%;
+    border: 0.5rem solid $white;
 
-    img {
-      width: 30rem;
-
-      @media only screen and (max-width: $tablet) {
-        width: 15rem;
-      }
+    @media only screen and (max-width: $tablet) {
+      @include size(15rem, 15rem);
+      margin-right: 0;
+      grid-row: 1;
     }
 
-    &::after {
-      @include size(150%, 150%);
-      @include absolute($top: -15%, $right: -48.3%);
-      content: '';
-      border: 0.0625rem solid $white;
+    img {
+      @include size(30rem, 30rem);
+      @include absolute(1.5rem, $left: 1rem);
       border-radius: 50%;
+      object-fit: cover;
 
       @media only screen and (max-width: $tablet) {
-        @include size(125%, 125%);
-        @include absolute($top: -24%, $right: -20%);
+        @include size(11rem, 11rem);
+        @include absolute(-0.05rem, $left: 1.5rem);
       }
     }
   }
