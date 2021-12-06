@@ -3,10 +3,10 @@
 .background {
   @include flex();
   @include size(100vw, 100vh);
-  @include absolute($top: 0, $left: 0);
-  z-index: 4;
-  background-color: rgba($color: $darkGray, $alpha: 0.8);
+  @include absolute(0, $left: 0);
   position: fixed;
+  z-index: 5;
+  background-color: rgba($color: $darkGray, $alpha: 0.8);
 
   aside {
     width: 50%;

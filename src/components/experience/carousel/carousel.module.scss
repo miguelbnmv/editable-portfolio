@@ -1,0 +1,25 @@
+@import 'styles/mixins.scss';
+
+.timeline {
+  position: absolute !important;
+  height: 100%;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  .slides {
+    height: 100%;
+  }
+
+  .line {
+    @include size(100vw, 0.0625rem);
+    @include absolute(50%);
+    background-color: rgba($color: $white, $alpha: 0.3);
+  }
+}
+
+.month {
+  @include flex(column);
+}

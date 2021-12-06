@@ -1,6 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-
 import { Context } from 'context/userContext';
 
 import Layout from 'components/shared/layout';
@@ -14,12 +13,41 @@ import {
 } from 'components/experience/forms/add-experience-form/utils';
 import MyExperienceForm from 'components/experience/forms/my-experience-form';
 
+import * as Carousel from 'components/experience/carousel';
+
+import {
+  contentContainer,
+  monthWrapper,
+  ball,
+  green,
+  experiencePop,
+  innerPop,
+  experienceInfo,
+} from './experience.module.scss';
+
+const allMonths = [
+  'Jan',
+  'Fev',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
 const Experience = () => {
   const navigate = useNavigate();
   const [addExperienceOpen, setAddExperienceOpen] = useState(false);
   const [myExperienceOpen, setMyExperienceOpen] = useState(false);
   const [searchParams] = useSearchParams();
   const { experiences } = useContext(Context);
+  const months = useMemo(() => [], []);
+  const years = useMemo(() => [], []);
 
   const experience = experiences.find(
     ({ id }) => id === parseInt(searchParams.get('id'))
@@ -30,6 +58,14 @@ const Experience = () => {
     setAddExperienceOpen(true);
     navigate(`/experience`);
   };
+
+  experiences.map(({ date }) => {
+    const currentDate = new Date(date);
+    const year = currentDate.getFullYear();
+    if (!years?.includes(year)) years.push(year);
+    months.push(year + '_' + currentDate.getMonth());
+    return null;
+  });
 
   const modal = (isList) =>
     isList ? (
@@ -53,10 +89,48 @@ const Experience = () => {
 
   return (
     <Layout pageTitle="Experience" openModal={() => setMyExperienceOpen(true)}>
-      <section>
+      <section className={contentContainer}>
         {addExperienceOpen ? modal(true) : null}
         {myExperienceOpen ? modal(false) : null}
-        <h1>Experience.</h1>
+        <Carousel.Component
+          options={{
+            type: 'carousel',
+            perView: 5,
+            focusAt: 'center',
+            startAt: '2',
+            gap: 0,
+          }}
+          years={years}
+        >
+          {years.map((y) => {
+            return allMonths.map((m, i) => {
+              const hasExperience = months.find((x) => x === y + '_' + i);
+              return (
+                <Carousel.Slide key={i}>
+                  <div className={`${monthWrapper} ${'monthWrapper'}`}>
+                    <span id={y + '_' + m}>{m}</span>
+                    <div
+                      className={`${ball} ${'ball'} ${
+                        hasExperience ? green : null
+                      }`}
+                    ></div>
+                  </div>
+                  {hasExperience ? (
+                    <div className={`${experiencePop} ${'experiencePop'}`}>
+                      <div className={innerPop}>
+                        <img src={experiences[0].banner} alt="User" />
+                        <div className={experienceInfo}>
+                          <span>{m}</span>
+                          <h3>{experiences[0].name}</h3>
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
+                </Carousel.Slide>
+              );
+            });
+          })}
+        </Carousel.Component>
       </section>
     </Layout>
   );

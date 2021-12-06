@@ -24,15 +24,22 @@
 }
 
 @mixin absolute($top: inherit, $right: inherit, $bottom: inherit, $left: inherit) {
-  position: absolute;
+  position: absolute !important;
   top: $top;
   right: $right;
   bottom: $bottom;
   left: $left;
 }
 
-
 @mixin size($width: $width, $height: $height) {
   width: $width;
   height: $height;
+}
+
+@mixin strokeText() {
+  white-space: nowrap;
+  text-transform: uppercase;
+  color: $darkGray;
+  text-shadow: -0.125rem -0.125rem 0 $white, 0.125rem -0.125rem 0 $white, -0.125rem 0.125rem 0 $white, 0.125rem 0.125rem 0 $white;
+  -webkit-user-select: none;
 }

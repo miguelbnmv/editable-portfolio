@@ -29,13 +29,9 @@
 
     h1 {
       @include font(normal, 800, 16rem, 100%);
+      @include strokeText();
       z-index: 1;
-      white-space: nowrap;
-      text-transform: uppercase;
-      text-shadow: -0.125rem -0.125rem 0 $white, 0.125rem -0.125rem 0 $white, -0.125rem 0.125rem 0 $white, 0.125rem 0.125rem 0 $white;
-      color: $darkGray;
       opacity: 0.3;
-      -webkit-user-select: none;
 
       @media only screen and (max-width: $tablet) {
         display: none;
