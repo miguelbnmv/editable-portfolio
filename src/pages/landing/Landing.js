@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useNavigate } from 'react-router-dom';
 
 import MockupLanding from 'assets/images/MockupLanding.png';
+
+import { auth, registerUser, loginUser } from 'firebase/firebase.js';
 
 import Button from 'components/shared/elements/button';
 import FormWrapper from 'components/shared/forms/form-wrapper';
@@ -25,8 +29,10 @@ import {
 } from './landing.module.scss';
 
 const Landing = () => {
+  const navigate = useNavigate();
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
+  const [user, loading] = useAuthState(auth);
 
   const handleButton = (isRegister) => {
     setLoginOpen(!isRegister);
@@ -62,6 +68,7 @@ const Landing = () => {
       handleClose={() =>
         isRegister ? setRegisterOpen(false) : setLoginOpen(false)
       }
+      handleSubmit={isRegister ? registerUser : loginUser}
       footerContent={footerContent(isRegister)}
     >
       {(formik) =>
@@ -73,6 +80,11 @@ const Landing = () => {
       }
     </FormWrapper>
   );
+
+  useEffect(() => {
+    if (loading) return;
+    if (user) navigate('/home');
+  }, [user, loading, navigate]);
 
   return (
     <section className={landing}>

@@ -40,12 +40,13 @@ const useMousePosition = () => {
 
 const ProjectsList = () => {
   const navigate = useNavigate();
-  const { x, y } = useMousePosition();
   const [searchParams] = useSearchParams();
   const [activeIndex, setActiveIndex] = useState(-1);
   const [addProjectOpen, setAddProjectOpen] = useState(false);
   const [myProjectsOpen, setMyProjectsOpen] = useState(false);
   const { projects } = useContext(Context);
+  const { x, y } = useMousePosition();
+
   const project = projects.find(
     ({ id }) => id === parseInt(searchParams.get('id'))
   );

@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import Helmet from 'react-helmet';
 import Glide from '@glidejs/glide';
+import { useNavigate } from 'react-router-dom';
 
 import '@glidejs/glide/dist/css/glide.core.css';
 
@@ -22,6 +23,7 @@ export const Carousel = forwardRef(({ options, children, years }, ref) => {
   const sliderRef = useRef();
   const refEl = useRef();
   const [year, setYear] = useState(years[0]);
+  const navigate = useNavigate();
 
   useImperativeHandle(ref, () => sliderRef.current);
 
@@ -39,9 +41,7 @@ export const Carousel = forwardRef(({ options, children, years }, ref) => {
 
   useEffect(() => {
     const width = parseInt(refEl.current.style.width.replace('px', ''));
-    if (width > 20000) {
-      window.location.reload();
-    }
+    if (width > 20000) navigate('/experience');
   });
 
   return (

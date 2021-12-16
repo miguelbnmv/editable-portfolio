@@ -6,9 +6,13 @@ import Textarea from 'components/shared/forms/textarea';
 import FormTitle from 'components/shared/forms/form-title';
 
 import { double } from 'components/shared/modal/modal.module.scss';
+import { logout } from 'firebase/firebase';
 
 const EditInfoForm = ({ formik }) => (
   <>
+    <button type="button" onClick={() => logout()}>
+      Logout
+    </button>
     <FormTitle text="about" />
     <Input
       name="userName"
