@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 
 import MockupLanding from 'assets/images/MockupLanding.png';
 
 import { auth, registerUser, loginUser } from 'firebase/firebase.js';
+
+//import { onEditUser } from 'handlers/editUser';
+//import { onFetchAllNotes } from 'handlers/fetchAllUsers';
 
 import Button from 'components/shared/elements/button';
 import FormWrapper from 'components/shared/forms/form-wrapper';
@@ -19,6 +22,11 @@ import {
   loginFormSchema,
 } from 'components/landing-page/forms/login-form/utils';
 import LoginForm from 'components/landing-page/forms/login-form';
+import {
+  initialValues as completeValues,
+  editInfoFormSchema,
+} from 'components/home/forms/edit-info-form/utils';
+import EditInfoForm from 'components/home/forms/edit-info-form';
 
 import {
   landing,
@@ -30,66 +38,100 @@ import {
 
 const Landing = () => {
   const navigate = useNavigate();
-  const [loginOpen, setLoginOpen] = useState(false);
-  const [registerOpen, setRegisterOpen] = useState(false);
-  const [user, loading] = useAuthState(auth);
+  const [formType, setFormType] = useState(false);
+  //const [data, setData] = useState([]);
+  const [user] = useAuthState(auth);
 
-  const handleButton = (isRegister) => {
-    setLoginOpen(!isRegister);
-    setRegisterOpen(isRegister);
+  const register = (values) => {
+    registerUser(values);
+    if (user) setFormType('complete');
   };
 
-  const footerContent = (isRegister) =>
-    isRegister ? (
-      <>
-        Already have an account?{' '}
-        <Button
-          text="Log in"
-          type="button"
-          handle={() => handleButton(false)}
-        />
-      </>
-    ) : (
-      <>
-        Don’t have and account?{' '}
-        <Button
-          text="Sign up"
-          type="button"
-          handle={() => handleButton(true)}
-        />
-      </>
-    );
+  const login = (values) => {
+    loginUser(values);
+    if (user) navigate('/home');
+  };
 
-  const modal = (isRegister) => (
+  const complete = (values) => {
+    console.log(user, values);
+    if (user) navigate('/home');
+  };
+
+  const getForm = (formType, formik) => {
+    if (formType === 'login') {
+      return <LoginForm formik={formik} />;
+    } else if (formType === 'register') {
+      return <RegisterForm formik={formik} />;
+    } else if (formType === 'complete') {
+      return <EditInfoForm formik={formik} />;
+    } else {
+      return null;
+    }
+  };
+
+  const formContent = {
+    login: {
+      initialValues: loginValues,
+      schema: loginFormSchema,
+      title: 'Login',
+      handleSubmit: login,
+    },
+    register: {
+      initialValues: registerValues,
+      schema: registerFormSchema,
+      title: 'Register',
+      handleSubmit: register,
+    },
+    complete: {
+      initialValues: completeValues(null),
+      schema: editInfoFormSchema,
+      title: 'Complete your profile',
+      handleSubmit: complete,
+    },
+  };
+
+  const footerContent = (formType) => {
+    if (formType === 'register') {
+      return (
+        <>
+          Already have an account?{' '}
+          <Button
+            text="Log in"
+            type="button"
+            handle={() => setFormType('login')}
+          />
+        </>
+      );
+    } else if (formType === 'login') {
+      return (
+        <>
+          Don’t have and account?{' '}
+          <Button
+            text="Sign up"
+            type="button"
+            handle={() => setFormType('register')}
+          />
+        </>
+      );
+    }
+  };
+
+  const modal = (formType) => (
     <FormWrapper
-      initialValues={isRegister ? registerValues : loginValues}
-      schema={isRegister ? registerFormSchema : loginFormSchema}
-      title={isRegister ? 'Add experience' : 'Add experience'}
-      handleClose={() =>
-        isRegister ? setRegisterOpen(false) : setLoginOpen(false)
-      }
-      handleSubmit={isRegister ? registerUser : loginUser}
-      footerContent={footerContent(isRegister)}
+      initialValues={formContent[formType]?.initialValues}
+      schema={formContent[formType]?.schema}
+      title={formContent[formType]?.title}
+      handleClose={() => setFormType(false)}
+      handleSubmit={formContent[formType]?.handleSubmit}
+      footerContent={footerContent(formType)}
     >
-      {(formik) =>
-        isRegister ? (
-          <RegisterForm formik={formik} />
-        ) : (
-          <LoginForm formik={formik} />
-        )
-      }
+      {(formik) => getForm(formType, formik)}
     </FormWrapper>
   );
 
-  useEffect(() => {
-    if (loading) return;
-    if (user) navigate('/home');
-  }, [user, loading, navigate]);
-
   return (
     <section className={landing}>
-      {loginOpen ? modal(false) : null}
-      {registerOpen ? modal(true) : null}
+      {formType ? modal(formType) : null}
       <div className={circle}></div>
       <div className={landingInfo}>
         <h1>
@@ -105,12 +147,12 @@ const Landing = () => {
           <Button
             text="Register"
             color="green"
-            handle={() => handleButton(true)}
+            handle={() => setFormType('register')}
           />
           <Button
             text="Login"
             color="green"
-            handle={() => handleButton(false)}
+            handle={() => setFormType('login')}
           />
         </div>
       </div>

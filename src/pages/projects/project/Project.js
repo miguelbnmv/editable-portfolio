@@ -6,7 +6,6 @@ import { Context } from 'context/userContext';
 
 import Layout from 'components/shared/layout/Layout';
 import FormWrapper from 'components/shared/forms/form-wrapper';
-
 import AddProjectForm from 'components/projects/forms/add-project-form';
 import {
   initialValues,
@@ -52,6 +51,7 @@ const Project = () => {
       noFill
       openModal={() => setEditProject(true)}
     >
+
       {editProject ? modal(true) : null}
       <div className={contentContainer}>
         <div className={hero}>

@@ -48,7 +48,7 @@
       }
 
       .double {
-        @include grid(2, 1fr / 1fr 1fr);
+        @include grid(2rem, 1fr / 1fr 1fr);
       }
     }
 

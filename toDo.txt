@@ -1,0 +1,7 @@
+Usar dados do register para preencher home
+Criar empty state do projects e do experience
+Ligar forms do projetcts e do experience ao firebase
+Usar dados do firebase para preencher o projetcts e o experience
+Desenvolver código para exister uma página para cada utilizador
+Comprar domínio e configurá-lo
+Meter cores se der

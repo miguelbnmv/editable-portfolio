@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 
 export const initialValues = (user) => ({
   userName: user?.name ?? '',
+  userPhoto: user?.photo ?? '',
   userBio: user?.bio ?? '',
   userRole: user?.role ?? '',
   userLocation: user?.location ?? '',

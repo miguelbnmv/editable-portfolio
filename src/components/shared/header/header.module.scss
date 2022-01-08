@@ -53,6 +53,7 @@
 
   &.hideTitle {
     @include container(2rem 4rem, transparent, none);
+    position: absolute;
 
     .pageInfo {
       @include flex($justify: flex-end);

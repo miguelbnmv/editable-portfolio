@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Input from 'components/shared/forms/input';
 import Textarea from 'components/shared/forms/textarea';
 import FormTitle from 'components/shared/forms/form-title';
+import FilesInput from 'components/shared/forms/files-input';
 
 import { double } from 'components/shared/modal/modal.module.scss';
 import { logout } from 'firebase/firebase';
@@ -28,6 +29,7 @@ const EditInfoForm = ({ formik }) => (
       label="Name"
       isRequired
     />
+    <FilesInput name="userPhoto" label="Upload your profile picture" />
     <Textarea
       name="userBio"
       value={formik.values.userBio}

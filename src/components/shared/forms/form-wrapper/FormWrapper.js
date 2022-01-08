@@ -15,6 +15,7 @@ const FormWrapper = ({
 }) => (
   <>
     <Formik
+      enableReinitialize
       initialValues={initialValues}
       validationSchema={schema}
       onSubmit={(values) => {

@@ -1,6 +1,9 @@
 import React, { useState, useContext } from 'react';
 import useMightyMouse from 'react-hook-mighty-mouse';
 
+import { auth } from '../../firebase/firebase';
+import { useAuthState } from "react-firebase-hooks/auth";
+
 import GithubIcon from 'assets/icons/Github.svg';
 import InstagramIcon from 'assets/icons/Instagram.svg';
 import TwitterIcon from 'assets/icons/Twitter.svg';
@@ -38,6 +41,7 @@ const icons = {
 };
 
 const Home = () => {
+  //const [user] = useAuthState(auth);
   const [contactOpen, setContactOpen] = useState(false);
   const [editInfoOpen, setEditInfoOpen] = useState(false);
   const { info } = useContext(Context);
