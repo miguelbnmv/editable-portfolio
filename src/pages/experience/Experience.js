@@ -4,6 +4,7 @@ import { Context } from 'context/userContext';
 
 import Layout from 'components/shared/layout';
 import Modal from 'components/shared/modal';
+import Empty from 'components/shared/empty';
 import FormWrapper from 'components/shared/forms/form-wrapper';
 
 import AddExperienceForm from 'components/experience/forms/add-experience-form';
@@ -92,6 +93,10 @@ const Experience = () => {
       <section className={contentContainer}>
         {addExperienceOpen ? modal(true) : null}
         {myExperienceOpen ? modal(false) : null}
+
+        {/* if there is no data run: */}
+        {/* <Empty message='Não existem experiências' button='Adiciona experiências à timeline'/> */}
+        {/* else: */}
         <Carousel.Component
           options={{
             type: 'carousel',

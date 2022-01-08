@@ -80,9 +80,14 @@ const ProjectsList = () => {
 
   return (
     <Layout pageTitle="Projects" openModal={() => setMyProjectsOpen(true)}>
+
       <section className={contentContainer}>
         {addProjectOpen ? modal(true) : null}
         {myProjectsOpen ? modal(false) : null}
+
+        {/* if there is no data run: */}
+        {/* <Empty message='Não existe nenhum projeto' button='Adiciona o teu primeiro projeto!'/> */}
+        {/* else: */}
         <div className={projectName}>
           {projects.map((project, index) => (
             <ProjectCard
