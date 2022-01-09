@@ -5,7 +5,7 @@ import { Context } from 'context/userContext';
 
 import Layout from 'components/shared/layout';
 import Modal from 'components/shared/modal';
-import Empty from 'components/shared/empty';
+//import Empty from 'components/shared/empty';
 import FormWrapper from 'components/shared/forms/form-wrapper';
 import ProjectCard from 'components/projects/project-card';
 import ProjectImage from 'components/projects/project-image';

@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
+import { getDatabase, ref, set } from 'firebase/database';
 
 import MockupLanding from 'assets/images/MockupLanding.png';
 
 import { auth, registerUser, loginUser } from 'firebase/firebase.js';
-
-//import { onEditUser } from 'handlers/editUser';
-//import { onFetchAllNotes } from 'handlers/fetchAllUsers';
 
 import Button from 'components/shared/elements/button';
 import FormWrapper from 'components/shared/forms/form-wrapper';
@@ -39,11 +37,12 @@ import {
 const Landing = () => {
   const navigate = useNavigate();
   const [formType, setFormType] = useState(false);
-  //const [data, setData] = useState([]);
   const [user] = useAuthState(auth);
+  const db = getDatabase();
+  const id = user?.uid;
 
   const register = (values) => {
-    registerUser(values);
+    const user = registerUser(values);
     if (user) setFormType('complete');
   };
 
@@ -53,7 +52,26 @@ const Landing = () => {
   };
 
   const complete = (values) => {
-    console.log(user, values);
+    console.log(values);
+    set(ref(db, 'users/' + id), {
+      info: {
+        name: values.userName,
+        image: values.userPhoto,
+        bio: values.userBio,
+        role: values.userRole,
+        location: values.userLocation,
+        email: values.userEmail,
+        phone: values.userPhone,
+        social: {
+          behance: values.userBehance,
+          github: values.userGitHub,
+          linkedin: values.userLinkedIn,
+          instagram: values.userInstagram,
+          twitter: values.userTwitter,
+          dribble: values.userDribble,
+        },
+      },
+    });
     if (user) navigate('/home');
   };
 

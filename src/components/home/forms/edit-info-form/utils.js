@@ -9,11 +9,11 @@ export const initialValues = (user) => ({
   userEmail: user?.email ?? '',
   userPhone: user?.phone ?? '',
   userBehance: user?.social?.behance ?? '',
-  userGitHub: user?.social?.Github ?? '',
-  userLinkedIn: user?.social?.Linkedin ?? '',
-  userInstagram: user?.social?.Instagram ?? '',
-  userTwitter: user?.social?.Twitter ?? '',
-  userDribble: user?.social?.Dribble ?? '',
+  userGitHub: user?.social?.github ?? '',
+  userLinkedIn: user?.social?.linkedin ?? '',
+  userInstagram: user?.social?.instagram ?? '',
+  userTwitter: user?.social?.twitter ?? '',
+  userDribble: user?.social?.dribble ?? '',
 });
 
 export const editInfoFormSchema = Yup.object().shape({
