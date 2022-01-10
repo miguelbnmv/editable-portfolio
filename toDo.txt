@@ -12,7 +12,9 @@ Meter cores se der
 É preciso adicionar os icons que faltam ✅
 Adicionar um botão de logout como deve ser ✅
 Adicionar imagens ao projeto
-Adicionar erros aos forms de autenticação
-Corrigir problema com o login e com register 〽️
+Adicionar erros aos forms de autenticação ✅
+Corrigir problema com o login e com register ✅
+Corrigir problema quando se falha login
 Melhorar loading
 Corrigir anos no experience
+Corrigir stress quando não social

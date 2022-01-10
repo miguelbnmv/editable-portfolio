@@ -1,5 +1,6 @@
-import { useEffect, createContext, useState } from 'react';
-import { getDatabase, ref, onValue } from 'firebase/database';
+import { createContext, useState } from 'react';
+import { getDatabase, ref, get } from 'firebase/database';
+import { onAuthStateChanged } from 'firebase/auth';
 
 import { auth } from 'firebase/firebase.js';
 
@@ -9,17 +10,22 @@ const UserContext = ({ children }) => {
   const [info, setInfo] = useState(null);
   const db = getDatabase();
 
-  useEffect(() => {
-    onValue(ref(db, '/users'), (user) => {
-      if (user && auth?.currentUser) {
-        setInfo({
-          info: user?.val()[auth?.currentUser?.uid],
-          id: auth?.currentUser?.uid,
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      get(ref(db, '/users'))
+        .then((user) => {
+          if (user.exists()) {
+            setInfo({
+              info: user?.val()[auth?.currentUser?.uid],
+              id: auth?.currentUser?.uid,
+            });
+          }
+        })
+        .catch((error) => {
+          console.error(error);
         });
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db, auth?.currentUser]);
+    }
+  });
 
   return (
     <Context.Provider value={info ? info : null}>{children}</Context.Provider>

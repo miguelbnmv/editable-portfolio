@@ -17,6 +17,7 @@ const app = initializeApp(firebaseConfig);
 
 const auth = firebaseAuth.getAuth(app);
 const database = firebaseDatabase.getDatabase(app);
+
 const loginUser = async ({ loginEmail, loginPassword }) => {
   try {
     await firebaseAuth.signInWithEmailAndPassword(
@@ -25,9 +26,10 @@ const loginUser = async ({ loginEmail, loginPassword }) => {
       loginPassword
     );
   } catch (err) {
-    console.error(err);
+    return err;
   }
 };
+
 const registerUser = async ({ registerEmail, registerPassword }) => {
   try {
     const res = await firebaseAuth.createUserWithEmailAndPassword(
@@ -40,10 +42,12 @@ const registerUser = async ({ registerEmail, registerPassword }) => {
       registerEmail,
     });
   } catch (err) {
-    console.error(err);
+    return err;
   }
 };
+
 const logout = () => {
   firebaseAuth.signOut(auth);
 };
+
 export { app, auth, database, loginUser, registerUser, logout };

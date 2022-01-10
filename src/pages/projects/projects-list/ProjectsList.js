@@ -128,6 +128,8 @@ const ProjectsList = () => {
       </Modal>
     );
 
+  if (!user?.info) return <span>loading...</span>; //melhorar design
+
   return (
     <Layout pageTitle="Projects" openModal={() => setMyProjectsOpen(true)}>
       <section className={contentContainer}>

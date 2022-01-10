@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getDatabase, ref, set } from 'firebase/database';
 
 import MockupLanding from 'assets/images/MockupLanding.png';
 
-import { auth, registerUser, loginUser } from 'firebase/firebase.js';
+import { registerUser, loginUser } from 'firebase/firebase.js';
+
+import { Context } from 'context/userContext';
 
 import Button from 'components/shared/elements/button';
 import FormWrapper from 'components/shared/forms/form-wrapper';
@@ -38,21 +39,33 @@ const Landing = () => {
   const navigate = useNavigate();
   const db = getDatabase();
   const [formType, setFormType] = useState(false);
-  const [user] = useAuthState(auth);
-  const id = user?.uid;
+  const [error, setError] = useState(null);
+  const user = useContext(Context);
 
   const register = (values) => {
-    const user = registerUser(values);
-    if (user) setFormType('complete');
+    const info = registerUser(values);
+    info.then(function (result) {
+      if (result) {
+        setError(result.code.replace('-', ' '));
+      } else {
+        setFormType('complete');
+      }
+    });
   };
 
   const login = (values) => {
-    loginUser(values);
-    if (user) navigate('/home');
+    const info = loginUser(values);
+    info.then(function (result) {
+      if (result) {
+        setError(result?.code.replace('-', ' '));
+      } else {
+        navigate('/home');
+      }
+    });
   };
 
   const complete = (values) => {
-    set(ref(db, 'users/' + id), {
+    set(ref(db, 'users/' + user?.id), {
       info: {
         name: values.userName,
         image: values.userPhoto,
@@ -76,9 +89,9 @@ const Landing = () => {
 
   const getForm = (formType, formik) => {
     if (formType === 'login') {
-      return <LoginForm formik={formik} />;
+      return <LoginForm formik={formik} error={error} />;
     } else if (formType === 'register') {
-      return <RegisterForm formik={formik} />;
+      return <RegisterForm formik={formik} error={error} />;
     } else if (formType === 'complete') {
       return <EditInfoForm formik={formik} />;
     } else {
