@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getDatabase, ref, push, update, remove } from 'firebase/database';
 
@@ -52,14 +52,15 @@ const ProjectsList = () => {
   const projects = user?.info?.projects;
   const id = searchParams.get('id');
 
-  const project = Object.entries(projects ? projects : {}).find(
-    (project) => project[0] === id
+  const project = useMemo(
+    () => Object.entries(projects ?? {}).find((project) => project[0] === id),
+    [id, projects]
   );
 
   const handleButton = () => {
     setMyProjectsOpen(false);
     setAddProjectOpen(true);
-    navigate(`/projects`);
+    navigate(`/projects`, { replace: true });
   };
 
   const addProject = (values) => {
@@ -94,6 +95,13 @@ const ProjectsList = () => {
       images: values.projectImages, //é preciso resolver a situação das imagens
     });
     setAddProjectOpen(false);
+    navigate(`/projects`, { replace: true });
+  };
+
+  const removeProject = (id) => {
+    remove(ref(db, 'users/' + user?.id + '/projects/' + id));
+    setAddProjectOpen(false);
+    navigate(`/projects`, { replace: true });
   };
 
   const modal = (isList) =>
@@ -115,9 +123,7 @@ const ProjectsList = () => {
       >
         <MyProjectsForm
           editHandler={() => handleButton()}
-          removeHandler={(id) => {
-            remove(ref(db, 'users/' + user?.id + '/projects/' + id));
-          }}
+          removeHandler={(id) => removeProject(id)}
         />
       </Modal>
     );

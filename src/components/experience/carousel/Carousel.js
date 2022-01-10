@@ -41,7 +41,7 @@ export const Carousel = forwardRef(({ options, children, years }, ref) => {
 
   useEffect(() => {
     const width = parseInt(refEl.current.style.width.replace('px', ''));
-    if (width > 20000) navigate('/experience');
+    if (width > 20000 || width < 5000) navigate('/experience');
   });
 
   return (

@@ -55,14 +55,15 @@ const Experience = () => {
   const experiences = user?.info?.experiences;
   const id = searchParams.get('id');
 
-  const experience = Object.entries(experiences ? experiences : {}).find(
-    (exp) => exp[0] === id
+  const experience = useMemo(
+    () => Object.entries(experiences ?? {}).find((exp) => exp[0] === id),
+    [experiences, id]
   );
 
   const handleButton = () => {
     setMyExperienceOpen(false);
     setAddExperienceOpen(true);
-    navigate(`/experience`);
+    navigate(`/experience`, { replace: true });
   };
 
   const addExperience = (values) => {
@@ -81,26 +82,26 @@ const Experience = () => {
       date: values.experienceDate,
     });
     setAddExperienceOpen(false);
+    navigate(`/experience`, { replace: true });
   };
 
-  const getExperience = (date) => {
-    const dateSplited = date.split('_');
-    const plusMonth = parseInt(dateSplited[1]) + 1;
-    const finalMonth =
-      plusMonth.toString().length === 1 ? '0' + plusMonth : plusMonth;
-    const newDate = dateSplited[0] + '-' + finalMonth;
-    return Object.entries(experiences ? experiences : {}).find(
-      (exp) => exp[1].date.slice(0, -3) === newDate
-    );
+  const removeExperience = (id) => {
+    remove(ref(db, 'users/' + user?.id + '/experiences/' + id));
+    setAddExperienceOpen(false);
+    navigate(`/experience`, { replace: true });
   };
 
-  Object.entries(experiences ? experiences : {}).map((exp) => {
-    const currentDate = new Date(exp[1].date);
-    const year = currentDate.getFullYear();
-    if (!years?.includes(year)) years.push(year);
-    months.push(year + '_' + currentDate.getMonth());
-    return null;
-  });
+  useMemo(
+    () =>
+      Object.entries(experiences ? experiences : {}).map((exp) => {
+        const currentDate = new Date(exp[1].date);
+        const year = currentDate.getFullYear();
+        if (!years?.includes(year)) years.push(year);
+        months.push(year + '_' + currentDate.getMonth());
+        return null;
+      }),
+    [experiences, months, years]
+  );
 
   const modal = (isList) =>
     isList ? (
@@ -121,12 +122,12 @@ const Experience = () => {
       >
         <MyExperienceForm
           editHandler={() => handleButton()}
-          removeHandler={(id) => {
-            remove(ref(db, 'users/' + user?.id + '/experiences/' + id));
-          }}
+          removeHandler={(id) => removeExperience(id)}
         />
       </Modal>
     );
+
+  if (!experiences) return <span>loading...</span>; //melhorar design
 
   return (
     <Layout pageTitle="Experience" openModal={() => setMyExperienceOpen(true)}>
@@ -147,8 +148,10 @@ const Experience = () => {
             {years.map((y) => {
               return allMonths.map((m, i) => {
                 const hasExperience = months.find((x) => x === y + '_' + i);
-                let exp;
-                if (hasExperience) exp = getExperience(hasExperience);
+                const exp =
+                  Object.values(experiences)[
+                    months.indexOf(hasExperience ?? null)
+                  ];
                 return (
                   <Carousel.Slide key={i}>
                     <div className={`${monthWrapper} ${'monthWrapper'}`}>
@@ -162,10 +165,10 @@ const Experience = () => {
                     {hasExperience ? (
                       <div className={`${experiencePop} ${'experiencePop'}`}>
                         <div className={innerPop}>
-                          <img src={exp[1]?.banner} alt="User" />
+                          <img src={exp?.banner} alt="User" />
                           <div className={experienceInfo}>
                             <span>{m}</span>
-                            <h3>{exp[1]?.name}</h3>
+                            <h3>{exp?.name}</h3>
                           </div>
                         </div>
                       </div>
