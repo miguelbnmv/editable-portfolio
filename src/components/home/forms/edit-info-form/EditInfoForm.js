@@ -7,13 +7,9 @@ import FormTitle from 'components/shared/forms/form-title';
 import FilesInput from 'components/shared/forms/files-input';
 
 import { double } from 'components/shared/modal/modal.module.scss';
-import { logout } from 'firebase/firebase';
 
 const EditInfoForm = ({ formik }) => (
   <>
-    <button type="button" onClick={() => logout()}>
-      Logout
-    </button>
     <FormTitle text="about" />
     <Input
       name="userName"

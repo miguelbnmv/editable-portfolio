@@ -5,6 +5,9 @@ import { getDatabase, ref, set } from 'firebase/database';
 import GithubIcon from 'assets/icons/Github.svg';
 import InstagramIcon from 'assets/icons/Instagram.svg';
 import TwitterIcon from 'assets/icons/Twitter.svg';
+import BehanceIcon from 'assets/icons/behance.png';
+import LinkedinIcon from 'assets/icons/linkedin.png';
+import DribbleIcon from 'assets/icons/dribble.png';
 import Kelvin from 'assets/images/Kelvin.png';
 
 import { Context } from 'context/userContext';
@@ -30,12 +33,16 @@ import {
   about,
   footer,
   imageGroup,
+  socialIcon,
 } from './home.module.scss';
 
 const icons = {
   github: GithubIcon,
   instagram: InstagramIcon,
   twitter: TwitterIcon,
+  behance: BehanceIcon,
+  linkedin: LinkedinIcon,
+  dribble: DribbleIcon,
 };
 
 const Home = () => {
@@ -100,7 +107,7 @@ const Home = () => {
     </FormWrapper>
   );
 
-  if (!info) return <span id="notGoodPractice">loading...</span> //melhorar design
+  if (!info) return <span id="notGoodPractice">loading...</span>; //melhorar design
 
   return (
     <Layout pageTitle="Home" hide openModal={() => setEditInfoOpen(true)}>
@@ -124,7 +131,7 @@ const Home = () => {
               if (social[1] !== '') {
                 return (
                   <a href={social[1]} key={social[0]}>
-                    <img src={icons[social[0]]} alt={social[0] + ' Icon'} />
+                    <img className={socialIcon} src={icons[social[0]]} alt={social[0] + ' Icon'} />
                   </a>
                 );
               } else {

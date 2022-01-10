@@ -9,5 +9,7 @@ Comprar domínio e configurá-lo
 Meter cores se der
 
 9/01
-É preciso adicionar os icons que faltam
-Adicionar um botão de logout como deve ser
+É preciso adicionar os icons que faltam ✅
+Adicionar um botão de logout como deve ser ✅
+Adicionar erros aos forms de autenticação
+Corrigir problema com o login e com register .......

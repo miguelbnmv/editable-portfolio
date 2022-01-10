@@ -58,6 +58,10 @@
     .pageInfo {
       @include flex($justify: flex-end);
       height: 5rem;
+
+      button {
+        margin-left: 2rem;
+      }
     }
   }
 }

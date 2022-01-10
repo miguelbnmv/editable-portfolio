@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import { logout } from 'firebase/firebase';
 
 import Button from '../elements/button/Button';
 
@@ -59,7 +60,10 @@ const Header = ({ pageTitle, noFill, hide, openModal }) => {
             <span>.</span>
           </h1>
         ) : null}
-        <Button handle={openModal} text="Edit" color="white" />
+        {hide ? (
+          <Button handle={() => logout()} text="Logout" color="white" />
+        ) : null}
+        <Button handle={openModal} text="Edit" color="white" style={{ marginLeft: '1rem' }} />
       </div>
     </header>
   );
