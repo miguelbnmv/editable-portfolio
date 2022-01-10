@@ -60,7 +60,7 @@ const ProjectsList = () => {
   const handleButton = () => {
     setMyProjectsOpen(false);
     setAddProjectOpen(true);
-    navigate(`/projects`, { replace: true });
+    navigate('/projects', { replace: true });
   };
 
   const addProject = (values) => {
@@ -95,13 +95,13 @@ const ProjectsList = () => {
       images: values.projectImages, //é preciso resolver a situação das imagens
     });
     setAddProjectOpen(false);
-    navigate(`/projects`, { replace: true });
+    navigate('/projects', { replace: true });
   };
 
   const removeProject = (id) => {
     remove(ref(db, 'users/' + user?.id + '/projects/' + id));
     setAddProjectOpen(false);
-    navigate(`/projects`, { replace: true });
+    navigate('/projects', { replace: true });
   };
 
   const modal = (isList) =>

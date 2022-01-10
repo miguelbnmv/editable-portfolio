@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getDatabase, ref, update } from 'firebase/database';
-import Masonry from 'react-masonry-css';
+//import Masonry from 'react-masonry-css';
 
 import { Context } from 'context/userContext';
 
@@ -20,8 +20,8 @@ import {
   primaryBio,
   about,
   secondaryBio,
-  masonry,
-  masonryColumn,
+  //masonry,
+  //masonryColumn,
 } from './project.module.scss';
 
 const Project = () => {
@@ -37,10 +37,10 @@ const Project = () => {
 
   const project = projectInfo ? projectInfo[1] : null;
 
-  const breakpointColumnsObj = {
-    default: 2,
-    800: 1,
-  };
+  //const breakpointColumnsObj = {
+  //  default: 2,
+  //  800: 1,
+  //};
 
   const editProject = (values) => {
     update(ref(db, 'users/' + user?.id + '/projects/' + projectInfo[0]), {

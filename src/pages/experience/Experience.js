@@ -63,7 +63,7 @@ const Experience = () => {
   const handleButton = () => {
     setMyExperienceOpen(false);
     setAddExperienceOpen(true);
-    navigate(`/experience`, { replace: true });
+    navigate('/experience', { replace: true });
   };
 
   const addExperience = (values) => {
@@ -82,13 +82,13 @@ const Experience = () => {
       date: values.experienceDate,
     });
     setAddExperienceOpen(false);
-    navigate(`/experience`, { replace: true });
+    navigate('/experience', { replace: true });
   };
 
   const removeExperience = (id) => {
     remove(ref(db, 'users/' + user?.id + '/experiences/' + id));
     setAddExperienceOpen(false);
-    navigate(`/experience`, { replace: true });
+    navigate('/experience', { replace: true });
   };
 
   useMemo(
@@ -102,6 +102,13 @@ const Experience = () => {
       }),
     [experiences, months, years]
   );
+
+  const dates = years?.reduce((acc, cur) => {
+    const temp = allMonths.reduce((acc, _, i) => {
+      return [...acc, cur + '_' + i];
+    }, []);
+    return [...acc, ...temp];
+  }, []);
 
   const modal = (isList) =>
     isList ? (
@@ -143,7 +150,7 @@ const Experience = () => {
               startAt: '2',
               gap: 0,
             }}
-            years={years}
+            dates={dates}
           >
             {years.map((y) => {
               return allMonths.map((m, i) => {

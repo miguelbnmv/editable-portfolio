@@ -19,10 +19,10 @@ import {
   yearText,
 } from './carousel.module.scss';
 
-export const Carousel = forwardRef(({ options, children, years }, ref) => {
+export const Carousel = forwardRef(({ options, children, dates }, ref) => {
   const sliderRef = useRef();
   const refEl = useRef();
-  const [year, setYear] = useState(years[0]);
+  const [year, setYear] = useState(dates[0].split('_')[0]);
   const navigate = useNavigate();
 
   useImperativeHandle(ref, () => sliderRef.current);
@@ -31,13 +31,13 @@ export const Carousel = forwardRef(({ options, children, years }, ref) => {
     const slider = new Glide(sliderRef.current, options);
 
     slider.on(['mount.after', 'run'], () =>
-      (12 * years.length) / slider.index <= 2 ? setYear(2020) : setYear(2019)
+      setYear(dates[slider.index].split('_')[0])
     );
 
     slider.mount();
 
     return () => slider.destroy();
-  }, [years, options]);
+  }, [options, dates]);
 
   useEffect(() => {
     const width = parseInt(refEl.current.style.width.replace('px', ''));

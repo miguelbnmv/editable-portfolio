@@ -1,5 +1,5 @@
 import { createContext, useState } from 'react';
-import { getDatabase, ref, get } from 'firebase/database';
+import { getDatabase, ref, get, onChildChanged } from 'firebase/database';
 import { onAuthStateChanged } from 'firebase/auth';
 
 import { auth } from 'firebase/firebase.js';
@@ -14,7 +14,7 @@ const UserContext = ({ children }) => {
     if (user) {
       get(ref(db, '/users'))
         .then((user) => {
-          if (user.exists()) {
+          if (!info && user.exists()) {
             setInfo({
               info: user?.val()[auth?.currentUser?.uid],
               id: auth?.currentUser?.uid,
@@ -25,6 +25,13 @@ const UserContext = ({ children }) => {
           console.error(error);
         });
     }
+  });
+
+  onChildChanged(ref(db, '/users'), (user) => {
+    setInfo({
+      info: user?.val(),
+      id: auth?.currentUser?.uid,
+    });
   });
 
   return (
