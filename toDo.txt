@@ -1,7 +1,7 @@
 Criar empty state do projects e do experience ✅
 Usar dados do register para preencher home ✅
-Ligar forms do projetcts e do experience ao firebase 〽️
-Usar dados do firebase para preencher o projetcts e o experience
+Ligar forms do projetcts e do experience ao firebase ✅
+Usar dados do firebase para preencher o projetcts e o experience 〽️
 
 Desenvolver código para existir uma página para cada utilizador
 Comprar domínio e configurá-lo
@@ -10,3 +10,4 @@ Meter cores se der
 
 9/01
 É preciso adicionar os icons que faltam
+Adicionar um botão de logout como deve ser
