@@ -100,7 +100,7 @@ const Home = () => {
     </FormWrapper>
   );
 
-  if (!info) return <span id="notGoodPractice">loading...</span>;
+  if (!info) return <span id="notGoodPractice">loading...</span> //melhorar design
 
   return (
     <Layout pageTitle="Home" hide openModal={() => setEditInfoOpen(true)}>

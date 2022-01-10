@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { getDatabase, ref, update } from 'firebase/database';
 import Masonry from 'react-masonry-css';
 
 import { Context } from 'context/userContext';
@@ -24,22 +25,47 @@ import {
 } from './project.module.scss';
 
 const Project = () => {
-  const [editProject, setEditProject] = useState(false);
+  const [editProjectOpen, setEditProjectOpen] = useState(false);
   const { projectId } = useParams();
-  const { projects } = useContext(Context);
-  const project = projects.find(({ id }) => id === parseInt(projectId));
+  const db = getDatabase();
+  const user = useContext(Context);
+  const projects = user?.info?.projects;
+
+  const projectInfo = Object.entries(projects ? projects : {}).find(
+    (project) => project[0] === projectId
+  );
+
+  const project = projectInfo ? projectInfo[1] : null;
 
   const breakpointColumnsObj = {
     default: 2,
     800: 1,
   };
 
+  const editProject = (values) => {
+    update(ref(db, 'users/' + user?.id + '/projects/' + projectInfo[0]), {
+      title: values.projectTitle,
+      quote: values.projectQuote,
+      firstDescription: values.projectFirstDescription,
+      firstDescriptionTitle: values.projectFirstDescriptionTitle,
+      secondDescription: values.projectSecondDescription,
+      secondDescriptionTitle: values.projectSecondDescriptionTitle,
+      subject: values.projectSubject,
+      date: values.projectDate,
+      platforms: values.projectPlatforms,
+      technologies: values.projectTechnologies,
+      images: values.projectImages, //é preciso resolver a situação das imagens
+    });
+    setEditProjectOpen(false);
+  };
+
   const modal = () => (
     <FormWrapper
       initialValues={initialValues(project)}
       schema={addProjectFormSchema}
-      title={project.name}
-      handleClose={() => setEditProject(false)}
+      title={project.title}
+      handleSubmit={editProject}
+      handleClose={() => setEditProjectOpen(false)}
     >
       {(formik) => <AddProjectForm formik={formik} />}
     </FormWrapper>
@@ -47,17 +73,16 @@ const Project = () => {
 
   return (
     <Layout
-      pageTitle={project.name}
+      pageTitle={project?.title}
       noFill
-      openModal={() => setEditProject(true)}
+      openModal={() => setEditProjectOpen(true)}
     >
-
-      {editProject ? modal(true) : null}
+      {editProjectOpen ? modal(true) : null}
       <div className={contentContainer}>
         <div className={hero}>
-          <img src={project.banner} alt="project-banner" />
+          <img src={project?.banner} alt="project-banner" />
           <h1>
-            {project.name}. {project.name}.
+            {project?.title}. {project?.title}.
           </h1>
         </div>
         <div className={main}>
@@ -65,50 +90,47 @@ const Project = () => {
             <div className={about}>
               <div>
                 <span>Subject</span>
-                <span>{project.about.subject}</span>
+                <span>{project?.subject}</span>
               </div>
               <div>
                 <span>Platforms</span>
-                <span>{project.about.platforms}</span>
+                <span>{project?.platforms}</span>
               </div>
               <div>
                 <span>Technologies</span>
-                <span>{project.about.technologies}</span>
+                <span>{project?.technologies}</span>
               </div>
               <div>
                 <span>Year</span>
-                <span>{project.about.year}</span>
+                <span>{project?.year}</span>
               </div>
             </div>
             <div>
-              <h3>{project.primaryDescription.title}</h3>
-              <p>{project.primaryDescription.description}</p>
-              <h4>"{project.quote}"</h4>
+              <h3>{project?.firstDescriptionTitle}</h3>
+              <p>{project?.firstDescription}</p>
+              <h4>"{project?.quote}"</h4>
             </div>
           </div>
-          <img
-            src={project.primaryDescription.image}
-            alt="description-illustration"
-          />
+          <img src={project?.firstDescription} alt="description-illustration" />
           <div className={secondaryBio}>
             <img
-              src={project.secondaryDescription.image}
+              src={project?.secondDescription}
               alt="description-illustration"
             />
             <div>
-              <h3>{project.secondaryDescription.title}</h3>
-              <p>{project.secondaryDescription.description}</p>
+              <h3>{project?.secondDescriptionTitle}</h3>
+              <p>{project?.secondDescription}</p>
             </div>
           </div>
-          <Masonry
+          {/*           <Masonry //preciso resolver a situação das imagens
             breakpointCols={breakpointColumnsObj}
             className={masonry}
             columnClassName={masonryColumn}
           >
-            {project.gallery.map((img) => (
+            {project?.images.map((img) => (
               <img src={img} alt="project-img" key={img} />
             ))}
-          </Masonry>
+          </Masonry> */}
         </div>
       </div>
     </Layout>

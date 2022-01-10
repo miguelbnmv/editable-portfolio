@@ -1,17 +1,17 @@
 import * as Yup from 'yup';
 
 export const initialValues = (project) => ({
-  projectTitle: project?.name ?? '',
+  projectTitle: project?.title ?? '',
   projectQuote: project?.quote ?? '',
-  projectFirstDescriptionTitle: project?.primaryDescription.title ?? '',
-  projectFirstDescription: project?.primaryDescription.description ?? '',
-  projectSecondDescriptionTitle: project?.secondaryDescription.title ?? '',
-  projectSecondDescription: project?.secondaryDescription.description ?? '',
-  projectSubject: project?.about.subject ?? '',
-  projectDate: project?.about.year ?? '',
-  projectPlatforms: project?.about.platforms ?? '',
-  projectTechnologies: project?.about.technologies ?? '',
-  projectImages: project?.description ?? '',
+  projectFirstDescriptionTitle: project?.firstDescriptionTitle ?? '',
+  projectFirstDescription: project?.firstDescription ?? '',
+  projectSecondDescriptionTitle: project?.secondDescriptionTitle ?? '',
+  projectSecondDescription: project?.secondDescription ?? '',
+  projectSubject: project?.subject ?? '',
+  projectDate: project?.date ?? '',
+  projectPlatforms: project?.platforms ?? '',
+  projectTechnologies: project?.technologies ?? '',
+  projectImages: project?.images ?? '',
 });
 
 export const addProjectFormSchema = Yup.object().shape({

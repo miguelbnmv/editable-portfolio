@@ -4,12 +4,12 @@
   @include size(100%, 100%);
   @include flex(column);
   position: absolute;
-  text-align: center;
   top: 0;
+  text-align: center;
 
   button {
-    color: $green;
     margin-top: 1rem;
+    color: $green;
   }
 
 }

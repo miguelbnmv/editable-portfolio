@@ -36,9 +36,9 @@ import {
 
 const Landing = () => {
   const navigate = useNavigate();
+  const db = getDatabase();
   const [formType, setFormType] = useState(false);
   const [user] = useAuthState(auth);
-  const db = getDatabase();
   const id = user?.uid;
 
   const register = (values) => {
@@ -52,7 +52,6 @@ const Landing = () => {
   };
 
   const complete = (values) => {
-    console.log(values);
     set(ref(db, 'users/' + id), {
       info: {
         name: values.userName,

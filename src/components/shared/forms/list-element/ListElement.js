@@ -5,12 +5,12 @@ import Button from 'components/shared/elements/button';
 
 import { wrapper, controls } from './list-element.module.scss';
 
-const ListElement = ({ name, editHandle }) => (
+const ListElement = ({ name, editHandle, removeHandle }) => (
   <div className={wrapper}>
     <span>{name}</span>
     <div className={controls}>
       <Button text="edit" color="borderless" handle={editHandle} />
-      <Button text="delete" color="borderless" handle={() => {}} />
+      <Button text="delete" color="borderless" handle={removeHandle} />
     </div>
   </div>
 );
@@ -20,4 +20,5 @@ export default ListElement;
 ListElement.propTypes = {
   name: PropTypes.string.isRequired,
   editHandle: PropTypes.func.isRequired,
+  removeHandle: PropTypes.func.isRequired,
 };
