@@ -128,7 +128,7 @@ const ProjectsList = () => {
       </Modal>
     );
 
-  if (!user?.info) return <span>loading...</span>; //melhorar design
+  if (!user?.info) return <></>;
 
   return (
     <Layout pageTitle="Projects" openModal={() => setMyProjectsOpen(true)}>

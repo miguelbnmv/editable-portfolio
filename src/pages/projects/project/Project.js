@@ -71,6 +71,8 @@ const Project = () => {
     </FormWrapper>
   );
 
+  if (!user?.info) return <></>;
+
   return (
     <Layout
       pageTitle={project?.title}

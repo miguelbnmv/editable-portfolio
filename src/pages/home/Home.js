@@ -107,7 +107,7 @@ const Home = () => {
     </FormWrapper>
   );
 
-  if (!info) return <span id="notGoodPractice">loading...</span>; //melhorar design
+  if (!info) return <div id="notGoodPractice"></div>;
 
   return (
     <Layout pageTitle="Home" hide openModal={() => setEditInfoOpen(true)}>
@@ -131,7 +131,11 @@ const Home = () => {
               if (social[1] !== '') {
                 return (
                   <a href={social[1]} key={social[0]}>
-                    <img className={socialIcon} src={icons[social[0]]} alt={social[0] + ' Icon'} />
+                    <img
+                      className={socialIcon}
+                      src={icons[social[0]]}
+                      alt={social[0] + ' Icon'}
+                    />
                   </a>
                 );
               } else {

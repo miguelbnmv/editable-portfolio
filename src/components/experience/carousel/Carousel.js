@@ -21,8 +21,8 @@ import {
 
 export const Carousel = forwardRef(({ options, children, dates }, ref) => {
   const sliderRef = useRef();
-  const refEl = useRef();
   const [year, setYear] = useState(dates[0].split('_')[0]);
+  const [reloadCount, setReloadCount] = useState(0);
   const navigate = useNavigate();
 
   useImperativeHandle(ref, () => sliderRef.current);
@@ -40,9 +40,14 @@ export const Carousel = forwardRef(({ options, children, dates }, ref) => {
   }, [options, dates]);
 
   useEffect(() => {
-    const width = parseInt(refEl.current.style.width.replace('px', ''));
-    if (width > 20000 || width < 5000) navigate('/experience');
-  });
+    if (reloadCount < 1) {
+      setReloadCount(reloadCount + 1);
+      navigate('/experience');
+    } else {
+      setReloadCount(0);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -78,9 +83,7 @@ export const Carousel = forwardRef(({ options, children, dates }, ref) => {
       </Helmet>
       <div className="glide" ref={sliderRef}>
         <div className={`${timeline} ${'glide__track'}`} data-glide-el="track">
-          <ul ref={refEl} className={`${slides} ${'glide__slides'}`}>
-            {children}
-          </ul>
+          <ul className={`${slides} ${'glide__slides'}`}>{children}</ul>
           <div className={line}></div>
         </div>
       </div>

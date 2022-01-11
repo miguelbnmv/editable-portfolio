@@ -2,7 +2,5 @@ Desenvolver código para existir uma página para cada utilizador
 Comprar domínio e configurá-lo
 Adicionar imagens ao projeto
 Corrigir problema quando se falha login
-Melhorar loading
-Corrigir stress quando não social
 
 Meter cores se der

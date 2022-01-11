@@ -134,7 +134,7 @@ const Experience = () => {
       </Modal>
     );
 
-  if (!user?.info) return <span>loading...</span>; //melhorar design
+  if (!user?.info) return <></>;
 
   return (
     <Layout pageTitle="Experience" openModal={() => setMyExperienceOpen(true)}>
