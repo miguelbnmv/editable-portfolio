@@ -155,7 +155,12 @@ const Landing = () => {
       handleSubmit={formContent[formType]?.handleSubmit}
       footerContent={footerContent(formType)}
     >
-      {(formik) => getForm(formType, formik)}
+      {(formik) => {
+        if (error && formik.isSubmitting) {
+          formik.setSubmitting(false);
+        }
+        return getForm(formType, formik);
+      }}
     </FormWrapper>
   );
 

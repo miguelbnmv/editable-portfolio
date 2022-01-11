@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import Helmet from 'react-helmet';
 import Glide from '@glidejs/glide';
-import { useNavigate } from 'react-router-dom';
 
 import '@glidejs/glide/dist/css/glide.core.css';
 
@@ -20,10 +19,9 @@ import {
 } from './carousel.module.scss';
 
 export const Carousel = forwardRef(({ options, children, dates }, ref) => {
-  const sliderRef = useRef();
   const [year, setYear] = useState(dates[0].split('_')[0]);
-  const [reloadCount, setReloadCount] = useState(0);
-  const navigate = useNavigate();
+  const sliderRef = useRef();
+  const refEl = useRef();
 
   useImperativeHandle(ref, () => sliderRef.current);
 
@@ -40,13 +38,11 @@ export const Carousel = forwardRef(({ options, children, dates }, ref) => {
   }, [options, dates]);
 
   useEffect(() => {
-    if (reloadCount < 1) {
-      setReloadCount(reloadCount + 1);
-      navigate('/experience');
-    } else {
-      setReloadCount(0);
+    var subStr = refEl?.current?.style?.transform.split('(-')[1].split('.');
+
+    if (subStr[0] > 7000) {
+      window.location.replace('/experience');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -54,36 +50,38 @@ export const Carousel = forwardRef(({ options, children, dates }, ref) => {
       <Helmet>
         <style>
           {`
-          .glide {
-            height: 75vh;
-            position: absolute !important;
-            bottom: 0;
-            z-index: 4;
+        .glide {
+          height: 75vh;
+          position: absolute !important;
+          bottom: 0;
+          z-index: 4;
+        }
+        @media only screen and (max-width: 48rem) {
+          .glide{
+            height: calc(100% - 10.5rem);
+            bottom: initial;
           }
-          @media only screen and (max-width: 48rem) {
-            .glide{
-              height: calc(100% - 10.5rem);
-              bottom: initial;
-            }
-          }
-          .glide * {
-            position: unset !important
-          }
-          .glide__slide--active .experiencePop{
-            display: flex;
-          }
-          .glide__slide--active .monthWrapper{
-            position: absolute !important;
-            top: 50%;
-            margin-top: -0.75rem;
-            transform: translateY(-50%);
-          }
-          `}
+        }
+        .glide * {
+          position: unset !important
+        }
+        .glide__slide--active .experiencePop{
+          display: flex;
+        }
+        .glide__slide--active .monthWrapper{
+          position: absolute !important;
+          top: 50%;
+          margin-top: -0.75rem;
+          transform: translateY(-50%);
+        }
+        `}
         </style>
       </Helmet>
       <div className="glide" ref={sliderRef}>
         <div className={`${timeline} ${'glide__track'}`} data-glide-el="track">
-          <ul className={`${slides} ${'glide__slides'}`}>{children}</ul>
+          <ul ref={refEl} className={`${slides} ${'glide__slides'}`}>
+            {children}
+          </ul>
           <div className={line}></div>
         </div>
       </div>

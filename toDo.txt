@@ -1,6 +1,6 @@
 Desenvolver código para existir uma página para cada utilizador
 Comprar domínio e configurá-lo
 Adicionar imagens ao projeto
-Corrigir problema quando se falha login
+Resolver problema da timeline again
 
 Meter cores se der
