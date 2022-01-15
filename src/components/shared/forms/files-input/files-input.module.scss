@@ -3,6 +3,8 @@
 .input {
   @include size(100%, 7rem);
 
+  background: red;
+
   label {
     @include size(100%, 100%);
     @include font($weight: 300);
@@ -11,11 +13,49 @@
     background-color: $darkGray;
     cursor: pointer;
 
-    >div:last-child {
+    .imgContainer {
       @include size(100%, 100%);
       @include flex();
+      padding: 0.5rem;
+      gap: 0.5rem;
       border: 0.0625rem dashed $lightGray;
       color: $lightGray;
+      // overflow: hidden;
+
+      .placeHolder {
+        @include size(100%, 100%);
+        position: relative;
+
+        img {
+          @include size(100%, 100%);
+          object-fit: cover;
+        }
+
+        button {
+          background: $green;
+          position: absolute;
+          top: -0.2rem;
+          right: -0.2rem;
+
+          img {
+            filter: brightness(0.2);
+          }
+        }
+
+        &.addMore {
+          @include flex();
+          border: 0.0625rem dashed $lightGray;
+
+          span {
+            font-size: 1.6rem;
+          }
+        }
+      }
+
+      // img {
+      //   @include size(100%, 100%);
+      //   object-fit: cover;
+      // }
     }
   }
 

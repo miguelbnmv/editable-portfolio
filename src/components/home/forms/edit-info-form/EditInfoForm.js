@@ -8,7 +8,7 @@ import FilesInput from 'components/shared/forms/files-input';
 
 import { double } from 'components/shared/modal/modal.module.scss';
 
-const EditInfoForm = ({ formik }) => (
+const EditInfoForm = ({ formik, urls, setImages }) => (
   <>
     <FormTitle text="about" />
     <Input
@@ -25,7 +25,7 @@ const EditInfoForm = ({ formik }) => (
       label="Name"
       isRequired
     />
-    <FilesInput name="userPhoto" label="Upload your profile picture" />
+    <FilesInput name="userPhoto" urls={urls} setImages={setImages} multiple label="Upload your profile picture" />
     <Textarea
       name="userBio"
       value={formik.values.userBio}
@@ -193,4 +193,6 @@ EditInfoForm.propTypes = {
     errors: PropTypes.object,
     touched: PropTypes.object,
   }),
+  urls: PropTypes.array,
+  setImages: PropTypes.func,
 };
