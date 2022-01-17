@@ -37,6 +37,7 @@ import {
   imageGroup,
   socialIcon,
 } from './home.module.scss';
+import { useEffect } from 'react/cjs/react.development';
 
 const icons = {
   github: GithubIcon,
@@ -79,6 +80,7 @@ const Home = () => {
         location: values.userLocation,
         email: values.userEmail,
         phone: values.userPhone,
+        color: values.userColor,
         social: {
           behance: values.userBehance,
           github: values.userGitHub,
@@ -117,6 +119,10 @@ const Home = () => {
       }
     </FormWrapper>
   );
+
+  useEffect(() => {
+    document.querySelector('body').classList.add(info?.color);
+  }, [info?.color])
 
   if (!info) return <div id="notGoodPractice"></div>;
 

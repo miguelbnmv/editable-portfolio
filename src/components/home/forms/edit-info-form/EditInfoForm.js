@@ -25,7 +25,13 @@ const EditInfoForm = ({ formik, urls, setImages }) => (
       label="Name"
       isRequired
     />
-    <FilesInput name="userPhoto" urls={urls} setImages={setImages} multiple label="Upload your profile picture" />
+    <FilesInput
+      name="userPhoto"
+      urls={urls}
+      setImages={setImages}
+      multiple
+      label="Upload your profile picture"
+    />
     <Textarea
       name="userBio"
       value={formik.values.userBio}
@@ -180,6 +186,57 @@ const EditInfoForm = ({ formik, urls, setImages }) => (
         placeholder="Insert your dribble account"
         label="Dribble"
       />
+      {console.log(formik?.values)}
+      <div>
+        <input
+          type="radio"
+          name="userColor"
+          onChange={formik.handleChange}
+          value="green-theme"
+          checked={formik?.values?.userColor === 'green-theme'}
+        />
+        <label htmlFor="green-theme">Green</label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          name="userColor"
+          onChange={formik.handleChange}
+          value="pink-theme"
+          checked={formik?.values?.userColor === 'pink-theme'}
+        />
+        <label htmlFor="pink-theme">Pink</label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          name="userColor"
+          onChange={formik.handleChange}
+          value="yellow-theme"
+          checked={formik?.values?.userColor === 'yellow-theme'}
+        />
+        <label htmlFor="yellow-theme">Yellow</label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          name="userColor"
+          onChange={formik.handleChange}
+          value="blue-theme"
+          checked={formik?.values?.userColor === 'blue-theme'}
+        />
+        <label htmlFor="blue-theme">Blue</label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          name="userColor"
+          onChange={formik.handleChange}
+          value="orange-theme"
+          checked={formik?.values?.userColor === 'orange-theme'}
+        />
+        <label htmlFor="orange-theme">Orange</label>
+      </div>
     </div>
   </>
 );
