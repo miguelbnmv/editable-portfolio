@@ -17,7 +17,7 @@
   .circle {
     @include size(60rem, 60rem);
     @include position($top: -50%, $right: -30%);
-    border: 2rem solid var(--primary-color);
+    border: 2rem solid $green;
     border-radius: 50%;
 
     @media only screen and (max-width: $desktop) {
@@ -71,7 +71,7 @@
     }
 
     h3 span {
-      color: var(--primary-color);
+      color: $green;
     }
   }
 
