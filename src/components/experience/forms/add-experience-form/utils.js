@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 export const initialValues = (experience) => ({
   experienceTitle: experience?.name ?? '',
   experienceDate: experience?.date ?? '',
-  experienceImages: experience?.images ?? '',
+  experienceImage: experience?.image ?? '',
 });
 
 export const addExperienceFormSchema = Yup.object().shape({
