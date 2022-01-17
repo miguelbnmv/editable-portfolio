@@ -186,7 +186,6 @@ const EditInfoForm = ({ formik, urls, setImages, setPhotoChanged }) => (
         placeholder="Insert your dribble account"
         label="Dribble"
       />
-      {console.log(formik?.values)}
       <div>
         <input
           type="radio"
