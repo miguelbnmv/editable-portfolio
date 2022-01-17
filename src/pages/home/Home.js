@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import useMightyMouse from 'react-hook-mighty-mouse';
-import { getDatabase, ref, update } from 'firebase/database';
-import { ref as sRef, uploadBytes } from "firebase/storage";
+import { getDatabase, ref, set, update } from 'firebase/database';
+import { ref as sRef, uploadBytes } from 'firebase/storage';
 
 import GithubIcon from 'assets/icons/Github.svg';
 import InstagramIcon from 'assets/icons/Instagram.svg';
@@ -11,7 +11,6 @@ import LinkedinIcon from 'assets/icons/linkedin.png';
 import DribbleIcon from 'assets/icons/dribble.png';
 
 import { Context } from 'context/userContext';
-
 import { storage } from 'firebase/firebase.js';
 
 import Layout from 'components/shared/layout';
@@ -50,12 +49,11 @@ const icons = {
 const Home = () => {
   const [contactOpen, setContactOpen] = useState(false);
   const [editInfoOpen, setEditInfoOpen] = useState(false);
+  const [photoChanged, setPhotoChanged] = useState(false);
   const [images, setImages] = useState([]);
-  const [url, setUrl] = useState([]);
   const db = getDatabase();
   const user = useContext(Context);
   const info = user?.info?.info;
-  const image = user?.image;
 
   const {
     selectedElement: {
@@ -70,10 +68,20 @@ const Home = () => {
   const rotateImage = `rotate(${-angle}deg)`;
 
   const editUser = (values) => {
+    const getImageInfo = () => {
+      if (photoChanged) {
+        if (images.length !== 0) {
+          return `users/${user?.id}/${images[0]?.name}`;
+        }
+      } else {
+        return info?.image;
+      }
+    };
+
     update(ref(db, 'users/' + user?.id), {
       info: {
         name: values.userName,
-        image: `users/${user?.id}/${images[0]?.name}`,
+        image: getImageInfo(),
         bio: values.userBio,
         role: values.userRole,
         location: values.userLocation,
@@ -90,11 +98,13 @@ const Home = () => {
       },
     });
 
-    images?.map((image) => {
-      uploadBytes(sRef(storage, 'users/' + user?.id + '/' + image.name), image).then((snapshot) => {
-        // console.log(snapshot);
-      });
-    });
+    if (photoChanged && images.length !== 0)
+      uploadBytes(
+        sRef(storage, 'users/' + user?.id + '/' + images[0].name),
+        images[0]
+      );
+
+    setPhotoChanged(false);
     setEditInfoOpen(false);
   };
 
@@ -112,7 +122,12 @@ const Home = () => {
         isContact ? (
           <ContactForm formik={formik} />
         ) : (
-          <EditInfoForm formik={formik} urls={[image]} setImages={setImages}/>
+          <EditInfoForm
+            formik={formik}
+            urls={images.length === 0 ? [user?.image] : images}
+            setImages={setImages}
+            setPhotoChanged={setPhotoChanged}
+          />
         )
       }
     </FormWrapper>
@@ -165,7 +180,11 @@ const Home = () => {
           className={imageGroup}
           style={{ transform: rotateWrapper }}
         >
-          <img src={image ??  null} alt={image ? "User" : "No image"} style={{ transform: rotateImage }} />
+          <img
+            src={user?.image ?? null}
+            alt={user?.image ? 'User' : 'Placeholder'}
+            style={{ transform: rotateImage }}
+          />
         </div>
       </section>
     </Layout>

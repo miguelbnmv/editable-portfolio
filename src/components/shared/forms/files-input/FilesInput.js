@@ -1,40 +1,70 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from 'components/shared/elements/button/Button';
 
-import { input, imgContainer, placeHolder, addMore } from './files-input.module.scss';
+import {
+  input,
+  imgContainer,
+  placeholder,
+  addMore,
+} from './files-input.module.scss';
 
-const FilesInput = ({ label, name, urls, setImages, multiple }) => {
+const FilesInput = ({
+  label,
+  name,
+  urls,
+  setImages,
+  setPhotoChanged,
+  isMultiple,
+}) => {
+  const [fileUrls, setFileUrls] = useState(urls);
+
   const handleChange = (e) => {
+    setImages([]);
+    setFileUrls([]);
+    setPhotoChanged(true);
     for (let i = 0; i < e?.target?.files.length; i++) {
       const newImage = e?.target?.files[i];
-      newImage["id"] = Math.random();
+      newImage['id'] = Math.random();
       setImages((prevState) => [...prevState, newImage]);
+      setFileUrls((prevState) => [...prevState, e?.target?.files[i]]);
     }
   };
 
-  console.log(urls.length);
+  const removeImage = () => {
+    setFileUrls([]);
+    setImages([]);
+    setPhotoChanged(true);
+  };
 
   return (
     <div className={input}>
       <label htmlFor={name}>
-        {urls === '' ? <div>{label}</div> : null}
         <div className={imgContainer}>
-          {urls?.map((url, i) => (
-            <div key={i} className={placeHolder}>
-              <img src={url} alt="Firebase" />
-              <Button img="close" color="icon" />
+          {fileUrls?.length === 0 ? <div>{label}</div> : null}
+          {fileUrls?.map((url, i) => (
+            <div key={i} className={placeholder}>
+              <img
+                src={typeof url !== 'string' ? URL.createObjectURL(url) : url}
+                alt="Firebase Content"
+              />
+              <Button img="close" color="icon" handle={() => removeImage()} />
             </div>
           ))}
-          {multiple && urls.length <= 4? (
-          <div className={`${placeHolder} ${addMore}`}>
-            <span>+</span>
-          </div>
+          {isMultiple && fileUrls?.length < 9 ? (
+            <div className={`${placeholder} ${addMore}`}>
+              <span>+</span>
+            </div>
           ) : null}
         </div>
       </label>
-      <input id={name} onChange={handleChange} multiple={multiple} type="file" />
+      <input
+        id={name}
+        onChange={handleChange}
+        multiple={isMultiple}
+        type="file"
+      />
     </div>
   );
 };
@@ -44,5 +74,5 @@ export default FilesInput;
 FilesInput.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string.isRequired,
-  multiple: PropTypes.bool,
+  isMultiple: PropTypes.bool,
 };

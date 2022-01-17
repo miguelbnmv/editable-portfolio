@@ -3,8 +3,6 @@
 .input {
   @include size(100%, 7rem);
 
-  background: red;
-
   label {
     @include size(100%, 100%);
     @include font($weight: 300);
@@ -20,9 +18,8 @@
       gap: 0.5rem;
       border: 0.0625rem dashed $lightGray;
       color: $lightGray;
-      // overflow: hidden;
 
-      .placeHolder {
+      .placeholder {
         @include size(100%, 100%);
         position: relative;
 
