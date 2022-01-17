@@ -78,8 +78,8 @@
           border: none;
           font-size: 1rem;
           text-transform: capitalize;
-          color: $green;
-          text-decoration-color: $green;
+          color: var(--primary-color);
+          text-decoration-color: var(--primary-color);
 
           &:hover {
             text-decoration: underline;
