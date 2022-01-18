@@ -12,24 +12,23 @@ const UserContext = ({ children }) => {
   const db = getDatabase();
 
   onAuthStateChanged(auth, (user) => {
-    console.log('entrou')
     if (user) {
       get(ref(db, '/users'))
         .then((user) => {
           if (!info && user.exists()) {
             const userInfo = user?.val()[auth?.currentUser?.uid];
-            console.log('user', user)
-            console.log('id', auth?.currentUser?.uid)
-            if (userInfo?.info?.image && ! userInfo?.info.image !== null) {
-              getDownloadURL(sRef(storage, userInfo?.info?.image)).then(
-                (url) => {
+            if (userInfo?.info?.image && !userInfo?.info.image !== null) {
+              getDownloadURL(sRef(storage, userInfo?.info?.image))
+                .then((url) => {
                   setInfo({
                     info: userInfo,
                     id: auth?.currentUser?.uid,
                     image: url,
                   });
-                }
-              );
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
             } else {
               setInfo({
                 info: userInfo,
@@ -46,13 +45,17 @@ const UserContext = ({ children }) => {
 
   onChildChanged(ref(db, '/users'), (user) => {
     if (user?.val().info?.image !== '') {
-      getDownloadURL(sRef(storage, user?.val().info?.image)).then((url) => {
-        setInfo({
-          info: user?.val(),
-          id: auth?.currentUser?.uid,
-          image: url,
+      getDownloadURL(sRef(storage, user?.val().info?.image))
+        .then((url) => {
+          setInfo({
+            info: user?.val(),
+            id: auth?.currentUser?.uid,
+            image: url,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      });
     } else {
       setInfo({
         info: user?.val(),

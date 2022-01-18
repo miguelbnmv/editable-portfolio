@@ -58,8 +58,6 @@ const Home = () => {
   const user = useContext(Context);
   const info = user?.info?.info;
 
-  console.log(1, user);
-
   const {
     selectedElement: {
       position: { angle },
@@ -70,7 +68,7 @@ const Home = () => {
   });
 
   const rotateWrapper = `rotate(${angle}deg)`;
-  const rotateImage = `rotate(${-angle}deg)`;
+  //const rotateImage = `rotate(${-angle}deg)`;
 
   const getImageInfo = () => {
     if (photoChanged) {
