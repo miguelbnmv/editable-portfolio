@@ -6,9 +6,9 @@ import { getStorage } from 'firebase/storage';
 const firebaseConfig = {
   apiKey: 'AIzaSyCCPPnWqDUTz5wtuMKDEMcaihQzMtTwoxw',
   authDomain: 'editable-portfolio.firebaseapp.com',
-  projectId: 'editable-portfolio',
   databaseURL:
     'https://editable-portfolio-default-rtdb.europe-west1.firebasedatabase.app',
+  projectId: 'editable-portfolio',
   storageBucket: 'editable-portfolio.appspot.com',
   messagingSenderId: '680868035482',
   appId: '1:680868035482:web:7bfa9d200dd43851179823',
