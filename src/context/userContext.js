@@ -18,7 +18,8 @@ const UserContext = ({ children }) => {
           if (!info && user.exists()) {
             const userInfo = user?.val()[auth?.currentUser?.uid];
             if (userInfo?.info?.image && !userInfo?.info.image !== null) {
-              getDownloadURL(sRef(storage, userInfo?.info?.image))
+              console.log(sRef(storage, userInfo?.info?.image));
+              /*               getDownloadURL(sRef(storage, userInfo?.info?.image))
                 .then((url) => {
                   setInfo({
                     info: userInfo,
@@ -28,7 +29,11 @@ const UserContext = ({ children }) => {
                 })
                 .catch((error) => {
                   console.log(error);
-                });
+                }); */
+              setInfo({
+                info: userInfo,
+                id: auth?.currentUser?.uid,
+              });
             } else {
               setInfo({
                 info: userInfo,
