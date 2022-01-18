@@ -179,9 +179,9 @@ const Home = () => {
 
   useEffect(() => {
     console.log(info?.color);
-    if (info?.color) {
+/*     if (info?.color) {
       document.querySelector('body').classList.add(info?.color);
-    }
+    } */
   }, [info?.color]);
 
   if (!info) return <div id="notGoodPractice"></div>;
