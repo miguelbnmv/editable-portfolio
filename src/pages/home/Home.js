@@ -72,7 +72,9 @@ const Home = () => {
       if (photoChanged) {
         if (images.length !== 0) {
           return `users/${user?.id}/${images[0]?.name}`;
-        }
+        } else {
+          return '';
+        } 
       } else {
         return info?.image;
       }
