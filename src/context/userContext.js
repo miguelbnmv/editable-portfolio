@@ -12,6 +12,17 @@ const UserContext = ({ children }) => {
   const db = getDatabase();
   const [id, setId] = useState();
 
+  if (id && !auth?.currentUser?.uid) {
+    get(ref(db, '/users')).then((user) => {
+      const temp = Object.values(user.val()).find(({ info }) => {
+        return id !== undefined && info?.username === id;
+      });
+      if (temp !== undefined) {
+        console.log(temp.val());
+      }
+    });
+  }
+
   onAuthStateChanged(auth, (user) => {
     if (user) {
       get(ref(db, '/users'))
@@ -60,13 +71,6 @@ const UserContext = ({ children }) => {
       });
     }
   });
-
-  if (id) {
-    console.log(id);
-    //firebase.database().ref('/users').orderByChild('email').equalTo(userEmail).on('value', data => {
-    //  console.log('data: ', data);
-    //})
-  }
 
   return (
     <Context.Provider value={info ? info : null}>{children}</Context.Provider>
