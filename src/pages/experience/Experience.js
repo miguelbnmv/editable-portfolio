@@ -1,8 +1,10 @@
-import React, { useState, useContext, useMemo } from 'react';
+import React, { useState, useContext, useMemo, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getDatabase, ref, push, update, remove } from 'firebase/database';
+import { ref as sRef, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 
 import { Context } from 'context/userContext';
+import { storage } from 'firebase/firebase.js';
 
 import Layout from 'components/shared/layout';
 import Modal from 'components/shared/modal';
@@ -44,44 +46,111 @@ const allMonths = [
 ];
 
 const Experience = () => {
+  const [addExperienceOpen, setAddExperienceOpen] = useState(false);
+  const [myExperienceOpen, setMyExperienceOpen] = useState(false);
+  const [images, setImages] = useState([]);
+  const [photoChanged, setPhotoChanged] = useState(false);
+  const [flag, setFlag] = useState(true);
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const user = useContext(Context);
   const db = getDatabase();
-  const [addExperienceOpen, setAddExperienceOpen] = useState(false);
-  const [myExperienceOpen, setMyExperienceOpen] = useState(false);
-  const [searchParams] = useSearchParams();
   const months = useMemo(() => [], []);
   const years = useMemo(() => [], []);
-  const experiences = user?.info?.experiences;
   const id = searchParams.get('id');
+  const experiences = user?.info?.experiences;
 
   const experience = useMemo(
     () => Object.entries(experiences ?? {}).find((exp) => exp[0] === id),
     [experiences, id]
   );
 
-  const handleButton = () => {
-    setMyExperienceOpen(false);
-    setAddExperienceOpen(true);
-    navigate('/experience', { replace: true });
+  const handleButton = (isNew) => {
+    if (id) {
+      getDownloadURL(sRef(storage, experience[1]?.image)).then((snap) => {
+        setImages([snap]);
+        setMyExperienceOpen(false);
+        setAddExperienceOpen(true);
+        if (isNew) navigate('/experience', { replace: true });
+      });
+    } else {
+      setImages([]);
+      setMyExperienceOpen(false);
+      setAddExperienceOpen(true);
+      if (isNew) navigate('/experience', { replace: true });
+    }
+  };
+
+  const getImageInfo = () => {
+    if (photoChanged) {
+      if (images.length !== 0) {
+        return `users/${user?.id}/experiences/${images[0]?.name}`;
+      }
+    } else {
+      return experience?.image;
+    }
+  };
+
+  const putStorageItem = (image) => {
+    return uploadBytes(
+      sRef(storage, `users/${user?.id}/experiences/${image.name}`),
+      image
+    );
   };
 
   const addExperience = (values) => {
     push(ref(db, 'users/' + user?.id + '/experiences'), {
       name: values.experienceTitle,
-      banner: values.experienceImages,
       date: values.experienceDate,
+      image: `users/${user?.id}/experiences/${images[0]?.name}`,
     });
+    uploadBytes(
+      sRef(storage, `users/${user?.id}/experiences/${images[0]?.name}`),
+      images[0]
+    );
     setAddExperienceOpen(false);
   };
 
   const editExperience = (values) => {
+    setFlag(false);
+    deleteObject(sRef(storage, experience[1].image)).catch((error) => {
+      console.log(error);
+    })
+    .finally(() => {
+      console.log('apagou')
+    });
     update(ref(db, 'users/' + user?.id + '/experiences/' + experience[0]), {
       name: values.experienceTitle,
-      banner: values.experienceImages,
       date: values.experienceDate,
+      image: getImageInfo(),
     });
-    setAddExperienceOpen(false);
+
+    if (photoChanged && images.length !== 0) {
+      Promise.all(images.map((image) => putStorageItem(image)))
+        .then((urls) => {
+          console.log(urls);
+          urls.map((url) => {
+            return getDownloadURL(sRef(storage, url.ref))
+              .then((url) => {
+                document.getElementById(user?.info?.experiences[id]?.date).src =
+                  url;
+              })
+              .catch((error) => console.log(error));
+          });
+          setFlag(true);
+          setPhotoChanged(false);
+          setAddExperienceOpen(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      uploadBytes(
+        sRef(storage, `users/${user?.id}/experiences/${images[0]?.name}`),
+        images[0]
+      );
+    }
+
     navigate('/experience', { replace: true });
   };
 
@@ -115,17 +184,24 @@ const Experience = () => {
       <FormWrapper
         initialValues={initialValues(id ? experience[1] : null)}
         schema={addExperienceFormSchema}
-        title={id ? experience[1].title : 'Add experience'}
+        title={id ? experience[1]?.name : 'Add experience'}
         handleSubmit={id ? editExperience : addExperience}
         handleClose={() => setAddExperienceOpen(false)}
       >
-        {(formik) => <AddExperienceForm formik={formik} />}
+        {(formik) => (
+          <AddExperienceForm
+            formik={formik}
+            urls={images}
+            setImages={setImages}
+            setPhotoChanged={setPhotoChanged}
+          />
+        )}
       </FormWrapper>
     ) : (
       <Modal
-        title="My experience"
+        title="My experiences"
         handleClose={() => setMyExperienceOpen(false)}
-        handleButton={() => handleButton()}
+        handleButton={() => handleButton(true)}
       >
         <MyExperienceForm
           editHandler={() => handleButton()}
@@ -133,6 +209,20 @@ const Experience = () => {
         />
       </Modal>
     );
+
+  useEffect(() => {
+    if (experiences && flag) {
+      console.log(1);
+      Object.keys(experiences).map((id) => {
+        return getDownloadURL(
+          sRef(storage, user?.info?.experiences[id]?.image)
+        ).then((url) => {
+          document.getElementById(user?.info?.experiences[id]?.date).src = url;
+        });
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [experiences]);
 
   if (!user?.info) return <></>;
 
@@ -172,7 +262,7 @@ const Experience = () => {
                     {hasExperience ? (
                       <div className={`${experiencePop} ${'experiencePop'}`}>
                         <div className={innerPop}>
-                          <img src={exp?.banner} alt="User" />
+                          <img id={exp?.date} alt="Exp" />
                           <div className={experienceInfo}>
                             <span>{m}</span>
                             <h3>{exp?.name}</h3>
@@ -189,7 +279,7 @@ const Experience = () => {
           <Empty
             message="Não existem experiências"
             button="Adiciona experiências à timeline"
-            handle={() => setAddExperienceOpen(true)}
+            handle={() => handleButton()}
           />
         )}
       </section>

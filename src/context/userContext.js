@@ -1,8 +1,9 @@
 import { createContext, useState } from 'react';
 import { getDatabase, ref, get, onChildChanged } from 'firebase/database';
+import { ref as sRef, getDownloadURL } from 'firebase/storage';
 import { onAuthStateChanged } from 'firebase/auth';
 
-import { auth } from 'firebase/firebase.js';
+import { auth, storage } from 'firebase/firebase.js';
 
 export const Context = createContext({});
 
@@ -15,10 +16,23 @@ const UserContext = ({ children }) => {
       get(ref(db, '/users'))
         .then((user) => {
           if (!info && user.exists()) {
-            setInfo({
-              info: user?.val()[auth?.currentUser?.uid],
-              id: auth?.currentUser?.uid,
-            });
+            const userInfo = user?.val()[auth?.currentUser?.uid];
+            if (userInfo?.info?.image) {
+              getDownloadURL(sRef(storage, userInfo?.info?.image)).then(
+                (url) => {
+                  setInfo({
+                    info: userInfo,
+                    id: auth?.currentUser?.uid,
+                    image: url,
+                  });
+                }
+              );
+            } else {
+              setInfo({
+                info: userInfo,
+                id: auth?.currentUser?.uid,
+              });
+            }
           }
         })
         .catch((error) => {
@@ -28,10 +42,20 @@ const UserContext = ({ children }) => {
   });
 
   onChildChanged(ref(db, '/users'), (user) => {
-    setInfo({
-      info: user?.val(),
-      id: auth?.currentUser?.uid,
-    });
+    if (user?.val().info?.image !== '') {
+      getDownloadURL(sRef(storage, user?.val().info?.image)).then((url) => {
+        setInfo({
+          info: user?.val(),
+          id: auth?.currentUser?.uid,
+          image: url,
+        });
+      });
+    } else {
+      setInfo({
+        info: user?.val(),
+        id: auth?.currentUser?.uid,
+      });
+    }
   });
 
   return (

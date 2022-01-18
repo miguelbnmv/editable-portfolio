@@ -8,7 +8,7 @@ import FormTitle from 'components/shared/forms/form-title';
 
 import { double } from 'components/shared/modal/modal.module.scss';
 
-const AddProjectForm = ({ formik }) => (
+const AddProjectForm = ({ formik, urls, setImages }) => (
   <>
     <FormTitle text="general" />
     <Input
@@ -153,7 +153,13 @@ const AddProjectForm = ({ formik }) => (
       />
     </div>
     <FormTitle text="gallery" />
-    <FilesInput name="projectImages" label="Upload images (4 max)" />
+    <FilesInput
+      name="projectImages"
+      isMultiple
+      urls={urls}
+      setImages={setImages}
+      label="Upload images (8 max)"
+    />
   </>
 );
 
@@ -166,4 +172,6 @@ AddProjectForm.propTypes = {
     errors: PropTypes.object,
     touched: PropTypes.object,
   }),
+  urls: PropTypes.array,
+  setImages: PropTypes.func,
 };

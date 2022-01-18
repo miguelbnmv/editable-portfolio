@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Input from 'components/shared/forms/input';
 import FilesInput from 'components/shared/forms/files-input';
 
-const AddExperienceForm = ({ formik }) => (
+const AddExperienceForm = ({ formik, urls, setImages, setPhotoChanged }) => (
   <>
     <Input
       name="experienceTitle"
@@ -34,7 +34,13 @@ const AddExperienceForm = ({ formik }) => (
       label="Date"
       isRequired
     />
-    <FilesInput name="experienceImages" label="Upload image (1 max)" />
+    <FilesInput
+      name="experienceImage"
+      label="Upload your experience's image (1 max)"
+      urls={urls}
+      setImages={setImages}
+      setPhotoChanged={setPhotoChanged}
+    />
   </>
 );
 
@@ -47,4 +53,7 @@ AddExperienceForm.propTypes = {
     errors: PropTypes.object,
     touched: PropTypes.object,
   }),
+  urls: PropTypes.array,
+  setImages: PropTypes.func,
+  setPhotoChanged: PropTypes.func,
 };

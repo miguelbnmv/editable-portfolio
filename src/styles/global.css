@@ -1,0 +1,131 @@
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap");
+html,
+body {
+  font: normal 400 1rem/1.5rem "Sora", sans-serif;
+  background-color: #1f1f1f;
+  color: #ffffff;
+  overflow-y: overlay;
+  overflow-x: hidden;
+}
+
+html h1,
+body h1 {
+  font: normal 600 5rem/125% "Sora", sans-serif;
+}
+
+@media only screen and (max-width: 48rem) {
+  html h1,
+  body h1 {
+    font-size: 2rem;
+  }
+}
+
+html h3,
+body h3 {
+  font: normal 300 2rem/150% "Sora", sans-serif;
+}
+
+html p,
+body p {
+  font: normal 400 1.25rem/150% "Playfair";
+}
+
+html a,
+html li,
+html button,
+body a,
+body li,
+body button {
+  font-size: 1rem;
+}
+
+html a,
+html button,
+body a,
+body button {
+  text-decoration: none;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+html a:focus, html a:active, html a:visited, html a:link, html a:hover,
+body a:focus,
+body a:active,
+body a:visited,
+body a:link,
+body a:hover {
+  text-decoration: none;
+  color: inherit;
+  outline: none;
+}
+
+html ul,
+body ul {
+  list-style: none;
+}
+
+html img,
+body img {
+  max-width: 100%;
+  display: block;
+}
+
+html input,
+body input {
+  border: none;
+}
+
+html ::-webkit-input-placeholder,
+body ::-webkit-input-placeholder {
+  color: #595959;
+}
+
+html :-ms-input-placeholder,
+body :-ms-input-placeholder {
+  color: #595959;
+}
+
+html ::-ms-input-placeholder,
+body ::-ms-input-placeholder {
+  color: #595959;
+}
+
+html ::placeholder,
+body ::placeholder {
+  color: #595959;
+}
+
+html ::-webkit-calendar-picker-indicator,
+body ::-webkit-calendar-picker-indicator {
+  -webkit-filter: invert(1);
+          filter: invert(1);
+}
+
+html *,
+body * {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+::-webkit-scrollbar {
+  width: 1.25rem;
+}
+
+::-webkit-scrollbar-track {
+  background: #2D2C2C;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1f1f1f;
+  border: 0.125rem solid #2D2C2C;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #595959;
+}
+/*# sourceMappingURL=global.css.map */

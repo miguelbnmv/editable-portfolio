@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import useMightyMouse from 'react-hook-mighty-mouse';
-import { getDatabase, ref, set } from 'firebase/database';
+import { getDatabase, ref, set, update } from 'firebase/database';
+import { ref as sRef, uploadBytes } from 'firebase/storage';
 
 import GithubIcon from 'assets/icons/Github.svg';
 import InstagramIcon from 'assets/icons/Instagram.svg';
@@ -8,9 +9,9 @@ import TwitterIcon from 'assets/icons/Twitter.svg';
 import BehanceIcon from 'assets/icons/behance.png';
 import LinkedinIcon from 'assets/icons/linkedin.png';
 import DribbleIcon from 'assets/icons/dribble.png';
-import Kelvin from 'assets/images/Kelvin.png';
 
 import { Context } from 'context/userContext';
+import { storage } from 'firebase/firebase.js';
 
 import Layout from 'components/shared/layout';
 import Button from 'components/shared/elements/button';
@@ -35,6 +36,7 @@ import {
   imageGroup,
   socialIcon,
 } from './home.module.scss';
+import { useEffect } from 'react/cjs/react.development';
 
 const icons = {
   github: GithubIcon,
@@ -48,6 +50,8 @@ const icons = {
 const Home = () => {
   const [contactOpen, setContactOpen] = useState(false);
   const [editInfoOpen, setEditInfoOpen] = useState(false);
+  const [photoChanged, setPhotoChanged] = useState(false);
+  const [images, setImages] = useState([]);
   const db = getDatabase();
   const user = useContext(Context);
   const info = user?.info?.info;
@@ -65,15 +69,26 @@ const Home = () => {
   const rotateImage = `rotate(${-angle}deg)`;
 
   const editUser = (values) => {
-    set(ref(db, 'users/' + user?.id), {
+    const getImageInfo = () => {
+      if (photoChanged) {
+        if (images.length !== 0) {
+          return `users/${user?.id}/${images[0]?.name}`;
+        }
+      } else {
+        return info?.image;
+      }
+    };
+
+    update(ref(db, 'users/' + user?.id), {
       info: {
         name: values.userName,
-        image: values.userPhoto,
+        image: getImageInfo(),
         bio: values.userBio,
         role: values.userRole,
         location: values.userLocation,
         email: values.userEmail,
         phone: values.userPhone,
+        color: values.userColor,
         social: {
           behance: values.userBehance,
           github: values.userGitHub,
@@ -84,6 +99,14 @@ const Home = () => {
         },
       },
     });
+
+    if (photoChanged && images.length !== 0)
+      uploadBytes(
+        sRef(storage, 'users/' + user?.id + '/' + images[0].name),
+        images[0]
+      );
+
+    setPhotoChanged(false);
     setEditInfoOpen(false);
   };
 
@@ -101,11 +124,20 @@ const Home = () => {
         isContact ? (
           <ContactForm formik={formik} />
         ) : (
-          <EditInfoForm formik={formik} />
+          <EditInfoForm
+            formik={formik}
+            urls={images.length === 0 ? [user?.image] : images}
+            setImages={setImages}
+            setPhotoChanged={setPhotoChanged}
+          />
         )
       }
     </FormWrapper>
   );
+
+  useEffect(() => {
+    document.querySelector('body').classList.add(info?.color);
+  }, [info?.color])
 
   if (!info) return <div id="notGoodPractice"></div>;
 
@@ -154,7 +186,11 @@ const Home = () => {
           className={imageGroup}
           style={{ transform: rotateWrapper }}
         >
-          <img src={Kelvin} alt="User" style={{ transform: rotateImage }} />
+          <img
+            src={user?.image ?? null}
+            alt={user?.image ? 'User' : 'Placeholder'}
+            style={{ transform: rotateImage }}
+          />
         </div>
       </section>
     </Layout>

@@ -1,8 +1,10 @@
 import React, { useState, useContext, useEffect, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getDatabase, ref, push, update, remove } from 'firebase/database';
+import { ref as sRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 import { Context } from 'context/userContext';
+import { storage } from 'firebase/firebase.js';
 
 import Layout from 'components/shared/layout';
 import Modal from 'components/shared/modal';
@@ -48,6 +50,7 @@ const ProjectsList = () => {
   const [activeIndex, setActiveIndex] = useState(-1);
   const [addProjectOpen, setAddProjectOpen] = useState(false);
   const [myProjectsOpen, setMyProjectsOpen] = useState(false);
+  const [images, setImages] = useState([]);
   const { x, y } = useMousePosition();
   const projects = user?.info?.projects;
   const id = searchParams.get('id');
@@ -58,12 +61,26 @@ const ProjectsList = () => {
   );
 
   const handleButton = () => {
-    setMyProjectsOpen(false);
-    setAddProjectOpen(true);
-    navigate('/projects', { replace: true });
+    if (id && project[1]?.images) {
+      getDownloadURL(sRef(storage, project[1]?.image[0])).then((snap) => {
+        setImages([snap]);
+        setMyProjectsOpen(false);
+        setAddProjectOpen(true);
+        navigate('/projects', { replace: true });
+      });
+    } else {
+      setImages([]);
+      setMyProjectsOpen(false);
+      setAddProjectOpen(true);
+      navigate('/projects', { replace: true });
+    }
   };
 
   const addProject = (values) => {
+    const imgs = images.map(({ name }) => {
+      return `users/${user?.id}/projects/${name}`;
+    });
+    console.log(imgs);
     push(ref(db, 'users/' + user?.id + '/projects'), {
       title: values.projectTitle,
       quote: values.projectQuote,
@@ -75,12 +92,24 @@ const ProjectsList = () => {
       date: values.projectDate,
       platforms: values.projectPlatforms,
       technologies: values.projectTechnologies,
-      images: values.projectImages, //é preciso resolver a situação das imagens
+      images: imgs,
     });
+
+    images?.map((image) => {
+      uploadBytes(
+        sRef(storage, `users/${user?.id}/projects/${image.name}`),
+        image
+      );
+      return null;
+    });
+
     setAddProjectOpen(false);
   };
 
   const editProject = (values) => {
+    const imgs = images.map(({ name }) => {
+      return `users/${user?.id}/projects/${name}`;
+    });
     update(ref(db, 'users/' + user?.id + '/projects/' + project[0]), {
       title: values.projectTitle,
       quote: values.projectQuote,
@@ -92,8 +121,17 @@ const ProjectsList = () => {
       date: values.projectDate,
       platforms: values.projectPlatforms,
       technologies: values.projectTechnologies,
-      images: values.projectImages, //é preciso resolver a situação das imagens
+      images: imgs,
     });
+
+    images?.map((image) => {
+      uploadBytes(
+        sRef(storage, `users/${user?.id}/projects/${image.name}`),
+        image
+      );
+      return null;
+    });
+
     setAddProjectOpen(false);
     navigate('/projects', { replace: true });
   };
@@ -113,7 +151,9 @@ const ProjectsList = () => {
         handleSubmit={id ? editProject : addProject}
         handleClose={() => setAddProjectOpen(false)}
       >
-        {(formik) => <AddProjectForm formik={formik} />}
+        {(formik) => (
+          <AddProjectForm formik={formik} urls={images} setImages={setImages} />
+        )}
       </FormWrapper>
     ) : (
       <Modal
@@ -138,11 +178,12 @@ const ProjectsList = () => {
         {projects ? (
           <>
             <div className={projectName}>
-              {Object.entries(projects).map((project) => (
+              {Object.entries(projects).map((project, index) => (
                 <ProjectCard
                   project={project}
                   key={project[0]}
                   setActiveIndex={setActiveIndex}
+                  index={index}
                 />
               ))}
             </div>
@@ -151,15 +192,19 @@ const ProjectsList = () => {
                 const isActive = index === activeIndex;
                 const xPos = isActive ? x : 0;
                 const yPos = isActive ? y : 0;
-                return (
-                  <ProjectImage
-                    url={project[1].images}
-                    active={isActive}
-                    key={project[0]}
-                    x={xPos}
-                    y={yPos}
-                  />
-                );
+                if (project[1].images !== '') {
+                  return (
+                    <ProjectImage
+                      project={project}
+                      active={isActive}
+                      key={project[0]}
+                      x={xPos}
+                      y={yPos}
+                    />
+                  );
+                } else {
+                  return null;
+                }
               })}
             </div>
           </>
