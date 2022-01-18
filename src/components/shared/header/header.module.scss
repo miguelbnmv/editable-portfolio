@@ -34,7 +34,7 @@
       line-height: 100%;
 
       span {
-        color: $green;
+        color: var(--primary-color);
       }
     }
   }
@@ -58,6 +58,10 @@
     .pageInfo {
       @include flex($justify: flex-end);
       height: 5rem;
+
+      button {
+        margin-left: 2rem;
+      }
     }
   }
 }

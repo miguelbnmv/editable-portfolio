@@ -8,12 +8,13 @@ export const initialValues = (user) => ({
   userLocation: user?.location ?? '',
   userEmail: user?.email ?? '',
   userPhone: user?.phone ?? '',
+  userColor: user?.color ?? '',
   userBehance: user?.social?.behance ?? '',
-  userGitHub: user?.social?.Github ?? '',
-  userLinkedIn: user?.social?.Linkedin ?? '',
-  userInstagram: user?.social?.Instagram ?? '',
-  userTwitter: user?.social?.Twitter ?? '',
-  userDribble: user?.social?.Dribble ?? '',
+  userGitHub: user?.social?.github ?? '',
+  userLinkedIn: user?.social?.linkedin ?? '',
+  userInstagram: user?.social?.instagram ?? '',
+  userTwitter: user?.social?.twitter ?? '',
+  userDribble: user?.social?.dribble ?? '',
 });
 
 export const editInfoFormSchema = Yup.object().shape({

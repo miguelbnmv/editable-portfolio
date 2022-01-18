@@ -78,12 +78,69 @@
           border: none;
           font-size: 1rem;
           text-transform: capitalize;
-          color: $green;
-          text-decoration-color: $green;
+          color: var(--primary-color);
+          text-decoration-color: var(--primary-color);
 
           &:hover {
             text-decoration: underline;
           }
+        }
+      }
+    }
+  }
+
+  .wrapper {
+    @include flex($justify: flex-start);
+    margin-top: 0.5rem;
+
+    >div {
+      @include flex();
+      gap: 0.5rem;
+      background: $darkGray;
+      padding: 0.5rem 1rem;
+
+      input {
+        background-color: red;
+      }
+
+      div {
+        width: 1.6rem;
+        height: 1.6rem;
+        background-color: red;
+      }
+
+      &:first-child {
+
+        div {
+          background-color: #00FFA3;
+        }
+      }
+
+      &:nth-child(2) {
+
+        div {
+          background-color: #FC74FD;
+        }
+      }
+
+      &:nth-child(3) {
+
+        div {
+          background-color: #FFCF09;
+        }
+      }
+
+      &:nth-child(4) {
+
+        div {
+          background-color: #0FF0FC;
+        }
+      }
+
+      &:nth-child(5) {
+
+        div {
+          background-color: #FF6B00;
         }
       }
     }

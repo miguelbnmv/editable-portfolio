@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getDatabase, ref, set } from 'firebase/database';
 
 import MockupLanding from 'assets/images/MockupLanding.png';
 
-import { auth, registerUser, loginUser } from 'firebase/firebase.js';
+import { registerUser, loginUser } from 'firebase/firebase.js';
 
-//import { onEditUser } from 'handlers/editUser';
-//import { onFetchAllNotes } from 'handlers/fetchAllUsers';
+import { Context } from 'context/userContext';
 
 import Button from 'components/shared/elements/button';
 import FormWrapper from 'components/shared/forms/form-wrapper';
@@ -38,30 +37,62 @@ import {
 
 const Landing = () => {
   const navigate = useNavigate();
+  const db = getDatabase();
   const [formType, setFormType] = useState(false);
-  //const [data, setData] = useState([]);
-  const [user] = useAuthState(auth);
+  const [error, setError] = useState(null);
+  const user = useContext(Context);
 
   const register = (values) => {
-    registerUser(values);
-    if (user) setFormType('complete');
+    const info = registerUser(values);
+    info.then(function (result) {
+      if (result) {
+        setError(result.code.replace('-', ' '));
+      } else {
+        setFormType('complete');
+      }
+    });
   };
 
   const login = (values) => {
-    loginUser(values);
-    if (user) navigate('/home');
+    const info = loginUser(values);
+    info.then(function (result) {
+      if (result) {
+        setError(result?.code.replace('-', ' '));
+      } else {
+        navigate('/home');
+      }
+    });
   };
 
   const complete = (values) => {
-    console.log(user, values);
+    set(ref(db, 'users/' + user?.id), {
+      info: {
+        name: values.userName,
+        image: values.userPhoto,
+        bio: values.userBio,
+        role: values.userRole,
+        location: values.userLocation,
+        email: values.userEmail,
+        phone: values.userPhone,
+        color: values.userColor,
+        social: {
+          behance: values.userBehance,
+          github: values.userGitHub,
+          linkedin: values.userLinkedIn,
+          instagram: values.userInstagram,
+          twitter: values.userTwitter,
+          dribble: values.userDribble,
+        },
+      },
+    });
     if (user) navigate('/home');
   };
 
   const getForm = (formType, formik) => {
     if (formType === 'login') {
-      return <LoginForm formik={formik} />;
+      return <LoginForm formik={formik} error={error} />;
     } else if (formType === 'register') {
-      return <RegisterForm formik={formik} />;
+      return <RegisterForm formik={formik} error={error} />;
     } else if (formType === 'complete') {
       return <EditInfoForm formik={formik} />;
     } else {
@@ -125,7 +156,12 @@ const Landing = () => {
       handleSubmit={formContent[formType]?.handleSubmit}
       footerContent={footerContent(formType)}
     >
-      {(formik) => getForm(formType, formik)}
+      {(formik) => {
+        if (error && formik.isSubmitting) {
+          formik.setSubmitting(false);
+        }
+        return getForm(formType, formik);
+      }}
     </FormWrapper>
   );
 

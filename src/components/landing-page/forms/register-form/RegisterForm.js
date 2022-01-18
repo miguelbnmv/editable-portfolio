@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Input from 'components/shared/forms/input';
 
-const RegisterForm = ({ formik }) => (
+const RegisterForm = ({ formik, error }) => (
   <>
     <Input
       name="registerEmail"
@@ -47,6 +47,7 @@ const RegisterForm = ({ formik }) => (
       label="Repeat password"
       isRequired
     />
+    {error ? <span style={{ color: '#F2122D' }}>Error: {error}</span> : null}
   </>
 );
 
@@ -59,4 +60,5 @@ RegisterForm.propTypes = {
     errors: PropTypes.object,
     touched: PropTypes.object,
   }),
+  error: PropTypes.string,
 };

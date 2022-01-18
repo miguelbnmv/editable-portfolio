@@ -1,44 +1,33 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { ref as sRef, getDownloadURL } from 'firebase/storage';
+
+import { storage } from 'firebase/firebase.js';
 
 import { isActive } from 'pages/projects/projects-list/projects-list.module.scss';
 
-const getDimensionObject = (node) => {
-  const rect = node.getBoundingClientRect();
+const ProjectImage = ({ project, active, x, y }) => {
+  const imageRef = useRef(null);
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+  const [refSrc, setRefSrc] = useState(null);
 
-  return {
-    width: rect.width,
-    height: rect.height,
+  getDownloadURL(sRef(storage, project[1]?.images[0])).then((url) => {
+    setRefSrc(url);
+  });
+
+  const onImgLoad = ({ target: img }) => {
+    setWidth(img.offsetWidth);
+    setHeight(img.offsetHeight);
   };
-};
-
-const useSize = () => {
-  const [dimensions, setDimensions] = useState({});
-  const [node, setNode] = useState(null);
-
-  const ref = useCallback((node) => {
-    setNode(node);
-  }, []);
-
-  useLayoutEffect(() => {
-    if (node) {
-      const measure = () => setDimensions(getDimensionObject(node));
-      measure();
-    }
-  }, [node]);
-
-  return [ref, dimensions];
-};
-
-const ProjectImage = ({ url, active, x, y }) => {
-  const [ref, { width, height }] = useSize();
 
   return (
     <img
       className={active ? isActive : null}
-      ref={ref}
-      src={url}
+      ref={imageRef}
+      src={refSrc}
       alt="project banner"
+      onLoad={onImgLoad}
       style={{
         transform: `translate(${x - width / 2}px, ${y - height / 2}px)`,
       }}
@@ -49,7 +38,7 @@ const ProjectImage = ({ url, active, x, y }) => {
 export default ProjectImage;
 
 ProjectImage.propTypes = {
-  url: PropTypes.string.isRequired,
+  project: PropTypes.array.isRequired,
   active: PropTypes.bool,
   x: PropTypes.number,
   y: PropTypes.number,

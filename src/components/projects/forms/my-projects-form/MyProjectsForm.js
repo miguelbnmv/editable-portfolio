@@ -6,19 +6,27 @@ import { Context } from 'context/userContext';
 
 import ListElement from 'components/shared/forms/list-element';
 
-const MyProjectsForm = ({ handle }) => {
+const MyProjectsForm = ({ editHandler, removeHandler }) => {
   const navigate = useNavigate();
-  const { projects } = useContext(Context);
+  const user = useContext(Context);
+  const projects = user?.info?.projects;
 
   const editHandle = (id) => {
-    handle();
+    editHandler();
     navigate(`/projects?id=${id}`);
   };
 
+  if (!projects) return <span>Não tem projetos</span>; //melhorar design
+
   return (
     <>
-      {projects.map(({ name, id }) => (
-        <ListElement name={name} key={id} editHandle={() => editHandle(id)} />
+      {Object.entries(projects).map((project) => (
+        <ListElement
+          name={project[1].title}
+          key={project[0]}
+          editHandle={() => editHandle(project[0])}
+          removeHandle={() => removeHandler(project[0])}
+        />
       ))}
     </>
   );
@@ -27,5 +35,6 @@ const MyProjectsForm = ({ handle }) => {
 export default MyProjectsForm;
 
 MyProjectsForm.propTypes = {
-  handle: PropTypes.func.isRequired,
+  editHandler: PropTypes.func.isRequired,
+  removeHandler: PropTypes.func.isRequired,
 };

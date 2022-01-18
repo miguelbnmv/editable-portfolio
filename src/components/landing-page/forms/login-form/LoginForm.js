@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Input from 'components/shared/forms/input';
 
-const LoginForm = ({ formik }) => (
+const LoginForm = ({ formik, error }) => (
   <>
     <Input
       name="loginEmail"
@@ -33,6 +33,7 @@ const LoginForm = ({ formik }) => (
       label="Password"
       isRequired
     />
+    {error ? <span style={{ color: '#F2122D' }}>Error: {error}</span> : null}
   </>
 );
 
@@ -45,4 +46,5 @@ LoginForm.propTypes = {
     errors: PropTypes.object,
     touched: PropTypes.object,
   }),
+  error: PropTypes.string,
 };

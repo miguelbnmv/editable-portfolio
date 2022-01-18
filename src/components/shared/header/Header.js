@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import { logout } from 'firebase/firebase';
+
+import { Context } from 'context/userContext';
 
 import Button from '../elements/button/Button';
 
@@ -19,6 +22,14 @@ const navigation = {
 
 const Header = ({ pageTitle, noFill, hide, openModal }) => {
   const navigate = useNavigate();
+  const user = useContext(Context);
+
+  const logoutUser = () => {
+    if (user?.info?.info?.color) {
+      document.querySelector('body').classList.remove(user?.info?.info?.color);
+    }
+    logout();
+  };
 
   const getTitle = (index) => {
     if (noFill) return 'Projects';
@@ -59,7 +70,15 @@ const Header = ({ pageTitle, noFill, hide, openModal }) => {
             <span>.</span>
           </h1>
         ) : null}
-        <Button handle={openModal} text="Edit" color="white" />
+        {hide ? (
+          <Button handle={() => logoutUser()} text="Logout" color="white" />
+        ) : null}
+        <Button
+          handle={openModal}
+          text="Edit"
+          color="white"
+          style={{ marginLeft: '1rem' }}
+        />
       </div>
     </header>
   );

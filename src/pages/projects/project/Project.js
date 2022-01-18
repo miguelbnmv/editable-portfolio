@@ -1,8 +1,17 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useMemo, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { getDatabase, ref, update } from 'firebase/database';
+import {
+  ref as sRef,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+  listAll,
+} from 'firebase/storage';
 import Masonry from 'react-masonry-css';
 
 import { Context } from 'context/userContext';
+import { storage } from 'firebase/firebase.js';
 
 import Layout from 'components/shared/layout/Layout';
 import FormWrapper from 'components/shared/forms/form-wrapper';
@@ -24,40 +33,128 @@ import {
 } from './project.module.scss';
 
 const Project = () => {
-  const [editProject, setEditProject] = useState(false);
+  const [editProjectOpen, setEditProjectOpen] = useState(false);
+  const [imgsSrc, setImgsSrc] = useState([]);
+  const [images, setImages] = useState([]);
+  const [flag, setFlag] = useState(true);
   const { projectId } = useParams();
-  const { projects } = useContext(Context);
-  const project = projects.find(({ id }) => id === parseInt(projectId));
+  const db = getDatabase();
+  const user = useContext(Context);
+  const projects = user?.info?.projects;
+
+  const projectInfo = useMemo(
+    () =>
+      Object.entries(projects ? projects : {}).find(
+        (project) => project[0] === projectId
+      ),
+    [projectId, projects]
+  );
+
+  const project = projectInfo ? projectInfo[1] : null;
 
   const breakpointColumnsObj = {
     default: 2,
     800: 1,
   };
 
+  const putStorageItem = (image) => {
+    return uploadBytes(
+      sRef(storage, `users/${user?.id}/projects/${image.name}`),
+      image
+    );
+  };
+
+  const editProject = (values) => {
+    setFlag(false);
+    setImgsSrc([]);
+    listAll(sRef(storage, 'users/' + user?.id + '/projects'))
+      .then((res) => {
+        res.items.forEach((itemRef) => {
+          deleteObject(itemRef);
+        });
+      })
+      .catch((error) => console.log(error))
+      .finally(() => {
+        const imgs = images.map(({ name }) => {
+          return `users/${user?.id}/projects/${name}`;
+        });
+
+        update(ref(db, 'users/' + user?.id + '/projects/' + projectInfo[0]), {
+          title: values.projectTitle,
+          quote: values.projectQuote,
+          firstDescription: values.projectFirstDescription,
+          firstDescriptionTitle: values.projectFirstDescriptionTitle,
+          secondDescription: values.projectSecondDescription,
+          secondDescriptionTitle: values.projectSecondDescriptionTitle,
+          subject: values.projectSubject,
+          date: values.projectDate,
+          platforms: values.projectPlatforms,
+          technologies: values.projectTechnologies,
+          images: imgs,
+        });
+        Promise.all(images.map((image) => putStorageItem(image)))
+          .then((urls) => {
+            urls.map((url) => {
+              return getDownloadURL(sRef(storage, url.ref))
+                .then((url) => {
+                  setImgsSrc((old) => [...old, url]);
+                })
+                .catch((error) => console.log(error));
+            });
+            setFlag(true);
+            setEditProjectOpen(false);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+  };
+
   const modal = () => (
     <FormWrapper
       initialValues={initialValues(project)}
       schema={addProjectFormSchema}
-      title={project.name}
-      handleClose={() => setEditProject(false)}
+      title={project.title}
+      handleSubmit={editProject}
+      handleClose={() => setEditProjectOpen(false)}
     >
-      {(formik) => <AddProjectForm formik={formik} />}
+      {(formik) => (
+        <AddProjectForm
+          formik={formik}
+          urls={images.length === 0 ? imgsSrc : images}
+          setImages={setImages}
+        />
+      )}
     </FormWrapper>
   );
 
+  useEffect(() => {
+    if (project && flag) {
+      project?.images?.map((img) => {
+        return getDownloadURL(sRef(storage, img))
+          .then((url) => {
+            setImgsSrc((old) => [...old, url]);
+          })
+          .catch((error) => console.log(error));
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [project]);
+
+  if (!user?.info) return <></>;
+
   return (
     <Layout
-      pageTitle={project.name}
+      pageTitle={project?.title}
       noFill
-      openModal={() => setEditProject(true)}
+      openModal={() => setEditProjectOpen(true)}
     >
-
-      {editProject ? modal(true) : null}
+      {editProjectOpen ? modal(true) : null}
       <div className={contentContainer}>
         <div className={hero}>
-          <img src={project.banner} alt="project-banner" />
+          <img src={imgsSrc[0]} alt="project-banner" />
           <h1>
-            {project.name}. {project.name}.
+            {project?.title}. {project?.title}.
           </h1>
         </div>
         <div className={main}>
@@ -65,39 +162,33 @@ const Project = () => {
             <div className={about}>
               <div>
                 <span>Subject</span>
-                <span>{project.about.subject}</span>
+                <span>{project?.subject}</span>
               </div>
               <div>
                 <span>Platforms</span>
-                <span>{project.about.platforms}</span>
+                <span>{project?.platforms}</span>
               </div>
               <div>
                 <span>Technologies</span>
-                <span>{project.about.technologies}</span>
+                <span>{project?.technologies}</span>
               </div>
               <div>
                 <span>Year</span>
-                <span>{project.about.year}</span>
+                <span>{project?.date.split('-')[0]}</span>
               </div>
             </div>
             <div>
-              <h3>{project.primaryDescription.title}</h3>
-              <p>{project.primaryDescription.description}</p>
-              <h4>"{project.quote}"</h4>
+              <h3>{project?.firstDescriptionTitle}</h3>
+              <p>{project?.firstDescription}</p>
+              <h4>"{project?.quote}"</h4>
             </div>
           </div>
-          <img
-            src={project.primaryDescription.image}
-            alt="description-illustration"
-          />
+          <img src={imgsSrc[1]} alt="description-illustration" />
           <div className={secondaryBio}>
-            <img
-              src={project.secondaryDescription.image}
-              alt="description-illustration"
-            />
+            <img src={imgsSrc[2]} alt="description-illustration" />
             <div>
-              <h3>{project.secondaryDescription.title}</h3>
-              <p>{project.secondaryDescription.description}</p>
+              <h3>{project?.secondDescriptionTitle}</h3>
+              <p>{project?.secondDescription}</p>
             </div>
           </div>
           <Masonry
@@ -105,7 +196,7 @@ const Project = () => {
             className={masonry}
             columnClassName={masonryColumn}
           >
-            {project.gallery.map((img) => (
+            {imgsSrc?.map((img) => (
               <img src={img} alt="project-img" key={img} />
             ))}
           </Masonry>
