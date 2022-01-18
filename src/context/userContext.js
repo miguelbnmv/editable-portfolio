@@ -18,7 +18,8 @@ const UserContext = ({ children }) => {
         .then((user) => {
           if (!info && user.exists()) {
             const userInfo = user?.val()[auth?.currentUser?.uid];
-            console.log(2, userInfo)
+            console.log('user', user)
+            console.log('id', auth?.currentUser?.uid)
             if (userInfo?.info?.image && ! userInfo?.info.image !== null) {
               getDownloadURL(sRef(storage, userInfo?.info?.image)).then(
                 (url) => {
