@@ -1,7 +1,14 @@
 import React, { useState, useContext, useMemo, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getDatabase, ref, push, update, remove } from 'firebase/database';
-import { ref as sRef, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import {
+  ref as sRef,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from 'firebase/storage';
+
+import LinkedinIcon from 'assets/icons/linkedin.png';
 
 import { Context } from 'context/userContext';
 import { storage } from 'firebase/firebase.js';
@@ -67,12 +74,15 @@ const Experience = () => {
 
   const handleButton = (isNew) => {
     if (id) {
-      getDownloadURL(sRef(storage, experience[1]?.image)).then((snap) => {
-        setImages([snap]);
-        setMyExperienceOpen(false);
-        setAddExperienceOpen(true);
-        if (isNew) navigate('/experience', { replace: true });
-      });
+      getDownloadURL(sRef(storage, experience[1]?.image))
+        .then((url) => {
+          setImages([url]);
+        })
+        .finally(() => {
+          setMyExperienceOpen(false);
+          setAddExperienceOpen(true);
+          if (isNew) navigate('/experience', { replace: true });
+        });
     } else {
       setImages([]);
       setMyExperienceOpen(false);
@@ -85,73 +95,103 @@ const Experience = () => {
     if (photoChanged) {
       if (images.length !== 0) {
         return `users/${user?.id}/experiences/${images[0]?.name}`;
+      } else {
+        return '';
       }
     } else {
-      return experience?.image;
+      return experience[1]?.image;
     }
   };
 
-  const putStorageItem = (image) => {
-    return uploadBytes(
-      sRef(storage, `users/${user?.id}/experiences/${image.name}`),
-      image
-    );
+  const editFunction = (values) => {
+    uploadBytes(
+      sRef(storage, `users/${user?.id}/experiences/${images[0].name}`),
+      images[0]
+    )
+      .then((url) => {
+        getDownloadURL(sRef(storage, url.ref))
+          .then((url) => {
+            document.getElementById(user?.info?.experiences[id]?.date).src =
+              url;
+          })
+          .catch((error) => console.log(error));
+      })
+      .finally(() => {
+        update(ref(db, 'users/' + user?.id + '/experiences/' + experience[0]), {
+          name: values.experienceTitle,
+          date: values.experienceDate,
+          image: getImageInfo(),
+        });
+        setFlag(true);
+        setPhotoChanged(false);
+        setAddExperienceOpen(false);
+        navigate('/experience', { replace: true });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const addExperience = (values) => {
-    push(ref(db, 'users/' + user?.id + '/experiences'), {
-      name: values.experienceTitle,
-      date: values.experienceDate,
-      image: `users/${user?.id}/experiences/${images[0]?.name}`,
-    });
-    uploadBytes(
-      sRef(storage, `users/${user?.id}/experiences/${images[0]?.name}`),
-      images[0]
-    );
-    setAddExperienceOpen(false);
+    setFlag(false);
+    if (photoChanged && images.length !== 0) {
+      uploadBytes(
+        sRef(storage, `users/${user?.id}/experiences/${images[0]?.name}`),
+        images[0]
+      )
+        .then((url) => {
+          getDownloadURL(sRef(storage, url.ref))
+            .then((url) => {
+              document.getElementById(user?.info?.experiences[id]?.date).src =
+                url;
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .finally(() => {
+          push(ref(db, 'users/' + user?.id + '/experiences'), {
+            name: values.experienceTitle,
+            date: values.experienceDate,
+            image: `users/${user?.id}/experiences/${images[0]?.name}`,
+          });
+          setAddExperienceOpen(false);
+        });
+    } else {
+      push(ref(db, 'users/' + user?.id + '/experiences'), {
+        name: values.experienceTitle,
+        date: values.experienceDate,
+        image: '',
+      });
+      setAddExperienceOpen(false);
+    }
   };
 
   const editExperience = (values) => {
     setFlag(false);
-    deleteObject(sRef(storage, experience[1].image)).catch((error) => {
-      console.log(error);
-    })
-    .finally(() => {
-      console.log('apagou')
-    });
-    update(ref(db, 'users/' + user?.id + '/experiences/' + experience[0]), {
-      name: values.experienceTitle,
-      date: values.experienceDate,
-      image: getImageInfo(),
-    });
-
     if (photoChanged && images.length !== 0) {
-      Promise.all(images.map((image) => putStorageItem(image)))
-        .then((urls) => {
-          console.log(urls);
-          urls.map((url) => {
-            return getDownloadURL(sRef(storage, url.ref))
-              .then((url) => {
-                document.getElementById(user?.info?.experiences[id]?.date).src =
-                  url;
-              })
-              .catch((error) => console.log(error));
+      if (experience[1]?.image === '') {
+        editFunction(values);
+      } else {
+        deleteObject(sRef(storage, experience[1]?.image))
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            editFunction(values);
           });
-          setFlag(true);
-          setPhotoChanged(false);
-          setAddExperienceOpen(false);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-
-      uploadBytes(
-        sRef(storage, `users/${user?.id}/experiences/${images[0]?.name}`),
-        images[0]
-      );
+      }
+    } else {
+      update(ref(db, 'users/' + user?.id + '/experiences/' + experience[0]), {
+        name: values.experienceTitle,
+        date: values.experienceDate,
+        image: getImageInfo(),
+      });
+      setFlag(true);
+      setPhotoChanged(false);
+      setAddExperienceOpen(false);
+      navigate('/experience', { replace: true });
     }
-
-    navigate('/experience', { replace: true });
   };
 
   const removeExperience = (id) => {
@@ -160,17 +200,13 @@ const Experience = () => {
     navigate('/experience', { replace: true });
   };
 
-  useMemo(
-    () =>
-      Object.entries(experiences ? experiences : {}).map((exp) => {
-        const currentDate = new Date(exp[1].date);
-        const year = currentDate.getFullYear();
-        if (!years?.includes(year)) years.push(year);
-        months.push(year + '_' + currentDate.getMonth());
-        return null;
-      }),
-    [experiences, months, years]
-  );
+  Object.entries(experiences ? experiences : {}).map((exp) => {
+    const currentDate = new Date(exp[1].date);
+    const year = currentDate.getFullYear();
+    if (!years?.includes(year)) years.push(year);
+    months.push(year + '_' + currentDate.getMonth());
+    return null;
+  });
 
   const dates = years?.reduce((acc, cur) => {
     const temp = allMonths.reduce((acc, _, i) => {
@@ -210,19 +246,31 @@ const Experience = () => {
       </Modal>
     );
 
-  useEffect(() => {
+  useEffect(() => {  
+    document
+      .querySelector('body')
+      .classList.add(
+        user?.info?.info?.color === '' ? 'green-theme' : user?.info?.info?.color
+      );
+
     if (experiences && flag) {
-      console.log(1);
       Object.keys(experiences).map((id) => {
-        return getDownloadURL(
-          sRef(storage, user?.info?.experiences[id]?.image)
-        ).then((url) => {
-          document.getElementById(user?.info?.experiences[id]?.date).src = url;
-        });
+        if (user?.info?.experiences[id]?.image === '') {
+          return (document.getElementById(
+            user?.info?.experiences[id]?.date
+          ).src = LinkedinIcon);
+        } else {
+          return getDownloadURL(
+            sRef(storage, user?.info?.experiences[id]?.image)
+          ).then((url) => {
+            document.getElementById(user?.info?.experiences[id]?.date).src =
+              url;
+          });
+        }
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [experiences]);
+  }, [experiences, user?.info?.info?.color]);
 
   if (!user?.info) return <></>;
 

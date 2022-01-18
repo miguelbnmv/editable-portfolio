@@ -18,7 +18,6 @@ const UserContext = ({ children }) => {
           if (!info && user.exists()) {
             const userInfo = user?.val()[auth?.currentUser?.uid];
             if (userInfo?.info?.image && ! userInfo?.info.image !== null) {
-              console.log(userInfo?.info?.image);
               getDownloadURL(sRef(storage, userInfo?.info?.image)).then(
                 (url) => {
                   setInfo({
@@ -44,7 +43,6 @@ const UserContext = ({ children }) => {
 
   onChildChanged(ref(db, '/users'), (user) => {
     if (user?.val().info?.image !== '') {
-      console.log(1, user?.val().info?.image);
       getDownloadURL(sRef(storage, user?.val().info?.image)).then((url) => {
         setInfo({
           info: user?.val(),
