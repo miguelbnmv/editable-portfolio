@@ -17,23 +17,16 @@ const UserContext = ({ children }) => {
         .then((user) => {
           if (!info && user.exists()) {
             const userInfo = user?.val()[auth?.currentUser?.uid];
-            if (userInfo?.info?.image && !userInfo?.info.image !== null) {
-              console.log(sRef(storage, userInfo?.info?.image));
-              /*               getDownloadURL(sRef(storage, userInfo?.info?.image))
-                .then((url) => {
+            if (userInfo?.info?.image && ! userInfo?.info.image !== null) {
+              getDownloadURL(sRef(storage, userInfo?.info?.image)).then(
+                (url) => {
                   setInfo({
                     info: userInfo,
                     id: auth?.currentUser?.uid,
                     image: url,
                   });
-                })
-                .catch((error) => {
-                  console.log(error);
-                }); */
-              setInfo({
-                info: userInfo,
-                id: auth?.currentUser?.uid,
-              });
+                }
+              );
             } else {
               setInfo({
                 info: userInfo,
@@ -50,17 +43,13 @@ const UserContext = ({ children }) => {
 
   onChildChanged(ref(db, '/users'), (user) => {
     if (user?.val().info?.image !== '') {
-      getDownloadURL(sRef(storage, user?.val().info?.image))
-        .then((url) => {
-          setInfo({
-            info: user?.val(),
-            id: auth?.currentUser?.uid,
-            image: url,
-          });
-        })
-        .catch((error) => {
-          console.log(error);
+      getDownloadURL(sRef(storage, user?.val().info?.image)).then((url) => {
+        setInfo({
+          info: user?.val(),
+          id: auth?.currentUser?.uid,
+          image: url,
         });
+      });
     } else {
       setInfo({
         info: user?.val(),

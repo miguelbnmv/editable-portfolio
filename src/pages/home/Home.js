@@ -10,7 +10,7 @@ import BehanceIcon from 'assets/icons/behance.png';
 import LinkedinIcon from 'assets/icons/linkedin.png';
 import DribbleIcon from 'assets/icons/dribble.png';
 
-//import ProfilePlaceholder from 'assets/images/ProfilePlaceholder.png';
+import ProfilePlaceholder from 'assets/images/ProfilePlaceholder.png';
 
 import { Context } from 'context/userContext';
 import { storage } from 'firebase/firebase.js';
@@ -58,6 +58,8 @@ const Home = () => {
   const user = useContext(Context);
   const info = user?.info?.info;
 
+  console.log(1, user);
+
   const {
     selectedElement: {
       position: { angle },
@@ -68,7 +70,7 @@ const Home = () => {
   });
 
   const rotateWrapper = `rotate(${angle}deg)`;
-  //const rotateImage = `rotate(${-angle}deg)`;
+  const rotateImage = `rotate(${-angle}deg)`;
 
   const getImageInfo = () => {
     if (photoChanged) {
@@ -177,11 +179,11 @@ const Home = () => {
     </FormWrapper>
   );
 
-  useEffect(() => {
-    document
+  /*useEffect(() => {
+        document
       .querySelector('body')
-      .classList.add(info?.color === '' ? 'green-theme' : info?.color);
-  }, [info?.color]);
+      .classList.add(info?.color === '' ? 'green-theme' : info?.color); 
+  }, [info?.color]);*/
 
   if (!info) return <div id="notGoodPractice"></div>;
 
@@ -230,11 +232,11 @@ const Home = () => {
           className={imageGroup}
           style={{ transform: rotateWrapper }}
         >
-          {/*           <img
+          <img
             src={user?.image ?? ProfilePlaceholder}
             alt={user?.image ? 'User' : 'Placeholder'}
             style={{ transform: rotateImage }}
-          /> */}
+          />
         </div>
       </section>
     </Layout>
