@@ -44,6 +44,7 @@ const UserContext = ({ children }) => {
 
   onChildChanged(ref(db, '/users'), (user) => {
     if (user?.val().info?.image !== '') {
+      console.log(1, user?.val().info?.image);
       getDownloadURL(sRef(storage, user?.val().info?.image)).then((url) => {
         setInfo({
           info: user?.val(),

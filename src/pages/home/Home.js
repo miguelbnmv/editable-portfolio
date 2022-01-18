@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import useMightyMouse from 'react-hook-mighty-mouse';
-import { getDatabase, ref, set, update } from 'firebase/database';
-import { ref as sRef, uploadBytes } from 'firebase/storage';
+import { getDatabase, ref, update } from 'firebase/database';
+import { ref as sRef, uploadBytes, deleteObject } from 'firebase/storage';
 
 import GithubIcon from 'assets/icons/Github.svg';
 import InstagramIcon from 'assets/icons/Instagram.svg';
@@ -36,6 +36,7 @@ import {
   imageGroup,
   socialIcon,
 } from './home.module.scss';
+import { useEffect } from 'react/cjs/react.development';
 
 const icons = {
   github: GithubIcon,
@@ -67,47 +68,86 @@ const Home = () => {
   const rotateWrapper = `rotate(${angle}deg)`;
   const rotateImage = `rotate(${-angle}deg)`;
 
-  const editUser = (values) => {
-    const getImageInfo = () => {
-      if (photoChanged) {
-        if (images.length !== 0) {
-          return `users/${user?.id}/${images[0]?.name}`;
-        } else {
-          return '';
-        } 
+  const getImageInfo = () => {
+    if (photoChanged) {
+      if (images.length !== 0) {
+        return `users/${user?.id}/${images[0]?.name}`;
       } else {
-        return info?.image;
+        return '';
       }
-    };
+    } else {
+      return info?.image;
+    }
+  };
 
-    update(ref(db, 'users/' + user?.id), {
-      info: {
-        name: values.userName,
-        image: getImageInfo(),
-        bio: values.userBio,
-        role: values.userRole,
-        location: values.userLocation,
-        email: values.userEmail,
-        phone: values.userPhone,
-        social: {
-          behance: values.userBehance,
-          github: values.userGitHub,
-          linkedin: values.userLinkedIn,
-          instagram: values.userInstagram,
-          twitter: values.userTwitter,
-          dribble: values.userDribble,
+  const editFunction = (values) => {
+    uploadBytes(
+      sRef(storage, 'users/' + user?.id + '/' + images[0].name),
+      images[0]
+    ).finally(() => {
+      update(ref(db, 'users/' + user?.id), {
+        info: {
+          name: values.userName,
+          image: getImageInfo(),
+          bio: values.userBio,
+          role: values.userRole,
+          location: values.userLocation,
+          email: values.userEmail,
+          phone: values.userPhone,
+          color: values.userColor,
+          social: {
+            behance: values.userBehance,
+            github: values.userGitHub,
+            linkedin: values.userLinkedIn,
+            instagram: values.userInstagram,
+            twitter: values.userTwitter,
+            dribble: values.userDribble,
+          },
         },
-      },
+      });
+
+      setPhotoChanged(false);
+      setEditInfoOpen(false);
     });
+  };
 
-    if (photoChanged && images.length !== 0)
-      uploadBytes(
-        sRef(storage, 'users/' + user?.id + '/' + images[0].name),
-        images[0]
-      );
-
-    setPhotoChanged(false);
-    setEditInfoOpen(false);
+  const editUser = (values) => {
+    if (photoChanged && images.length !== 0) {
+      if (info?.image === '') {
+        editFunction(values);
+      } else {
+        deleteObject(sRef(storage, info?.image))
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            editFunction(values);
+          });
+      }
+    } else {
+      update(ref(db, 'users/' + user?.id), {
+        info: {
+          name: values.userName,
+          image: getImageInfo(),
+          bio: values.userBio,
+          role: values.userRole,
+          location: values.userLocation,
+          email: values.userEmail,
+          phone: values.userPhone,
+          color: values.userColor,
+          social: {
+            behance: values.userBehance,
+            github: values.userGitHub,
+            linkedin: values.userLinkedIn,
+            instagram: values.userInstagram,
+            twitter: values.userTwitter,
+            dribble: values.userDribble,
+          },
+        },
+      });
+      setPhotoChanged(false);
+      setEditInfoOpen(false);
+    }
   };
 
   const modal = (isContact) => (
@@ -134,6 +174,12 @@ const Home = () => {
       }
     </FormWrapper>
   );
+
+  useEffect(() => {
+    document
+      .querySelector('body')
+      .classList.add(info?.color === '' ? 'green-theme' : info?.color);
+  }, [info?.color]);
 
   if (!info) return <div id="notGoodPractice"></div>;
 
@@ -183,7 +229,7 @@ const Home = () => {
           style={{ transform: rotateWrapper }}
         >
           <img
-            src={user?.image ?? null}
+            src={user?.image ?? InstagramIcon}
             alt={user?.image ? 'User' : 'Placeholder'}
             style={{ transform: rotateImage }}
           />

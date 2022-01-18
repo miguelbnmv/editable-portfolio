@@ -30,8 +30,8 @@
 
   &.borderless {
     &:hover {
-      border-color: $green;
-      background-color: $green;
+      border-color: var(--primary-color);
+      background-color: var(--primary-color);
       color: $darkGray;
 
       img {
@@ -41,14 +41,14 @@
   }
 
   &.green {
-    border-color: $green;
-    background-color: $green;
+    border-color: var(--primary-color);
+    background-color: var(--primary-color);
     color: $darkGray;
 
     &:hover {
-      border-color: $green;
+      border-color: var(--primary-color);
       background-color: $darkGray;
-      color: $green;
+      color: var(--primary-color);
 
       img {
         filter: invert(76%) sepia(50%) saturate(1300%) hue-rotate(96deg) brightness(500%) contrast(500%);

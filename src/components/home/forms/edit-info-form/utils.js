@@ -8,6 +8,7 @@ export const initialValues = (user) => ({
   userLocation: user?.location ?? '',
   userEmail: user?.email ?? '',
   userPhone: user?.phone ?? '',
+  userColor: user?.color ?? '',
   userBehance: user?.social?.behance ?? '',
   userGitHub: user?.social?.github ?? '',
   userLinkedIn: user?.social?.linkedin ?? '',

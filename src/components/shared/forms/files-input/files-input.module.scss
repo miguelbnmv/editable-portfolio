@@ -29,7 +29,7 @@
         }
 
         button {
-          background: $green;
+          background: var(--primary-color);
           position: absolute;
           top: -0.2rem;
           right: -0.2rem;
@@ -48,11 +48,6 @@
           }
         }
       }
-
-      // img {
-      //   @include size(100%, 100%);
-      //   object-fit: cover;
-      // }
     }
   }
 
@@ -61,7 +56,7 @@
 
     &:focus {
       outline: none;
-      border: 0.0625rem solid $green;
+      border: 0.0625rem solid var(--primary-color);
     }
   }
 }
