@@ -178,7 +178,7 @@ const Home = () => {
   );
 
   useEffect(() => {
-    console.log(info?.color);
+    //console.log(info?.color);
 /*     if (info?.color) {
       document.querySelector('body').classList.add(info?.color);
     } */
