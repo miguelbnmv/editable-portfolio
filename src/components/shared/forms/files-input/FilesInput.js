@@ -18,8 +18,19 @@ const FilesInput = ({
   setPhotoChanged,
   isMultiple,
 }) => {
-  const [fileUrls, setFileUrls] = useState(urls?.find((x)=>x===undefined) ? null: urls);
-  console.log(urls?.find((x)=>x===undefined));
+  const getInitialUrls = (urls) => {
+    if (urls) {
+      if (urls[0] === undefined) {
+        return [];
+      } else {
+        return urls;
+      }
+    } else {
+      return [];
+    }
+  };
+
+  const [fileUrls, setFileUrls] = useState(getInitialUrls(urls));
 
   const handleChange = (e) => {
     setImages([]);
