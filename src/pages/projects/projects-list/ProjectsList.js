@@ -191,19 +191,15 @@ const ProjectsList = () => {
                 const isActive = index === activeIndex;
                 const xPos = isActive ? x : 0;
                 const yPos = isActive ? y : 0;
-                if (project[1].images !== '') {
-                  return (
-                    <ProjectImage
-                      project={project}
-                      active={isActive}
-                      key={project[0]}
-                      x={xPos}
-                      y={yPos}
-                    />
-                  );
-                } else {
-                  return null;
-                }
+                return (
+                  <ProjectImage
+                    project={project}
+                    active={isActive}
+                    key={project[0]}
+                    x={xPos}
+                    y={yPos}
+                  />
+                );
               })}
             </div>
           </>
