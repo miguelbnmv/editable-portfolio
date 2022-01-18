@@ -138,7 +138,7 @@ const Home = () => {
   );
 
   useEffect(() => {
-    document.querySelector('body').classList.add(info?.color);
+    document.querySelector('body').classList.add(info?.color ?? 'green-theme');
   }, [info?.color])
 
   if (!info) return <div id="notGoodPractice"></div>;
@@ -189,7 +189,7 @@ const Home = () => {
           style={{ transform: rotateWrapper }}
         >
           <img
-            src={user?.image ?? null}
+            src={user?.image ?? TwitterIcon}
             alt={user?.image ? 'User' : 'Placeholder'}
             style={{ transform: rotateImage }}
           />
