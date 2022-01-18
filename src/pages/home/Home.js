@@ -58,8 +58,6 @@ const Home = () => {
   const user = useContext(Context);
   const info = user?.info?.info;
 
-  console.log(1, user);
-
   const {
     selectedElement: {
       position: { angle },
@@ -179,11 +177,12 @@ const Home = () => {
     </FormWrapper>
   );
 
-  /*useEffect(() => {
-        document
-      .querySelector('body')
-      .classList.add(info?.color === '' ? 'green-theme' : info?.color); 
-  }, [info?.color]);*/
+  useEffect(() => {
+    console.log(info?.color);
+    if (info?.color) {
+      document.querySelector('body').classList.add(info?.color);
+    }
+  }, [info?.color]);
 
   if (!info) return <div id="notGoodPractice"></div>;
 
