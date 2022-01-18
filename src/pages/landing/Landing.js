@@ -1,10 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getDatabase, ref, set } from 'firebase/database';
+import { ref as sRef, uploadBytes } from 'firebase/storage';
 
 import MockupLanding from 'assets/images/MockupLanding.png';
 
-import { registerUser, loginUser } from 'firebase/firebase.js';
+import { registerUser, loginUser, storage } from 'firebase/firebase.js';
 
 import { Context } from 'context/userContext';
 
@@ -40,6 +41,8 @@ const Landing = () => {
   const db = getDatabase();
   const [formType, setFormType] = useState(false);
   const [error, setError] = useState(null);
+  const [photoChanged, setPhotoChanged] = useState(false);
+  const [images, setImages] = useState([]);
   const user = useContext(Context);
 
   const register = (values) => {
@@ -64,11 +67,19 @@ const Landing = () => {
     });
   };
 
-  const complete = (values) => {
+  const getImageInfo = () => {
+    if (photoChanged && images.length !== 0) {
+      return `users/${user?.id}/${images[0]?.name}`;
+    } else {
+      return '';
+    }
+  };
+
+  const getValues = (values) => {
     set(ref(db, 'users/' + user?.id), {
       info: {
         name: values.userName,
-        image: values.userPhoto,
+        image: getImageInfo(),
         bio: values.userBio,
         role: values.userRole,
         location: values.userLocation,
@@ -85,7 +96,23 @@ const Landing = () => {
         },
       },
     });
-    if (user) navigate('/home');
+  };
+
+  const complete = (values) => {
+    if (photoChanged && images.length !== 0) {
+      uploadBytes(
+        sRef(storage, 'users/' + user?.id + '/' + images[0].name),
+        images[0]
+      ).finally(() => {
+        getValues(values);
+        setPhotoChanged(false);
+        if (user) navigate('/home');
+      });
+    } else {
+      getValues(values);
+      setPhotoChanged(false);
+      if (user) navigate('/home');
+    }
   };
 
   const getForm = (formType, formik) => {
@@ -94,7 +121,14 @@ const Landing = () => {
     } else if (formType === 'register') {
       return <RegisterForm formik={formik} error={error} />;
     } else if (formType === 'complete') {
-      return <EditInfoForm formik={formik} />;
+      return (
+        <EditInfoForm
+          formik={formik}
+          urls={images.length === 0 ? [user?.image] : images}
+          setImages={setImages}
+          setPhotoChanged={setPhotoChanged}
+        />
+      );
     } else {
       return null;
     }

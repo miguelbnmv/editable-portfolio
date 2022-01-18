@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import useMightyMouse from 'react-hook-mighty-mouse';
 import { getDatabase, ref, update } from 'firebase/database';
@@ -40,7 +40,6 @@ import {
   imageGroup,
   socialIcon,
 } from './home.module.scss';
-import { useEffect } from 'react/cjs/react.development';
 
 const icons = {
   github: GithubIcon,
@@ -187,7 +186,7 @@ const Home = ({ hasId }) => {
       .querySelector('body')
       .classList.add(info?.color === '' ? 'green-theme' : info?.color);
     user?.setId(userId);
-  }, [user, userId]);
+  }, [info?.color, user, userId]);
 
   if (!info) return <div id="notGoodPractice"></div>;
 
