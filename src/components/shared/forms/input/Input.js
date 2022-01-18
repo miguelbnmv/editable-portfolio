@@ -30,6 +30,7 @@ const Input = ({
       onChange={handleChange}
       placeholder={placeholder}
       className={error ? red : null}
+      autoComplete="on"
     />
     <span className={errorMessage}>{error}</span>
   </div>

@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getDatabase, ref, set } from 'firebase/database';
 
 import MockupLanding from 'assets/images/MockupLanding.png';
+
+import { registerUser, loginUser } from 'firebase/firebase.js';
+
+import { Context } from 'context/userContext';
 
 import Button from 'components/shared/elements/button';
 import FormWrapper from 'components/shared/forms/form-wrapper';
@@ -15,6 +21,11 @@ import {
   loginFormSchema,
 } from 'components/landing-page/forms/login-form/utils';
 import LoginForm from 'components/landing-page/forms/login-form';
+import {
+  initialValues as completeValues,
+  editInfoFormSchema,
+} from 'components/home/forms/edit-info-form/utils';
+import EditInfoForm from 'components/home/forms/edit-info-form';
 
 import {
   landing,
@@ -25,59 +36,138 @@ import {
 } from './landing.module.scss';
 
 const Landing = () => {
-  const [loginOpen, setLoginOpen] = useState(false);
-  const [registerOpen, setRegisterOpen] = useState(false);
+  const navigate = useNavigate();
+  const db = getDatabase();
+  const [formType, setFormType] = useState(false);
+  const [error, setError] = useState(null);
+  const user = useContext(Context);
 
-  const handleButton = (isRegister) => {
-    setLoginOpen(!isRegister);
-    setRegisterOpen(isRegister);
+  const register = (values) => {
+    const info = registerUser(values);
+    info.then(function (result) {
+      if (result) {
+        setError(result.code.replace('-', ' '));
+      } else {
+        setFormType('complete');
+      }
+    });
   };
 
-  const footerContent = (isRegister) =>
-    isRegister ? (
-      <>
-        Already have an account?{' '}
-        <Button
-          text="Log in"
-          type="button"
-          handle={() => handleButton(false)}
-        />
-      </>
-    ) : (
-      <>
-        Don’t have and account?{' '}
-        <Button
-          text="Sign up"
-          type="button"
-          handle={() => handleButton(true)}
-        />
-      </>
-    );
+  const login = (values) => {
+    const info = loginUser(values);
+    info.then(function (result) {
+      if (result) {
+        setError(result?.code.replace('-', ' '));
+      } else {
+        navigate('/home');
+      }
+    });
+  };
 
-  const modal = (isRegister) => (
+  const complete = (values) => {
+    set(ref(db, 'users/' + user?.id), {
+      info: {
+        name: values.userName,
+        image: values.userPhoto,
+        bio: values.userBio,
+        role: values.userRole,
+        location: values.userLocation,
+        email: values.userEmail,
+        phone: values.userPhone,
+        color: values.userColor,
+        social: {
+          behance: values.userBehance,
+          github: values.userGitHub,
+          linkedin: values.userLinkedIn,
+          instagram: values.userInstagram,
+          twitter: values.userTwitter,
+          dribble: values.userDribble,
+        },
+      },
+    });
+    if (user) navigate('/home');
+  };
+
+  const getForm = (formType, formik) => {
+    if (formType === 'login') {
+      return <LoginForm formik={formik} error={error} />;
+    } else if (formType === 'register') {
+      return <RegisterForm formik={formik} error={error} />;
+    } else if (formType === 'complete') {
+      return <EditInfoForm formik={formik} />;
+    } else {
+      return null;
+    }
+  };
+
+  const formContent = {
+    login: {
+      initialValues: loginValues,
+      schema: loginFormSchema,
+      title: 'Login',
+      handleSubmit: login,
+    },
+    register: {
+      initialValues: registerValues,
+      schema: registerFormSchema,
+      title: 'Register',
+      handleSubmit: register,
+    },
+    complete: {
+      initialValues: completeValues(null),
+      schema: editInfoFormSchema,
+      title: 'Complete your profile',
+      handleSubmit: complete,
+    },
+  };
+
+  const footerContent = (formType) => {
+    if (formType === 'register') {
+      return (
+        <>
+          Already have an account?{' '}
+          <Button
+            text="Log in"
+            type="button"
+            handle={() => setFormType('login')}
+          />
+        </>
+      );
+    } else if (formType === 'login') {
+      return (
+        <>
+          Don’t have and account?{' '}
+          <Button
+            text="Sign up"
+            type="button"
+            handle={() => setFormType('register')}
+          />
+        </>
+      );
+    }
+  };
+
+  const modal = (formType) => (
     <FormWrapper
-      initialValues={isRegister ? registerValues : loginValues}
-      schema={isRegister ? registerFormSchema : loginFormSchema}
-      title={isRegister ? 'Add experience' : 'Add experience'}
-      handleClose={() =>
-        isRegister ? setRegisterOpen(false) : setLoginOpen(false)
-      }
-      footerContent={footerContent(isRegister)}
+      initialValues={formContent[formType]?.initialValues}
+      schema={formContent[formType]?.schema}
+      title={formContent[formType]?.title}
+      handleClose={() => setFormType(false)}
+      handleSubmit={formContent[formType]?.handleSubmit}
+      footerContent={footerContent(formType)}
     >
-      {(formik) =>
-        isRegister ? (
-          <RegisterForm formik={formik} />
-        ) : (
-          <LoginForm formik={formik} />
-        )
-      }
+      {(formik) => {
+        if (error && formik.isSubmitting) {
+          formik.setSubmitting(false);
+        }
+        return getForm(formType, formik);
+      }}
     </FormWrapper>
   );
 
   return (
     <section className={landing}>
-      {loginOpen ? modal(false) : null}
-      {registerOpen ? modal(true) : null}
+      {formType ? modal(formType) : null}
       <div className={circle}></div>
       <div className={landingInfo}>
         <h1>
@@ -93,12 +183,12 @@ const Landing = () => {
           <Button
             text="Register"
             color="green"
-            handle={() => handleButton(true)}
+            handle={() => setFormType('register')}
           />
           <Button
             text="Login"
             color="green"
-            handle={() => handleButton(false)}
+            handle={() => setFormType('login')}
           />
         </div>
       </div>

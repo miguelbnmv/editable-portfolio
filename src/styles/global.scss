@@ -1,4 +1,5 @@
 @import './mixins.scss';
+@import './variables.scss';
 
 html,
 body {
@@ -79,6 +80,31 @@ body {
     padding: 0;
   }
 }
+
+:root {
+  --primary-color: #00FFA3;
+}
+
+body.green-theme {
+  --primary-color: #00FFA3;
+}
+
+body.pink-theme {
+  --primary-color: #FC74FD;
+}
+
+body.blue-theme {
+  --primary-color: #0FF0FC;
+}
+
+body.yellow-theme {
+  --primary-color: #FFCF09;
+}
+
+body.orange-theme {
+  --primary-color: #FF6B00;
+}
+
 
 ::-webkit-scrollbar {
   width: 1.25rem;

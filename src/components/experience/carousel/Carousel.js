@@ -18,10 +18,10 @@ import {
   yearText,
 } from './carousel.module.scss';
 
-export const Carousel = forwardRef(({ options, children, years }, ref) => {
+export const Carousel = forwardRef(({ options, children, dates }, ref) => {
+  const [year, setYear] = useState(dates[0].split('_')[0]);
   const sliderRef = useRef();
   const refEl = useRef();
-  const [year, setYear] = useState(years[0]);
 
   useImperativeHandle(ref, () => sliderRef.current);
 
@@ -29,51 +29,52 @@ export const Carousel = forwardRef(({ options, children, years }, ref) => {
     const slider = new Glide(sliderRef.current, options);
 
     slider.on(['mount.after', 'run'], () =>
-      (12 * years.length) / slider.index <= 2 ? setYear(2020) : setYear(2019)
+      setYear(dates[slider.index].split('_')[0])
     );
 
     slider.mount();
 
     return () => slider.destroy();
-  }, [years, options]);
+  }, [options, dates]);
 
   useEffect(() => {
-    const width = parseInt(refEl.current.style.width.replace('px', ''));
-    if (width > 20000) {
-      window.location.reload();
+    var subStr = refEl?.current?.style?.transform.split('(-')[1].split('.');
+
+    if (subStr[0] > 7000) {
+      window.location.replace('/experience');
     }
-  });
+  }, []);
 
   return (
     <>
       <Helmet>
         <style>
           {`
-          .glide {
-            height: 75vh;
-            position: absolute !important;
-            bottom: 0;
-            z-index: 4;
+        .glide {
+          height: 75vh;
+          position: absolute !important;
+          bottom: 0;
+          z-index: 4;
+        }
+        @media only screen and (max-width: 48rem) {
+          .glide{
+            height: calc(100% - 10.5rem);
+            bottom: initial;
           }
-          @media only screen and (max-width: 48rem) {
-            .glide{
-              height: calc(100% - 10.5rem);
-              bottom: initial;
-            }
-          }
-          .glide * {
-            position: unset !important
-          }
-          .glide__slide--active .experiencePop{
-            display: flex;
-          }
-          .glide__slide--active .monthWrapper{
-            position: absolute !important;
-            top: 50%;
-            margin-top: -0.75rem;
-            transform: translateY(-50%);
-          }
-          `}
+        }
+        .glide * {
+          position: unset !important
+        }
+        .glide__slide--active .experiencePop{
+          display: flex;
+        }
+        .glide__slide--active .monthWrapper{
+          position: absolute !important;
+          top: 50%;
+          margin-top: -0.75rem;
+          transform: translateY(-50%);
+        }
+        `}
         </style>
       </Helmet>
       <div className="glide" ref={sliderRef}>

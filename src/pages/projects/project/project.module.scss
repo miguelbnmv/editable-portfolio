@@ -4,7 +4,7 @@
   overflow: hidden;
 
   h3 {
-    color: $green;
+    color: var(--primary-color);
   }
 
   p {
@@ -97,7 +97,7 @@
           color: $white;
 
           span:last-child {
-            color: $green;
+            color: var(--primary-color);
           }
         }
       }

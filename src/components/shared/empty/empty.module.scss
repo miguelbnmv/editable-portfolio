@@ -1,0 +1,15 @@
+@import 'styles/mixins.scss';
+
+.emptyState {
+  @include size(100%, 100%);
+  @include flex(column);
+  position: absolute;
+  top: 0;
+  text-align: center;
+
+  button {
+    margin-top: 1rem;
+    color: var(--primary-color);
+  }
+
+}

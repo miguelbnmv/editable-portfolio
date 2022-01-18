@@ -34,7 +34,7 @@
       line-height: 100%;
 
       span {
-        color: $green;
+        color: var(--primary-color);
       }
     }
   }
@@ -53,10 +53,15 @@
 
   &.hideTitle {
     @include container(2rem 4rem, transparent, none);
+    position: absolute;
 
     .pageInfo {
       @include flex($justify: flex-end);
       height: 5rem;
+
+      button {
+        margin-left: 2rem;
+      }
     }
   }
 }

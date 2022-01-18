@@ -1,12 +1,17 @@
 import React, { useState, useContext } from 'react';
 import useMightyMouse from 'react-hook-mighty-mouse';
+import { getDatabase, ref, update } from 'firebase/database';
+import { ref as sRef, uploadBytes, deleteObject } from 'firebase/storage';
 
 import GithubIcon from 'assets/icons/Github.svg';
 import InstagramIcon from 'assets/icons/Instagram.svg';
 import TwitterIcon from 'assets/icons/Twitter.svg';
-import Kelvin from 'assets/images/Kelvin.png';
+import BehanceIcon from 'assets/icons/behance.png';
+import LinkedinIcon from 'assets/icons/linkedin.png';
+import DribbleIcon from 'assets/icons/dribble.png';
 
 import { Context } from 'context/userContext';
+import { storage } from 'firebase/firebase.js';
 
 import Layout from 'components/shared/layout';
 import Button from 'components/shared/elements/button';
@@ -29,24 +34,33 @@ import {
   about,
   footer,
   imageGroup,
+  socialIcon,
 } from './home.module.scss';
+import { useEffect } from 'react/cjs/react.development';
 
 const icons = {
-  Github: GithubIcon,
-  Instagram: InstagramIcon,
-  Twitter: TwitterIcon,
+  github: GithubIcon,
+  instagram: InstagramIcon,
+  twitter: TwitterIcon,
+  behance: BehanceIcon,
+  linkedin: LinkedinIcon,
+  dribble: DribbleIcon,
 };
 
 const Home = () => {
   const [contactOpen, setContactOpen] = useState(false);
   const [editInfoOpen, setEditInfoOpen] = useState(false);
-  const { info } = useContext(Context);
+  const [photoChanged, setPhotoChanged] = useState(false);
+  const [images, setImages] = useState([]);
+  const db = getDatabase();
+  const user = useContext(Context);
+  const info = user?.info?.info;
 
   const {
     selectedElement: {
       position: { angle },
     },
-  } = useMightyMouse(true, 'placeholder', {
+  } = useMightyMouse(true, 'notGoodPractice', {
     x: -window.innerWidth / 3,
     y: -window.innerHeight / 3,
   });
@@ -54,11 +68,94 @@ const Home = () => {
   const rotateWrapper = `rotate(${angle}deg)`;
   const rotateImage = `rotate(${-angle}deg)`;
 
+  const getImageInfo = () => {
+    if (photoChanged) {
+      if (images.length !== 0) {
+        return `users/${user?.id}/${images[0]?.name}`;
+      } else {
+        return '';
+      }
+    } else {
+      return info?.image;
+    }
+  };
+
+  const editFunction = (values) => {
+    uploadBytes(
+      sRef(storage, 'users/' + user?.id + '/' + images[0].name),
+      images[0]
+    ).finally(() => {
+      update(ref(db, 'users/' + user?.id), {
+        info: {
+          name: values.userName,
+          image: getImageInfo(),
+          bio: values.userBio,
+          role: values.userRole,
+          location: values.userLocation,
+          email: values.userEmail,
+          phone: values.userPhone,
+          color: values.userColor,
+          social: {
+            behance: values.userBehance,
+            github: values.userGitHub,
+            linkedin: values.userLinkedIn,
+            instagram: values.userInstagram,
+            twitter: values.userTwitter,
+            dribble: values.userDribble,
+          },
+        },
+      });
+
+      setPhotoChanged(false);
+      setEditInfoOpen(false);
+    });
+  };
+
+  const editUser = (values) => {
+    if (photoChanged && images.length !== 0) {
+      if (info?.image === '') {
+        editFunction(values);
+      } else {
+        deleteObject(sRef(storage, info?.image))
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            editFunction(values);
+          });
+      }
+    } else {
+      update(ref(db, 'users/' + user?.id), {
+        info: {
+          name: values.userName,
+          image: getImageInfo(),
+          bio: values.userBio,
+          role: values.userRole,
+          location: values.userLocation,
+          email: values.userEmail,
+          phone: values.userPhone,
+          color: values.userColor,
+          social: {
+            behance: values.userBehance,
+            github: values.userGitHub,
+            linkedin: values.userLinkedIn,
+            instagram: values.userInstagram,
+            twitter: values.userTwitter,
+            dribble: values.userDribble,
+          },
+        },
+      });
+      setPhotoChanged(false);
+      setEditInfoOpen(false);
+    }
+  };
+
   const modal = (isContact) => (
     <FormWrapper
       initialValues={isContact ? contactFormValues : editInfoFormValues(info)}
       schema={isContact ? contactFormSchema : editInfoFormSchema}
       title={isContact ? 'Contact Me' : 'Edit your info'}
+      handleSubmit={editUser}
       handleClose={() =>
         isContact ? setContactOpen(false) : setEditInfoOpen(false)
       }
@@ -67,11 +164,24 @@ const Home = () => {
         isContact ? (
           <ContactForm formik={formik} />
         ) : (
-          <EditInfoForm formik={formik} />
+          <EditInfoForm
+            formik={formik}
+            urls={images.length === 0 ? [user?.image] : images}
+            setImages={setImages}
+            setPhotoChanged={setPhotoChanged}
+          />
         )
       }
     </FormWrapper>
   );
+
+  useEffect(() => {
+    document
+      .querySelector('body')
+      .classList.add(info?.color === '' ? 'green-theme' : info?.color);
+  }, [info?.color]);
+
+  if (!info) return <div id="notGoodPractice"></div>;
 
   return (
     <Layout pageTitle="Home" hide openModal={() => setEditInfoOpen(true)}>
@@ -80,7 +190,7 @@ const Home = () => {
       <section className={contentContainer}>
         <div className={about}>
           <h1>
-            Hello, I'm <span>{info?.name.split(' ')[0]}</span>
+            Hello, I'm <span>{info?.name?.split(' ')[0]}</span>
           </h1>
           <h3>{info?.role}</h3>
           <p>{info?.bio}</p>
@@ -91,11 +201,15 @@ const Home = () => {
             color="green"
           />
           <div>
-            {Object.entries(info?.social).map((x) => {
-              if (x[1] !== '') {
+            {Object.entries(info?.social).map((social) => {
+              if (social[1] !== '') {
                 return (
-                  <a href={x[1]} key={x[0]}>
-                    <img src={icons[x[0]]} alt={x[0] + ' Icon'} />
+                  <a href={social[1]} key={social[0]}>
+                    <img
+                      className={socialIcon}
+                      src={icons[social[0]]}
+                      alt={social[0] + ' Icon'}
+                    />
                   </a>
                 );
               } else {
@@ -110,11 +224,15 @@ const Home = () => {
           </div>
         </div>
         <div
-          id="placeholder"
+          id="notGoodPractice"
           className={imageGroup}
           style={{ transform: rotateWrapper }}
         >
-          <img src={Kelvin} alt="User" style={{ transform: rotateImage }} />
+          <img
+            src={user?.image ?? InstagramIcon}
+            alt={user?.image ? 'User' : 'Placeholder'}
+            style={{ transform: rotateImage }}
+          />
         </div>
       </section>
     </Layout>

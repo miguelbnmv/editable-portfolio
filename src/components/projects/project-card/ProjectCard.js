@@ -15,13 +15,13 @@ const ProjectCard = ({ project, setActiveIndex, index }) => {
       {() => (
         <div
           className={card}
-          key={project.id}
+          key={project[0]}
           onMouseEnter={() => setActiveIndex(index)}
           onMouseLeave={() => setActiveIndex(-1)}
         >
           <Button
-            text={' ' + project.name + '.'}
-            handle={() => navigate(`/projects/${project.id}`)}
+            text={' ' + project[1].title + '.'}
+            handle={() => navigate(`/projects/${project[0]}`)}
           />
         </div>
       )}
@@ -32,7 +32,7 @@ const ProjectCard = ({ project, setActiveIndex, index }) => {
 export default ProjectCard;
 
 ProjectCard.propTypes = {
-  project: PropTypes.object.isRequired,
+  project: PropTypes.array.isRequired,
   setActiveIndex: PropTypes.func,
   index: PropTypes.number,
 };

@@ -1,10 +1,14 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { getDatabase, ref, push, update, remove } from 'firebase/database';
+import { ref as sRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 import { Context } from 'context/userContext';
+import { storage } from 'firebase/firebase.js';
 
 import Layout from 'components/shared/layout';
 import Modal from 'components/shared/modal';
+import Empty from 'components/shared/empty';
 import FormWrapper from 'components/shared/forms/form-wrapper';
 import ProjectCard from 'components/projects/project-card';
 import ProjectImage from 'components/projects/project-image';
@@ -40,31 +44,116 @@ const useMousePosition = () => {
 
 const ProjectsList = () => {
   const navigate = useNavigate();
-  const { x, y } = useMousePosition();
+  const user = useContext(Context);
+  const db = getDatabase();
   const [searchParams] = useSearchParams();
   const [activeIndex, setActiveIndex] = useState(-1);
   const [addProjectOpen, setAddProjectOpen] = useState(false);
   const [myProjectsOpen, setMyProjectsOpen] = useState(false);
-  const { projects } = useContext(Context);
-  const project = projects.find(
-    ({ id }) => id === parseInt(searchParams.get('id'))
+  const [images, setImages] = useState([]);
+  const { x, y } = useMousePosition();
+  const projects = user?.info?.projects;
+  const id = searchParams.get('id');
+
+  const project = useMemo(
+    () => Object.entries(projects ?? {}).find((project) => project[0] === id),
+    [id, projects]
   );
 
   const handleButton = () => {
-    setMyProjectsOpen(false);
-    setAddProjectOpen(true);
-    navigate(`/projects`);
+    if (id && project[1]?.images) {
+      getDownloadURL(sRef(storage, project[1]?.image[0])).then((snap) => {
+        setImages([snap]);
+        setMyProjectsOpen(false);
+        setAddProjectOpen(true);
+        navigate('/projects', { replace: true });
+      });
+    } else {
+      setImages([]);
+      setMyProjectsOpen(false);
+      setAddProjectOpen(true);
+      navigate('/projects', { replace: true });
+    }
+  };
+
+  const addProject = (values) => {
+    const imgs = images.map(({ name }) => {
+      return `users/${user?.id}/projects/${name}`;
+    });
+    console.log(imgs);
+    push(ref(db, 'users/' + user?.id + '/projects'), {
+      title: values.projectTitle,
+      quote: values.projectQuote,
+      firstDescription: values.projectFirstDescription,
+      firstDescriptionTitle: values.projectFirstDescriptionTitle,
+      secondDescription: values.projectSecondDescription,
+      secondDescriptionTitle: values.projectSecondDescriptionTitle,
+      subject: values.projectSubject,
+      date: values.projectDate,
+      platforms: values.projectPlatforms,
+      technologies: values.projectTechnologies,
+      images: imgs,
+    });
+
+    images?.map((image) => {
+      uploadBytes(
+        sRef(storage, `users/${user?.id}/projects/${image.name}`),
+        image
+      );
+      return null;
+    });
+
+    setAddProjectOpen(false);
+  };
+
+  const editProject = (values) => {
+    const imgs = images.map(({ name }) => {
+      return `users/${user?.id}/projects/${name}`;
+    });
+    update(ref(db, 'users/' + user?.id + '/projects/' + project[0]), {
+      title: values.projectTitle,
+      quote: values.projectQuote,
+      firstDescription: values.projectFirstDescription,
+      firstDescriptionTitle: values.projectFirstDescriptionTitle,
+      secondDescription: values.projectSecondDescription,
+      secondDescriptionTitle: values.projectSecondDescriptionTitle,
+      subject: values.projectSubject,
+      date: values.projectDate,
+      platforms: values.projectPlatforms,
+      technologies: values.projectTechnologies,
+      images: imgs,
+    });
+
+    images?.map((image) => {
+      uploadBytes(
+        sRef(storage, `users/${user?.id}/projects/${image.name}`),
+        image
+      );
+      return null;
+    });
+
+    setAddProjectOpen(false);
+    navigate('/projects', { replace: true });
+  };
+
+  const removeProject = (id) => {
+    remove(ref(db, 'users/' + user?.id + '/projects/' + id));
+    setAddProjectOpen(false);
+    navigate('/projects', { replace: true });
   };
 
   const modal = (isList) =>
     isList ? (
       <FormWrapper
-        initialValues={initialValues(project)}
+        initialValues={initialValues(id ? project[1] : null)}
         schema={addProjectFormSchema}
-        title="Add project"
+        title={id ? project[1].title : 'Add project'}
+        handleSubmit={id ? editProject : addProject}
         handleClose={() => setAddProjectOpen(false)}
       >
-        {(formik) => <AddProjectForm formik={formik} />}
+        {(formik) => (
+          <AddProjectForm formik={formik} urls={images} setImages={setImages} />
+        )}
       </FormWrapper>
     ) : (
       <Modal
@@ -72,41 +161,60 @@ const ProjectsList = () => {
         handleClose={() => setMyProjectsOpen(false)}
         handleButton={() => handleButton()}
       >
-        <MyProjectsForm handle={() => handleButton()} />
+        <MyProjectsForm
+          editHandler={() => handleButton()}
+          removeHandler={(id) => removeProject(id)}
+        />
       </Modal>
     );
+
+  if (!user?.info) return <></>;
 
   return (
     <Layout pageTitle="Projects" openModal={() => setMyProjectsOpen(true)}>
       <section className={contentContainer}>
         {addProjectOpen ? modal(true) : null}
         {myProjectsOpen ? modal(false) : null}
-        <div className={projectName}>
-          {projects.map((project, index) => (
-            <ProjectCard
-              project={project}
-              key={project.id}
-              setActiveIndex={setActiveIndex}
-              index={index}
-            />
-          ))}
-        </div>
-        <div className={projectBanner}>
-          {projects.map(({ id, banner }, index) => {
-            const isActive = index === activeIndex;
-            const xPos = isActive ? x : 0;
-            const yPos = isActive ? y : 0;
-            return (
-              <ProjectImage
-                url={banner}
-                active={isActive}
-                key={id}
-                x={xPos}
-                y={yPos}
-              />
-            );
-          })}
-        </div>
+        {projects ? (
+          <>
+            <div className={projectName}>
+              {Object.entries(projects).map((project, index) => (
+                <ProjectCard
+                  project={project}
+                  key={project[0]}
+                  setActiveIndex={setActiveIndex}
+                  index={index}
+                />
+              ))}
+            </div>
+            <div className={projectBanner}>
+              {Object.entries(projects).map((project, index) => {
+                const isActive = index === activeIndex;
+                const xPos = isActive ? x : 0;
+                const yPos = isActive ? y : 0;
+                if (project[1].images !== '') {
+                  return (
+                    <ProjectImage
+                      project={project}
+                      active={isActive}
+                      key={project[0]}
+                      x={xPos}
+                      y={yPos}
+                    />
+                  );
+                } else {
+                  return null;
+                }
+              })}
+            </div>
+          </>
+        ) : (
+          <Empty
+            message="Não existe nenhum projeto"
+            button="Adiciona o teu primeiro projeto!"
+            handle={() => setAddProjectOpen(true)}
+          />
+        )}
       </section>
     </Layout>
   );

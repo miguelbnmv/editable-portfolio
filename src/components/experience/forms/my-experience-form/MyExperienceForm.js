@@ -7,14 +7,15 @@ import { Context } from 'context/userContext';
 import FormTitle from 'components/shared/forms/form-title';
 import ListElement from 'components/shared/forms/list-element';
 
-const MyExperienceForm = ({ handle }) => {
+const MyExperienceForm = ({ editHandler, removeHandler }) => {
   const navigate = useNavigate();
-  const { experiences } = useContext(Context);
+  const user = useContext(Context);
+  const experiences = user?.info?.experiences;
 
   let currentYear = '';
 
   const editHandle = (id) => {
-    handle();
+    editHandler();
     navigate(`/experience?id=${id}`);
   };
 
@@ -23,15 +24,21 @@ const MyExperienceForm = ({ handle }) => {
     return <FormTitle text={'' + year} isList />;
   };
 
+  if (!experiences) return <span>Não tem experiências</span>; //melhorar design
+
   return (
     <>
-      {experiences.map(({ name, id, date }) => {
-        const year = new Date(date).getFullYear();
+      {Object.entries(experiences).map((exp) => {
+        const year = new Date(exp[1].date).getFullYear();
 
         return (
-          <React.Fragment key={id}>
-            {year === currentYear ? null : addTitle(date, year, id)}
-            <ListElement name={name} editHandle={() => editHandle(id)} />
+          <React.Fragment key={exp[0]}>
+            {year === currentYear ? null : addTitle(exp[1].date, year, exp[0])}
+            <ListElement
+              name={exp[1].name}
+              editHandle={() => editHandle(exp[0])}
+              removeHandle={() => removeHandler(exp[0])}
+            />
           </React.Fragment>
         );
       })}
@@ -42,5 +49,6 @@ const MyExperienceForm = ({ handle }) => {
 export default MyExperienceForm;
 
 MyExperienceForm.propTypes = {
-  handle: PropTypes.func.isRequired,
+  editHandler: PropTypes.func.isRequired,
+  removeHandler: PropTypes.func.isRequired,
 };

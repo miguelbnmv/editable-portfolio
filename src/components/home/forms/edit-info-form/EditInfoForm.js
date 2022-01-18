@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 import Input from 'components/shared/forms/input';
 import Textarea from 'components/shared/forms/textarea';
 import FormTitle from 'components/shared/forms/form-title';
+import FilesInput from 'components/shared/forms/files-input';
 
-import { double } from 'components/shared/modal/modal.module.scss';
+import { double, wrapper } from 'components/shared/modal/modal.module.scss';
 
-const EditInfoForm = ({ formik }) => (
+const EditInfoForm = ({ formik, urls, setImages, setPhotoChanged }) => (
   <>
     <FormTitle text="about" />
     <Input
@@ -23,6 +24,13 @@ const EditInfoForm = ({ formik }) => (
       placeholder="Insert your name"
       label="Name"
       isRequired
+    />
+    <FilesInput
+      name="userPhoto"
+      urls={urls}
+      setImages={setImages}
+      setPhotoChanged={setPhotoChanged}
+      label="Upload your profile picture"
     />
     <Textarea
       name="userBio"
@@ -178,7 +186,61 @@ const EditInfoForm = ({ formik }) => (
         placeholder="Insert your dribble account"
         label="Dribble"
       />
-    </div>
+      </div>
+      <FormTitle text="theme" />
+      <label>Choose your favorite color</label>
+      <div className={wrapper}>
+        <div>
+          <div></div>
+          <input
+            type="radio"
+            name="userColor"
+            onChange={formik.handleChange}
+            value="green-theme"
+            checked={formik?.values?.userColor === 'green-theme'}
+          />
+        </div>
+        <div>
+        <div></div>
+          <input
+            type="radio"
+            name="userColor"
+            onChange={formik.handleChange}
+            value="pink-theme"
+            checked={formik?.values?.userColor === 'pink-theme'}
+          />
+        </div>
+        <div>
+          <div></div>
+          <input
+            type="radio"
+            name="userColor"
+            onChange={formik.handleChange}
+            value="yellow-theme"
+            checked={formik?.values?.userColor === 'yellow-theme'}
+          />
+        </div>
+        <div>
+          <div></div>
+          <input
+            type="radio"
+            name="userColor"
+            onChange={formik.handleChange}
+            value="blue-theme"
+            checked={formik?.values?.userColor === 'blue-theme'}
+          />
+        </div>
+        <div>
+          <div></div>
+          <input
+            type="radio"
+            name="userColor"
+            onChange={formik.handleChange}
+            value="orange-theme"
+            checked={formik?.values?.userColor === 'orange-theme'}
+          />
+        </div>
+      </div>
   </>
 );
 
@@ -191,4 +253,7 @@ EditInfoForm.propTypes = {
     errors: PropTypes.object,
     touched: PropTypes.object,
   }),
+  urls: PropTypes.array,
+  setImages: PropTypes.func,
+  setPhotoChanged: PropTypes.func,
 };
