@@ -10,6 +10,7 @@ export const Context = createContext({});
 const UserContext = ({ children }) => {
   const [info, setInfo] = useState(null);
   const db = getDatabase();
+  const [id, setId] = useState();
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -17,13 +18,14 @@ const UserContext = ({ children }) => {
         .then((user) => {
           if (!info && user.exists()) {
             const userInfo = user?.val()[auth?.currentUser?.uid];
-            if (userInfo?.info?.image && ! userInfo?.info.image !== null) {
+            if (userInfo?.info?.image && !userInfo?.info.image !== null) {
               getDownloadURL(sRef(storage, userInfo?.info?.image)).then(
                 (url) => {
                   setInfo({
                     info: userInfo,
                     id: auth?.currentUser?.uid,
                     image: url,
+                    setId: setId,
                   });
                 }
               );
@@ -31,6 +33,7 @@ const UserContext = ({ children }) => {
               setInfo({
                 info: userInfo,
                 id: auth?.currentUser?.uid,
+                setId: setId,
               });
             }
           }
@@ -57,6 +60,13 @@ const UserContext = ({ children }) => {
       });
     }
   });
+
+  if (id) {
+    console.log(id);
+    //firebase.database().ref('/users').orderByChild('email').equalTo(userEmail).on('value', data => {
+    //  console.log('data: ', data);
+    //})
+  }
 
   return (
     <Context.Provider value={info ? info : null}>{children}</Context.Provider>

@@ -25,6 +25,20 @@ const EditInfoForm = ({ formik, urls, setImages, setPhotoChanged }) => (
       label="Name"
       isRequired
     />
+    <Input
+      name="userUsername"
+      type="text"
+      value={formik.values.userUsername}
+      handleChange={formik.handleChange}
+      error={
+        formik.errors?.userUsername &&
+        formik.touched?.userUsername &&
+        formik.errors?.userUsername
+      }
+      placeholder="Insert your username"
+      label="Username"
+      isRequired
+    />
     <FilesInput
       name="userPhoto"
       urls={urls}
@@ -186,61 +200,61 @@ const EditInfoForm = ({ formik, urls, setImages, setPhotoChanged }) => (
         placeholder="Insert your dribble account"
         label="Dribble"
       />
-      </div>
-      <FormTitle text="theme" />
-      <label>Choose your favorite color</label>
-      <div className={wrapper}>
-        <div>
-          <div></div>
-          <input
-            type="radio"
-            name="userColor"
-            onChange={formik.handleChange}
-            value="green-theme"
-            checked={formik?.values?.userColor === 'green-theme'}
-          />
-        </div>
-        <div>
+    </div>
+    <FormTitle text="theme" />
+    <label>Choose your favorite color</label>
+    <div className={wrapper}>
+      <div>
         <div></div>
-          <input
-            type="radio"
-            name="userColor"
-            onChange={formik.handleChange}
-            value="pink-theme"
-            checked={formik?.values?.userColor === 'pink-theme'}
-          />
-        </div>
-        <div>
-          <div></div>
-          <input
-            type="radio"
-            name="userColor"
-            onChange={formik.handleChange}
-            value="yellow-theme"
-            checked={formik?.values?.userColor === 'yellow-theme'}
-          />
-        </div>
-        <div>
-          <div></div>
-          <input
-            type="radio"
-            name="userColor"
-            onChange={formik.handleChange}
-            value="blue-theme"
-            checked={formik?.values?.userColor === 'blue-theme'}
-          />
-        </div>
-        <div>
-          <div></div>
-          <input
-            type="radio"
-            name="userColor"
-            onChange={formik.handleChange}
-            value="orange-theme"
-            checked={formik?.values?.userColor === 'orange-theme'}
-          />
-        </div>
+        <input
+          type="radio"
+          name="userColor"
+          onChange={formik.handleChange}
+          value="green-theme"
+          checked={formik?.values?.userColor === 'green-theme'}
+        />
       </div>
+      <div>
+        <div></div>
+        <input
+          type="radio"
+          name="userColor"
+          onChange={formik.handleChange}
+          value="pink-theme"
+          checked={formik?.values?.userColor === 'pink-theme'}
+        />
+      </div>
+      <div>
+        <div></div>
+        <input
+          type="radio"
+          name="userColor"
+          onChange={formik.handleChange}
+          value="yellow-theme"
+          checked={formik?.values?.userColor === 'yellow-theme'}
+        />
+      </div>
+      <div>
+        <div></div>
+        <input
+          type="radio"
+          name="userColor"
+          onChange={formik.handleChange}
+          value="blue-theme"
+          checked={formik?.values?.userColor === 'blue-theme'}
+        />
+      </div>
+      <div>
+        <div></div>
+        <input
+          type="radio"
+          name="userColor"
+          onChange={formik.handleChange}
+          value="orange-theme"
+          checked={formik?.values?.userColor === 'orange-theme'}
+        />
+      </div>
+    </div>
   </>
 );
 

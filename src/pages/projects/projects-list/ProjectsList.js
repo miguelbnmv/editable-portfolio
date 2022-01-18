@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getDatabase, ref, push, update, remove } from 'firebase/database';
 import { ref as sRef, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -171,7 +172,11 @@ const ProjectsList = () => {
   if (!user?.info) return <></>;
 
   return (
-    <Layout pageTitle="Projects" openModal={() => setMyProjectsOpen(true)}>
+    <Layout
+      pageTitle="Projects"
+      hasId
+      openModal={() => setMyProjectsOpen(true)}
+    >
       <section className={contentContainer}>
         {addProjectOpen ? modal(true) : null}
         {myProjectsOpen ? modal(false) : null}
@@ -221,3 +226,7 @@ const ProjectsList = () => {
 };
 
 export default ProjectsList;
+
+ProjectsList.propTypes = {
+  hasId: PropTypes.bool,
+};

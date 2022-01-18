@@ -1,4 +1,5 @@
 import React, { useState, useContext, useMemo, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getDatabase, ref, push, update, remove } from 'firebase/database';
 import {
@@ -52,16 +53,16 @@ const allMonths = [
   'Dec',
 ];
 
-const Experience = () => {
+const Experience = ({ hadId }) => {
+  const navigate = useNavigate();
+  const user = useContext(Context);
+  const db = getDatabase();
   const [addExperienceOpen, setAddExperienceOpen] = useState(false);
   const [myExperienceOpen, setMyExperienceOpen] = useState(false);
   const [images, setImages] = useState([]);
   const [photoChanged, setPhotoChanged] = useState(false);
   const [flag, setFlag] = useState(true);
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const user = useContext(Context);
-  const db = getDatabase();
   const months = useMemo(() => [], []);
   const years = useMemo(() => [], []);
   const id = searchParams.get('id');
@@ -246,7 +247,7 @@ const Experience = () => {
       </Modal>
     );
 
-  useEffect(() => {  
+  useEffect(() => {
     document
       .querySelector('body')
       .classList.add(
@@ -275,7 +276,11 @@ const Experience = () => {
   if (!user?.info) return <></>;
 
   return (
-    <Layout pageTitle="Experience" openModal={() => setMyExperienceOpen(true)}>
+    <Layout
+      pageTitle="Experience"
+      hasId
+      openModal={() => setMyExperienceOpen(true)}
+    >
       <section className={contentContainer}>
         {addExperienceOpen ? modal(true) : null}
         {myExperienceOpen ? modal(false) : null}
@@ -336,3 +341,7 @@ const Experience = () => {
 };
 
 export default Experience;
+
+Experience.propTypes = {
+  hasId: PropTypes.bool,
+};

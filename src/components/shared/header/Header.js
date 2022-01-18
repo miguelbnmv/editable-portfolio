@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { logout } from 'firebase/firebase';
 
 import { Context } from 'context/userContext';
@@ -20,9 +20,10 @@ const navigation = {
   Experience: ['projects', 'home'],
 };
 
-const Header = ({ pageTitle, noFill, hide, openModal }) => {
+const Header = ({ pageTitle, noFill, hide, openModal, hasId }) => {
   const navigate = useNavigate();
   const user = useContext(Context);
+  const { userId } = useParams();
 
   const logoutUser = () => {
     if (user?.info?.info?.color) {
@@ -38,7 +39,26 @@ const Header = ({ pageTitle, noFill, hide, openModal }) => {
 
   const getPath = (index) => {
     if (noFill) return '/projects';
-    return '/' + navigation[pageTitle][index];
+    const base = hasId ? `/${userId}/` : '/';
+    return base + navigation[pageTitle][index];
+  };
+
+  const getControls = (hide, hasId) => {
+    if (!hasId) {
+      return (
+        <>
+          {hide ? (
+            <Button handle={() => logout()} text="Logout" color="white" />
+          ) : null}
+          <Button
+            handle={openModal}
+            text="Edit"
+            color="white"
+            style={{ marginLeft: '1rem' }}
+          />
+        </>
+      );
+    }
   };
 
   return (
@@ -70,6 +90,7 @@ const Header = ({ pageTitle, noFill, hide, openModal }) => {
             <span>.</span>
           </h1>
         ) : null}
+<<<<<<< Updated upstream
         {hide ? (
           <Button handle={() => logoutUser()} text="Logout" color="white" />
         ) : null}
@@ -79,16 +100,20 @@ const Header = ({ pageTitle, noFill, hide, openModal }) => {
           color="white"
           style={{ marginLeft: '1rem' }}
         />
+=======
+        {getControls(hide, hasId)}
+>>>>>>> Stashed changes
       </div>
     </header>
   );
 };
+
+export default Header;
 
 Header.propTypes = {
   pageTitle: PropTypes.string,
   noFill: PropTypes.bool,
   hide: PropTypes.bool,
   openModal: PropTypes.func,
+  hasId: PropTypes.bool,
 };
-
-export default Header;

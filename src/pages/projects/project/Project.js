@@ -1,4 +1,5 @@
 import React, { useContext, useState, useMemo, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { getDatabase, ref, update } from 'firebase/database';
 import {
@@ -147,6 +148,7 @@ const Project = () => {
     <Layout
       pageTitle={project?.title}
       noFill
+      hasId
       openModal={() => setEditProjectOpen(true)}
     >
       {editProjectOpen ? modal(true) : null}
@@ -207,3 +209,7 @@ const Project = () => {
 };
 
 export default Project;
+
+Project.propTypes = {
+  hasId: PropTypes.bool,
+};
