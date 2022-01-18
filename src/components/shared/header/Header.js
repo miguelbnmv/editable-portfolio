@@ -90,19 +90,7 @@ const Header = ({ pageTitle, noFill, hide, openModal, hasId }) => {
             <span>.</span>
           </h1>
         ) : null}
-<<<<<<< Updated upstream
-        {hide ? (
-          <Button handle={() => logoutUser()} text="Logout" color="white" />
-        ) : null}
-        <Button
-          handle={openModal}
-          text="Edit"
-          color="white"
-          style={{ marginLeft: '1rem' }}
-        />
-=======
         {getControls(hide, hasId)}
->>>>>>> Stashed changes
       </div>
     </header>
   );
