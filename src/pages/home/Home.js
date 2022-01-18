@@ -12,6 +12,8 @@ import BehanceIcon from 'assets/icons/behance.png';
 import LinkedinIcon from 'assets/icons/linkedin.png';
 import DribbleIcon from 'assets/icons/dribble.png';
 
+import ProfilePlaceholder from 'assets/images/ProfilePlaceholder.png';
+
 import { Context } from 'context/userContext';
 import { storage } from 'firebase/firebase.js';
 
@@ -240,7 +242,7 @@ const Home = ({ hasId }) => {
           style={{ transform: rotateWrapper }}
         >
           <img
-            src={user?.image ?? InstagramIcon}
+            src={user?.image ?? ProfilePlaceholder}
             alt={user?.image ? 'User' : 'Placeholder'}
             style={{ transform: rotateImage }}
           />

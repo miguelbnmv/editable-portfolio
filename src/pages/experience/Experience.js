@@ -9,7 +9,7 @@ import {
   deleteObject,
 } from 'firebase/storage';
 
-import LinkedinIcon from 'assets/icons/linkedin.png';
+import ExperiencePlaceholder from 'assets/images/ExperiencePlaceholder.png';
 
 import { Context } from 'context/userContext';
 import { storage } from 'firebase/firebase.js';
@@ -259,7 +259,7 @@ const Experience = ({ hadId }) => {
         if (user?.info?.experiences[id]?.image === '') {
           return (document.getElementById(
             user?.info?.experiences[id]?.date
-          ).src = LinkedinIcon);
+          ).src = ExperiencePlaceholder);
         } else {
           return getDownloadURL(
             sRef(storage, user?.info?.experiences[id]?.image)

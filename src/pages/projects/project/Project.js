@@ -11,6 +11,8 @@ import {
 } from 'firebase/storage';
 import Masonry from 'react-masonry-css';
 
+import ProjectsPlaceholder from 'assets/images/ExperiencePlaceholder.png';
+
 import { Context } from 'context/userContext';
 import { storage } from 'firebase/firebase.js';
 
@@ -130,7 +132,7 @@ const Project = () => {
   );
 
   useEffect(() => {
-    if (project && flag) {
+    if (project?.images && flag) {
       project?.images?.map((img) => {
         return getDownloadURL(sRef(storage, img))
           .then((url) => {
@@ -154,7 +156,7 @@ const Project = () => {
       {editProjectOpen ? modal(true) : null}
       <div className={contentContainer}>
         <div className={hero}>
-          <img src={imgsSrc[0]} alt="project-banner" />
+          <img src={imgsSrc[0]  ?? ProjectsPlaceholder} alt="project-banner" />
           <h1>
             {project?.title}. {project?.title}.
           </h1>
@@ -185,9 +187,9 @@ const Project = () => {
               <h4>"{project?.quote}"</h4>
             </div>
           </div>
-          <img src={imgsSrc[1]} alt="description-illustration" />
+          <img src={imgsSrc[1] ?? ProjectsPlaceholder} alt="description-illustration" />
           <div className={secondaryBio}>
-            <img src={imgsSrc[2]} alt="description-illustration" />
+            <img src={imgsSrc[2]  ?? ProjectsPlaceholder} alt="description-illustration" />
             <div>
               <h3>{project?.secondDescriptionTitle}</h3>
               <p>{project?.secondDescription}</p>
