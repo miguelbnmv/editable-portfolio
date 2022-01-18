@@ -74,6 +74,7 @@ const Landing = () => {
         location: values.userLocation,
         email: values.userEmail,
         phone: values.userPhone,
+        color: values.userColor,
         social: {
           behance: values.userBehance,
           github: values.userGitHub,
