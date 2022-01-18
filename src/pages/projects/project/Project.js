@@ -131,7 +131,7 @@ const Project = () => {
   );
 
   useEffect(() => {
-    if (project && flag) {
+    if (project?.images && flag) {
       project?.images?.map((img) => {
         return getDownloadURL(sRef(storage, img))
           .then((url) => {

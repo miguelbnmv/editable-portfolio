@@ -80,7 +80,6 @@ const ProjectsList = () => {
     const imgs = images.map(({ name }) => {
       return `users/${user?.id}/projects/${name}`;
     });
-    console.log(imgs);
     push(ref(db, 'users/' + user?.id + '/projects'), {
       title: values.projectTitle,
       quote: values.projectQuote,
