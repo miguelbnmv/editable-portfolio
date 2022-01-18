@@ -12,11 +12,13 @@ const UserContext = ({ children }) => {
   const db = getDatabase();
 
   onAuthStateChanged(auth, (user) => {
+    console.log('entrou')
     if (user) {
       get(ref(db, '/users'))
         .then((user) => {
           if (!info && user.exists()) {
             const userInfo = user?.val()[auth?.currentUser?.uid];
+            console.log(2, userInfo)
             if (userInfo?.info?.image && ! userInfo?.info.image !== null) {
               getDownloadURL(sRef(storage, userInfo?.info?.image)).then(
                 (url) => {

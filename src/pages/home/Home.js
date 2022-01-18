@@ -58,6 +58,8 @@ const Home = () => {
   const user = useContext(Context);
   const info = user?.info?.info;
 
+  console.log(1, user)
+
   const {
     selectedElement: {
       position: { angle },
