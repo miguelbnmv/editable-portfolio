@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import useMightyMouse from 'react-hook-mighty-mouse';
 import { getDatabase, ref, update } from 'firebase/database';
 import { ref as sRef, uploadBytes, deleteObject } from 'firebase/storage';
@@ -38,7 +38,6 @@ import {
   imageGroup,
   socialIcon,
 } from './home.module.scss';
-import { useEffect } from 'react/cjs/react.development';
 
 const icons = {
   github: GithubIcon,
@@ -178,10 +177,9 @@ const Home = () => {
   );
 
   useEffect(() => {
-    //console.log(info?.color);
-/*     if (info?.color) {
+     if (info?.color) {
       document.querySelector('body').classList.add(info?.color);
-    } */
+    }
   }, [info?.color]);
 
   if (!info) return <div id="notGoodPractice"></div>;
