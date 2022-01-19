@@ -1,10 +1,9 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import { getDatabase, ref, get, onChildChanged } from 'firebase/database';
 import { ref as sRef, getDownloadURL } from 'firebase/storage';
 import { onAuthStateChanged } from 'firebase/auth';
 
 import { auth, storage } from 'firebase/firebase.js';
-import { useEffect } from 'react/cjs/react.development';
 
 export const Context = createContext({});
 
