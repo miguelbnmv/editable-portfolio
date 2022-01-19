@@ -186,7 +186,6 @@ const Home = ({ hasId }) => {
       const element = document.querySelector('body');
       const classList = element.className.split(/\s+/);
       for (var i = 0; i < classList.length; i++) {
-        console.log(classList[i]?.split('-'));
         if (classList[i]?.split('-')[1] === 'theme') {
           element.classList.remove(classList[i]);
         }
