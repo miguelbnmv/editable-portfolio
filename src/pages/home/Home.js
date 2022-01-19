@@ -182,6 +182,7 @@ const Home = ({ hasId }) => {
   );
 
   useEffect(() => {
+    console.log(info?.color);
     document
       .querySelector('body')
       .classList.add(info?.color === '' ? 'green-theme' : info?.color);
