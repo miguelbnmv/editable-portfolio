@@ -182,16 +182,17 @@ const Home = ({ hasId }) => {
   );
 
   useEffect(() => {
-    const classList = document.querySelector('body').className.split(/\s+/);
-    for (var i = 0; i < classList.length; i++) {
-      if (classList[i]?.split('-')[1] === 'theme') {
-        console.log(classList[i], classList[i?.split('-')[1]]);
-        document.querySelector('body').classList.remove(classList[i]);
+    if (info?.color) {
+      const element = document.querySelector('body');
+      const classList = element.className.split(/\s+/);
+      for (var i = 0; i < classList.length; i++) {
+        console.log(classList[i]?.split('-'));
+        if (classList[i]?.split('-')[1] === 'theme') {
+          element.classList.remove(classList[i]);
+        }
       }
+      element.classList.add(info?.color);
     }
-    document
-      .querySelector('body')
-      .classList.add(info?.color === '' ? 'green-theme' : info?.color);
     user?.setId(userId);
   }, [info?.color, user, userId]);
 

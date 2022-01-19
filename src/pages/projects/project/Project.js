@@ -132,6 +132,17 @@ const Project = ({ hasId }) => {
   );
 
   useEffect(() => {
+    if (user?.info?.info?.color) {
+      const element = document.querySelector('body');
+      const classList = element.className.split(/\s+/);
+      for (var i = 0; i < classList.length; i++) {
+        console.log(classList[i]?.split('-'));
+        if (classList[i]?.split('-')[1] === 'theme') {
+          element.classList.remove(classList[i]);
+        }
+      }
+      element.classList.add(user?.info?.info?.color);
+    }
     if (project?.images && flag) {
       project?.images?.map((img) => {
         return getDownloadURL(sRef(storage, img))
@@ -141,8 +152,8 @@ const Project = ({ hasId }) => {
           .catch((error) => console.log(error));
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [project]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [project, user]);
 
   if (!user?.info) return <></>;
 
