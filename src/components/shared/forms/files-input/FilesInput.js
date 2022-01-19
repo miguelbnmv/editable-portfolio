@@ -44,10 +44,20 @@ const FilesInput = ({
     }
   };
 
-  const removeImage = () => {
-    setFileUrls([]);
-    setImages([]);
-    setPhotoChanged(true);
+  const removeImage = (url) => {
+    if (fileUrls.length === 1) {
+      setFileUrls([]);
+      setImages([]);
+      setPhotoChanged(true);
+    } else {
+      const index = fileUrls.indexOf(url);
+      if (index > -1) {
+        fileUrls.splice(index, 1);
+        urls.splice(index, 1);
+      }
+      setImages([]);
+      setPhotoChanged(true);
+    }
   };
 
   return (
@@ -61,7 +71,11 @@ const FilesInput = ({
                 src={typeof url !== 'string' ? URL.createObjectURL(url) : url}
                 alt="Firebase Content"
               />
-              <Button img="close" color="icon" handle={() => removeImage()} />
+              <Button
+                img="close"
+                color="icon"
+                handle={() => removeImage(url)}
+              />
             </div>
           ))}
           {isMultiple && fileUrls?.length < 9 ? (

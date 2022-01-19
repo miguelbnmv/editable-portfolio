@@ -1,8 +1,14 @@
-import React, { useState, useContext, useEffect, useMemo } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getDatabase, ref, push, update, remove } from 'firebase/database';
-import { ref as sRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import {
+  ref as sRef,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+  listAll,
+} from 'firebase/storage';
 
 import { Context } from 'context/userContext';
 import { storage } from 'firebase/firebase.js';
@@ -47,30 +53,39 @@ const ProjectsList = ({ hasId }) => {
   const navigate = useNavigate();
   const user = useContext(Context);
   const db = getDatabase();
-  const [searchParams] = useSearchParams();
   const [activeIndex, setActiveIndex] = useState(-1);
   const [addProjectOpen, setAddProjectOpen] = useState(false);
   const [myProjectsOpen, setMyProjectsOpen] = useState(false);
+  const [photoChanged, setPhotoChanged] = useState(false);
+  const [project, setProject] = useState(null);
   const [images, setImages] = useState([]);
   const { x, y } = useMousePosition();
   const projects = user?.info?.projects;
-  const id = searchParams.get('id');
   const { userId } = useParams();
 
-  const project = useMemo(
-    () => Object.entries(projects ?? {}).find((project) => project[0] === id),
-    [id, projects]
-  );
-
-  const handleButton = () => {
-    if (id && project[1]?.images) {
-      getDownloadURL(sRef(storage, project[1]?.image[0])).then((snap) => {
-        setImages([snap]);
-        setMyProjectsOpen(false);
-        setAddProjectOpen(true);
-        navigate('/projects', { replace: true });
-      });
+  const handleButton = (isEdit, elProject) => {
+    if (elProject && isEdit) {
+      setProject(elProject);
+      setImages([]);
+      Promise.all(
+        elProject[1]?.images?.map((image) => {
+          return getDownloadURL(sRef(storage, image)).then((url) => {
+            setImages((old) => [...old, url]);
+          });
+        })
+      )
+        .finally(() => {
+          setMyProjectsOpen(false);
+          setAddProjectOpen(true);
+          navigate('/projects', {
+            replace: true,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
+      setProject(null);
       setImages([]);
       setMyProjectsOpen(false);
       setAddProjectOpen(true);
@@ -79,62 +94,144 @@ const ProjectsList = ({ hasId }) => {
   };
 
   const addProject = (values) => {
-    const imgs = images.map(({ name }) => {
-      return `users/${user?.id}/projects/${name}`;
-    });
-    push(ref(db, 'users/' + user?.id + '/projects'), {
-      title: values.projectTitle,
-      quote: values.projectQuote,
-      firstDescription: values.projectFirstDescription,
-      firstDescriptionTitle: values.projectFirstDescriptionTitle,
-      secondDescription: values.projectSecondDescription,
-      secondDescriptionTitle: values.projectSecondDescriptionTitle,
-      subject: values.projectSubject,
-      date: values.projectDate,
-      platforms: values.projectPlatforms,
-      technologies: values.projectTechnologies,
-      images: imgs,
-    });
+    if (photoChanged && images.length !== 0) {
+      Promise.all(
+        images.map((image) => {
+          return uploadBytes(
+            sRef(
+              storage,
+              `users/${user?.id}/projects/${values.projectTitle}/${image.name}`
+            ),
+            image
+          );
+        })
+      )
+        .finally(() => {
+          const imgs = images?.map(({ name }) => {
+            return `users/${user?.id}/projects/${values.projectTitle}/${name}`;
+          });
+          push(ref(db, 'users/' + user?.id + '/projects/'), {
+            title: values.projectTitle,
+            quote: values.projectQuote,
+            firstDescription: values.projectFirstDescription,
+            firstDescriptionTitle: values.projectFirstDescriptionTitle,
+            secondDescription: values.projectSecondDescription,
+            secondDescriptionTitle: values.projectSecondDescriptionTitle,
+            subject: values.projectSubject,
+            date: values.projectDate,
+            platforms: values.projectPlatforms,
+            technologies: values.projectTechnologies,
+            images: imgs,
+          });
+          setAddProjectOpen(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      push(ref(db, 'users/' + user?.id + '/projects/'), {
+        title: values.projectTitle,
+        quote: values.projectQuote,
+        firstDescription: values.projectFirstDescription,
+        firstDescriptionTitle: values.projectFirstDescriptionTitle,
+        secondDescription: values.projectSecondDescription,
+        secondDescriptionTitle: values.projectSecondDescriptionTitle,
+        subject: values.projectSubject,
+        date: values.projectDate,
+        platforms: values.projectPlatforms,
+        technologies: values.projectTechnologies,
+        images: [],
+      });
+    }
+  };
 
-    images?.map((image) => {
-      uploadBytes(
-        sRef(storage, `users/${user?.id}/projects/${image.name}`),
-        image
-      );
-      return null;
-    });
+  const getImageInfo = () => {
+    if (photoChanged) {
+      if (images.length !== 0) {
+        return images?.map((img) => {
+          return `users/${user?.id}/projects/${project.title}/${img?.name}`;
+        });
+      } else {
+        return [];
+      }
+    } else {
+      return project[1]?.images;
+    }
+  };
 
-    setAddProjectOpen(false);
+  const editFunction = (values) => {
+    Promise.all(
+      images.map((image) => {
+        return uploadBytes(
+          sRef(
+            storage,
+            `users/${user?.id}/projects/$${project.title}/${image.name}`
+          ),
+          image
+        );
+      })
+    )
+      .finally(() => {
+        update(ref(db, 'users/' + user?.id + '/projects/' + project[0]), {
+          title: values.projectTitle,
+          quote: values.projectQuote,
+          firstDescription: values.projectFirstDescription,
+          firstDescriptionTitle: values.projectFirstDescriptionTitle,
+          secondDescription: values.projectSecondDescription,
+          secondDescriptionTitle: values.projectSecondDescriptionTitle,
+          subject: values.projectSubject,
+          date: values.projectDate,
+          platforms: values.projectPlatforms,
+          technologies: values.projectTechnologies,
+          images: getImageInfo(),
+        });
+        setPhotoChanged(false);
+        setAddProjectOpen(false);
+        navigate('/projects', { replace: true });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const editProject = (values) => {
-    const imgs = images.map(({ name }) => {
-      return `users/${user?.id}/projects/${name}`;
-    });
-    update(ref(db, 'users/' + user?.id + '/projects/' + project[0]), {
-      title: values.projectTitle,
-      quote: values.projectQuote,
-      firstDescription: values.projectFirstDescription,
-      firstDescriptionTitle: values.projectFirstDescriptionTitle,
-      secondDescription: values.projectSecondDescription,
-      secondDescriptionTitle: values.projectSecondDescriptionTitle,
-      subject: values.projectSubject,
-      date: values.projectDate,
-      platforms: values.projectPlatforms,
-      technologies: values.projectTechnologies,
-      images: imgs,
-    });
-
-    images?.map((image) => {
-      uploadBytes(
-        sRef(storage, `users/${user?.id}/projects/${image.name}`),
-        image
-      );
-      return null;
-    });
-
-    setAddProjectOpen(false);
-    navigate('/projects', { replace: true });
+    if (photoChanged && images.length !== 0) {
+      if (project[1]?.images === []) {
+        editFunction(values);
+      } else {
+        listAll(sRef(storage, `users/${user?.id}/projects/$${project.title}`))
+          .then((res) => {
+            res.items.forEach((itemRef) => {
+              deleteObject(sRef(storage, itemRef)).catch((error) => {
+                console.log(error);
+              });
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            editFunction(values);
+          });
+      }
+    } else {
+      update(ref(db, 'users/' + user?.id + '/projects/' + project[0]), {
+        title: values.projectTitle,
+        quote: values.projectQuote,
+        firstDescription: values.projectFirstDescription,
+        firstDescriptionTitle: values.projectFirstDescriptionTitle,
+        secondDescription: values.projectSecondDescription,
+        secondDescriptionTitle: values.projectSecondDescriptionTitle,
+        subject: values.projectSubject,
+        date: values.projectDate,
+        platforms: values.projectPlatforms,
+        technologies: values.projectTechnologies,
+        images: getImageInfo(),
+      });
+      setPhotoChanged(false);
+      setAddProjectOpen(false);
+      navigate('/projects', { replace: true });
+    }
   };
 
   const removeProject = (id) => {
@@ -146,14 +243,19 @@ const ProjectsList = ({ hasId }) => {
   const modal = (isList) =>
     isList ? (
       <FormWrapper
-        initialValues={initialValues(id ? project[1] : null)}
+        initialValues={initialValues(project ? project[1] : null)}
         schema={addProjectFormSchema}
-        title={id ? project[1].title : 'Add project'}
-        handleSubmit={id ? editProject : addProject}
+        title={project ? project[1].title : 'Add project'}
+        handleSubmit={project ? editProject : addProject}
         handleClose={() => setAddProjectOpen(false)}
       >
         {(formik) => (
-          <AddProjectForm formik={formik} urls={images} setImages={setImages} />
+          <AddProjectForm
+            formik={formik}
+            urls={images}
+            setImages={setImages}
+            setPhotoChanged={setPhotoChanged}
+          />
         )}
       </FormWrapper>
     ) : (
@@ -163,7 +265,7 @@ const ProjectsList = ({ hasId }) => {
         handleButton={() => handleButton()}
       >
         <MyProjectsForm
-          editHandler={() => handleButton()}
+          editHandler={handleButton}
           removeHandler={(id) => removeProject(id)}
         />
       </Modal>
@@ -174,7 +276,6 @@ const ProjectsList = ({ hasId }) => {
       const element = document.querySelector('body');
       const classList = element.className.split(/\s+/);
       for (var i = 0; i < classList.length; i++) {
-        console.log(classList[i]?.split('-'));
         if (classList[i]?.split('-')[1] === 'theme') {
           element.classList.remove(classList[i]);
         }

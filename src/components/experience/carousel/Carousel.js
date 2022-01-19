@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import Helmet from 'react-helmet';
 import Glide from '@glidejs/glide';
-import { useParams } from 'react-router-dom';
 
 import '@glidejs/glide/dist/css/glide.core.css';
 
@@ -23,7 +22,6 @@ export const Carousel = forwardRef(({ options, children, dates }, ref) => {
   const [year, setYear] = useState(dates[0].split('_')[0]);
   const sliderRef = useRef();
   const refEl = useRef();
-  const { userId } = useParams();
 
   useImperativeHandle(ref, () => sliderRef.current);
 
@@ -38,14 +36,6 @@ export const Carousel = forwardRef(({ options, children, dates }, ref) => {
 
     return () => slider.destroy();
   }, [options, dates]);
-
-  useEffect(() => {
-    var subStr = refEl?.current?.style?.transform.split('(-')[1].split('.');
-
-    if (subStr[0] > 7000) {
-      window.location.replace(userId ? `/${userId}/experience` : '/experience');
-    }
-  }, [userId]);
 
   return (
     <>

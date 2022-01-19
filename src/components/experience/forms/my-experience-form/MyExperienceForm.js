@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
 
 import { Context } from 'context/userContext';
 
@@ -8,16 +7,10 @@ import FormTitle from 'components/shared/forms/form-title';
 import ListElement from 'components/shared/forms/list-element';
 
 const MyExperienceForm = ({ editHandler, removeHandler }) => {
-  const navigate = useNavigate();
   const user = useContext(Context);
   const experiences = user?.info?.experiences;
 
   let currentYear = '';
-
-  const editHandle = (id) => {
-    editHandler();
-    navigate(`/experience?id=${id}`);
-  };
 
   const addTitle = (date, year) => {
     currentYear = new Date(date).getFullYear();
@@ -36,7 +29,7 @@ const MyExperienceForm = ({ editHandler, removeHandler }) => {
             {year === currentYear ? null : addTitle(exp[1].date, year, exp[0])}
             <ListElement
               name={exp[1].name}
-              editHandle={() => editHandle(exp[0])}
+              editHandle={() => editHandler(true, exp)}
               removeHandle={() => removeHandler(exp[0])}
             />
           </React.Fragment>

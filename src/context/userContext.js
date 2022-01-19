@@ -21,11 +21,22 @@ const UserContext = ({ children }) => {
         return id !== undefined && info?.username === id;
       });
       if (temp !== undefined) {
-        setInfo({
-          info: temp,
-          id: auth?.currentUser?.uid,
-          setId: setId,
-        });
+        if (temp?.info?.image && !temp?.info.image !== null) {
+          getDownloadURL(sRef(storage, temp?.info?.image)).then((url) => {
+            setInfo({
+              info: temp,
+              id: auth?.currentUser?.uid,
+              image: url,
+              setId: setId,
+            });
+          });
+        } else {
+          setInfo({
+            info: temp,
+            id: auth?.currentUser?.uid,
+            setId: setId,
+          });
+        }
       }
     });
   }
