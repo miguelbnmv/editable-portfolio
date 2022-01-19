@@ -24,7 +24,7 @@ export const editInfoFormSchema = Yup.object().shape({
     .test(
       'userUsername',
       'Invalid username - No spaces allowed',
-      (value) => !value.includes(' ')
+      (value) => !value?.includes(' ')
     )
     .required('Required'),
   userBio: Yup.string().required('Required'),

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
 import { getDatabase, ref, push, update, remove } from 'firebase/database';
 import {
   ref as sRef,
@@ -53,7 +53,7 @@ const allMonths = [
   'Dec',
 ];
 
-const Experience = ({ hadId }) => {
+const Experience = ({ hasId }) => {
   const navigate = useNavigate();
   const user = useContext(Context);
   const db = getDatabase();
@@ -67,6 +67,7 @@ const Experience = ({ hadId }) => {
   const years = useMemo(() => [], []);
   const id = searchParams.get('id');
   const experiences = user?.info?.experiences;
+  const { userId } = useParams();
 
   const experience = useMemo(
     () => Object.entries(experiences ?? {}).find((exp) => exp[0] === id),
@@ -270,15 +271,15 @@ const Experience = ({ hadId }) => {
         }
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [experiences, user?.info?.info?.color]);
+    user?.setId(userId);
+  }, [experiences, flag, user, user?.info?.info?.color, userId]);
 
   if (!user?.info) return <></>;
 
   return (
     <Layout
       pageTitle="Experience"
-      hasId
+      hasId={hasId}
       openModal={() => setMyExperienceOpen(true)}
     >
       <section className={contentContainer}>
@@ -333,6 +334,7 @@ const Experience = ({ hadId }) => {
             message="Não existem experiências"
             button="Adiciona experiências à timeline"
             handle={() => handleButton()}
+            hasId={hasId}
           />
         )}
       </section>

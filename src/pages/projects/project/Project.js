@@ -35,7 +35,7 @@ import {
   masonryColumn,
 } from './project.module.scss';
 
-const Project = () => {
+const Project = ({ hasId }) => {
   const [editProjectOpen, setEditProjectOpen] = useState(false);
   const [imgsSrc, setImgsSrc] = useState([]);
   const [images, setImages] = useState([]);
@@ -150,13 +150,13 @@ const Project = () => {
     <Layout
       pageTitle={project?.title}
       noFill
-      hasId
+      hasId={hasId}
       openModal={() => setEditProjectOpen(true)}
     >
       {editProjectOpen ? modal(true) : null}
       <div className={contentContainer}>
         <div className={hero}>
-          <img src={imgsSrc[0]  ?? ProjectsPlaceholder} alt="project-banner" />
+          <img src={imgsSrc[0] ?? ProjectsPlaceholder} alt="project-banner" />
           <h1>
             {project?.title}. {project?.title}.
           </h1>
@@ -187,9 +187,15 @@ const Project = () => {
               <h4>"{project?.quote}"</h4>
             </div>
           </div>
-          <img src={imgsSrc[1] ?? ProjectsPlaceholder} alt="description-illustration" />
+          <img
+            src={imgsSrc[1] ?? ProjectsPlaceholder}
+            alt="description-illustration"
+          />
           <div className={secondaryBio}>
-            <img src={imgsSrc[2]  ?? ProjectsPlaceholder} alt="description-illustration" />
+            <img
+              src={imgsSrc[2] ?? ProjectsPlaceholder}
+              alt="description-illustration"
+            />
             <div>
               <h3>{project?.secondDescriptionTitle}</h3>
               <p>{project?.secondDescription}</p>

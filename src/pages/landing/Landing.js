@@ -79,6 +79,7 @@ const Landing = () => {
     set(ref(db, 'users/' + user?.id), {
       info: {
         name: values.userName,
+        username: values.userUsername,
         image: getImageInfo(),
         bio: values.userBio,
         role: values.userRole,

@@ -15,7 +15,6 @@ const ProjectImage = ({ project, active, x, y }) => {
 
   if (project[1]?.images) {
     getDownloadURL(sRef(storage, project[1]?.images[0])).then((url) => {
-      console.log(1, url);
       setRefSrc(url);
     });
   }

@@ -58,7 +58,6 @@ const Home = ({ hasId }) => {
   const db = getDatabase();
   const user = useContext(Context);
   const info = user?.info?.info;
-
   const { userId } = useParams();
 
   const {
@@ -134,6 +133,7 @@ const Home = ({ hasId }) => {
       update(ref(db, 'users/' + user?.id), {
         info: {
           name: values.userName,
+          username: values.userUsername,
           image: getImageInfo(),
           bio: values.userBio,
           role: values.userRole,

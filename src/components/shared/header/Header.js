@@ -48,7 +48,7 @@ const Header = ({ pageTitle, noFill, hide, openModal, hasId }) => {
       return (
         <>
           {hide ? (
-            <Button handle={() => logout()} text="Logout" color="white" />
+            <Button handle={() => logoutUser()} text="Logout" color="white" />
           ) : null}
           <Button
             handle={openModal}
