@@ -182,7 +182,7 @@ const Home = ({ hasId }) => {
   );
 
   useEffect(() => {
-    const classList = document.getElementById('body').className.split(/\s+/);
+    const classList = document.querySelector('body').classList.split(/\s+/);
     for (var i = 0; i < classList.length; i++) {
       if (classList[i]?.split('-')[1] === 'theme') {
         console.log(classList[i], classList[i?.split('-')[1]]);
