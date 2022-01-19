@@ -1,5 +1,6 @@
 import React, { useState, useContext, useMemo, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
 import { getDatabase, ref, push, update, remove } from 'firebase/database';
 import {
   ref as sRef,
@@ -52,20 +53,21 @@ const allMonths = [
   'Dec',
 ];
 
-const Experience = () => {
+const Experience = ({ hasId }) => {
+  const navigate = useNavigate();
+  const user = useContext(Context);
+  const db = getDatabase();
   const [addExperienceOpen, setAddExperienceOpen] = useState(false);
   const [myExperienceOpen, setMyExperienceOpen] = useState(false);
   const [images, setImages] = useState([]);
   const [photoChanged, setPhotoChanged] = useState(false);
   const [flag, setFlag] = useState(true);
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const user = useContext(Context);
-  const db = getDatabase();
   const months = useMemo(() => [], []);
   const years = useMemo(() => [], []);
   const id = searchParams.get('id');
   const experiences = user?.info?.experiences;
+  const { userId } = useParams();
 
   const experience = useMemo(
     () => Object.entries(experiences ?? {}).find((exp) => exp[0] === id),
@@ -246,7 +248,7 @@ const Experience = () => {
       </Modal>
     );
 
-  useEffect(() => {  
+  useEffect(() => {
     document
       .querySelector('body')
       .classList.add(
@@ -269,13 +271,17 @@ const Experience = () => {
         }
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [experiences, user?.info?.info?.color]);
+    user?.setId(userId);
+  }, [experiences, flag, user, user?.info?.info?.color, userId]);
 
   if (!user?.info) return <></>;
 
   return (
-    <Layout pageTitle="Experience" openModal={() => setMyExperienceOpen(true)}>
+    <Layout
+      pageTitle="Experience"
+      hasId={hasId}
+      openModal={() => setMyExperienceOpen(true)}
+    >
       <section className={contentContainer}>
         {addExperienceOpen ? modal(true) : null}
         {myExperienceOpen ? modal(false) : null}
@@ -328,6 +334,7 @@ const Experience = () => {
             message="Não existem experiências"
             button="Adiciona experiências à timeline"
             handle={() => handleButton()}
+            hasId={hasId}
           />
         )}
       </section>
@@ -336,3 +343,7 @@ const Experience = () => {
 };
 
 export default Experience;
+
+Experience.propTypes = {
+  hasId: PropTypes.bool,
+};

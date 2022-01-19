@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 
 export const initialValues = (user) => ({
   userName: user?.name ?? '',
+  userUsername: user?.username ?? '',
   userPhoto: user?.photo ?? '',
   userBio: user?.bio ?? '',
   userRole: user?.role ?? '',
@@ -19,6 +20,13 @@ export const initialValues = (user) => ({
 
 export const editInfoFormSchema = Yup.object().shape({
   userName: Yup.string().required('Required'),
+  userUsername: Yup.string()
+    .test(
+      'userUsername',
+      'Invalid username - No spaces allowed',
+      (value) => !value?.includes(' ')
+    )
+    .required('Required'),
   userBio: Yup.string().required('Required'),
   userRole: Yup.string().required('Required'),
   userEmail: Yup.string().email('Invalid email'),

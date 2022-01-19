@@ -1,7 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import useMightyMouse from 'react-hook-mighty-mouse';
 import { getDatabase, ref, update } from 'firebase/database';
 import { ref as sRef, uploadBytes, deleteObject } from 'firebase/storage';
+import { useParams } from 'react-router-dom';
 
 import GithubIcon from 'assets/icons/Github.svg';
 import InstagramIcon from 'assets/icons/Instagram.svg';
@@ -48,7 +50,7 @@ const icons = {
   dribble: DribbleIcon,
 };
 
-const Home = () => {
+const Home = ({ hasId }) => {
   const [contactOpen, setContactOpen] = useState(false);
   const [editInfoOpen, setEditInfoOpen] = useState(false);
   const [photoChanged, setPhotoChanged] = useState(false);
@@ -56,6 +58,7 @@ const Home = () => {
   const db = getDatabase();
   const user = useContext(Context);
   const info = user?.info?.info;
+  const { userId } = useParams();
 
   const {
     selectedElement: {
@@ -89,6 +92,7 @@ const Home = () => {
       update(ref(db, 'users/' + user?.id), {
         info: {
           name: values.userName,
+          username: values.userUsername,
           image: getImageInfo(),
           bio: values.userBio,
           role: values.userRole,
@@ -129,6 +133,7 @@ const Home = () => {
       update(ref(db, 'users/' + user?.id), {
         info: {
           name: values.userName,
+          username: values.userUsername,
           image: getImageInfo(),
           bio: values.userBio,
           role: values.userRole,
@@ -177,15 +182,21 @@ const Home = () => {
   );
 
   useEffect(() => {
-     if (info?.color) {
-      document.querySelector('body').classList.add(info?.color);
-    }
-  }, [info?.color]);
+    document
+      .querySelector('body')
+      .classList.add(info?.color === '' ? 'green-theme' : info?.color);
+    user?.setId(userId);
+  }, [info?.color, user, userId]);
 
   if (!info) return <div id="notGoodPractice"></div>;
 
   return (
-    <Layout pageTitle="Home" hide openModal={() => setEditInfoOpen(true)}>
+    <Layout
+      pageTitle="Home"
+      hide
+      hasId={hasId}
+      openModal={() => setEditInfoOpen(true)}
+    >
       {contactOpen ? modal(true) : null}
       {editInfoOpen ? modal(false) : null}
       <section className={contentContainer}>
@@ -241,3 +252,7 @@ const Home = () => {
 };
 
 export default Home;
+
+Home.propTypes = {
+  hasId: PropTypes.bool,
+};

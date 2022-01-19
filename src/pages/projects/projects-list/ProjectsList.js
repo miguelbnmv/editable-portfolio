@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect, useMemo } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
 import { getDatabase, ref, push, update, remove } from 'firebase/database';
 import { ref as sRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 
@@ -42,7 +43,7 @@ const useMousePosition = () => {
   return mousePosition;
 };
 
-const ProjectsList = () => {
+const ProjectsList = ({ hasId }) => {
   const navigate = useNavigate();
   const user = useContext(Context);
   const db = getDatabase();
@@ -54,6 +55,7 @@ const ProjectsList = () => {
   const { x, y } = useMousePosition();
   const projects = user?.info?.projects;
   const id = searchParams.get('id');
+  const { userId } = useParams();
 
   const project = useMemo(
     () => Object.entries(projects ?? {}).find((project) => project[0] === id),
@@ -167,10 +169,21 @@ const ProjectsList = () => {
       </Modal>
     );
 
+  useEffect(() => {
+    document
+      .querySelector('body')
+      .classList.add(user?.info?.info?.color === '' ? 'green-theme' : user?.info?.info?.color);
+    user?.setId(userId);
+  }, [user, userId]);
+
   if (!user?.info) return <></>;
 
   return (
-    <Layout pageTitle="Projects" openModal={() => setMyProjectsOpen(true)}>
+    <Layout
+      pageTitle="Projects"
+      hasId={hasId}
+      openModal={() => setMyProjectsOpen(true)}
+    >
       <section className={contentContainer}>
         {addProjectOpen ? modal(true) : null}
         {myProjectsOpen ? modal(false) : null}
@@ -208,6 +221,7 @@ const ProjectsList = () => {
             message="Não existe nenhum projeto"
             button="Adiciona o teu primeiro projeto!"
             handle={() => setAddProjectOpen(true)}
+            hasId={hasId}
           />
         )}
       </section>
@@ -216,3 +230,7 @@ const ProjectsList = () => {
 };
 
 export default ProjectsList;
+
+ProjectsList.propTypes = {
+  hasId: PropTypes.bool,
+};
