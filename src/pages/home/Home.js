@@ -182,7 +182,13 @@ const Home = ({ hasId }) => {
   );
 
   useEffect(() => {
-    console.log(info?.color);
+    const classList = document.getElementById('body').className.split(/\s+/);
+    for (var i = 0; i < classList.length; i++) {
+      if (classList[i]?.split('-')[1] === 'theme') {
+        console.log(classList[i], classList[i?.split('-')[1]]);
+        document.querySelector('body').classList.remove(classList[i]);
+      }
+    }
     document
       .querySelector('body')
       .classList.add(info?.color === '' ? 'green-theme' : info?.color);
