@@ -67,7 +67,6 @@ const ProjectsList = ({ hasId }) => {
     if (elProject && isEdit) {
       setProject(elProject);
       setImages([]);
-      console.log(elProject[1]?.images);
       Promise.all(
         elProject[1]?.images?.map((image) => {
           return getDownloadURL(sRef(storage, image)).then((url) => {

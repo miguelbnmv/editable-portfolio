@@ -50,8 +50,6 @@ const FilesInput = ({
       setImages([]);
       setPhotoChanged(true);
     } else {
-      console.log(url);
-      console.log(fileUrls);
       const index = fileUrls.indexOf(url);
       if (index > -1) {
         fileUrls.splice(index, 1);

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getDatabase, ref, push, update, remove } from 'firebase/database';
 import {
   ref as sRef,
@@ -62,34 +62,31 @@ const Experience = ({ hasId }) => {
   const [images, setImages] = useState([]);
   const [photoChanged, setPhotoChanged] = useState(false);
   const [flag, setFlag] = useState(true);
-  const [searchParams] = useSearchParams();
+  const [experience, setExperience] = useState(null);
   const months = useMemo(() => [], []);
   const years = useMemo(() => [], []);
-  const id = searchParams.get('id');
   const experiences = user?.info?.experiences;
   const { userId } = useParams();
 
-  const experience = useMemo(
-    () => Object.entries(experiences ?? {}).find((exp) => exp[0] === id),
-    [experiences, id]
-  );
-
-  const handleButton = (isNew) => {
-    if (id) {
-      getDownloadURL(sRef(storage, experience[1]?.image))
+  const handleButton = (isEdit, elExp) => {
+    if (elExp && isEdit) {
+      setExperience(elExp);
+      setImages([]);
+      getDownloadURL(sRef(storage, elExp[1]?.image))
         .then((url) => {
           setImages([url]);
         })
         .finally(() => {
           setMyExperienceOpen(false);
           setAddExperienceOpen(true);
-          if (isNew) navigate('/experience', { replace: true });
+          navigate('/experience', { replace: true });
         });
     } else {
+      setExperience(null);
       setImages([]);
       setMyExperienceOpen(false);
       setAddExperienceOpen(true);
-      if (isNew) navigate('/experience', { replace: true });
+      navigate('/experience', { replace: true });
     }
   };
 
@@ -113,7 +110,7 @@ const Experience = ({ hasId }) => {
       .then((url) => {
         getDownloadURL(sRef(storage, url.ref))
           .then((url) => {
-            document.getElementById(user?.info?.experiences[id]?.date).src =
+            document.getElementById(user?.info?.experiences[experience[0]]?.date).src =
               url;
           })
           .catch((error) => console.log(error));
@@ -143,10 +140,7 @@ const Experience = ({ hasId }) => {
       )
         .then((url) => {
           getDownloadURL(sRef(storage, url.ref))
-            .then((url) => {
-              document.getElementById(user?.info?.experiences[id]?.date).src =
-                url;
-            })
+            .then(() => {})
             .catch((error) => {
               console.log(error);
             });
@@ -175,6 +169,7 @@ const Experience = ({ hasId }) => {
       if (experience[1]?.image === '') {
         editFunction(values);
       } else {
+        console.log(experience[1]?.image);
         deleteObject(sRef(storage, experience[1]?.image))
           .catch((error) => {
             console.log(error);
@@ -220,10 +215,10 @@ const Experience = ({ hasId }) => {
   const modal = (isList) =>
     isList ? (
       <FormWrapper
-        initialValues={initialValues(id ? experience[1] : null)}
+        initialValues={initialValues(experience ? experience[1] : null)}
         schema={addExperienceFormSchema}
-        title={id ? experience[1]?.name : 'Add experience'}
-        handleSubmit={id ? editExperience : addExperience}
+        title={experience ? experience[1]?.name : 'Add experience'}
+        handleSubmit={experience ? editExperience : addExperience}
         handleClose={() => setAddExperienceOpen(false)}
       >
         {(formik) => (
@@ -242,7 +237,7 @@ const Experience = ({ hasId }) => {
         handleButton={() => handleButton(true)}
       >
         <MyExperienceForm
-          editHandler={() => handleButton()}
+          editHandler={handleButton}
           removeHandler={(id) => removeExperience(id)}
         />
       </Modal>
@@ -253,7 +248,6 @@ const Experience = ({ hasId }) => {
       const element = document.querySelector('body');
       const classList = element.className.split(/\s+/);
       for (var i = 0; i < classList.length; i++) {
-        console.log(classList[i]?.split('-'));
         if (classList[i]?.split('-')[1] === 'theme') {
           element.classList.remove(classList[i]);
         }
@@ -263,6 +257,7 @@ const Experience = ({ hasId }) => {
 
     if (experiences && flag) {
       Object.keys(experiences).map((id) => {
+        console.log(id);
         if (user?.info?.experiences[id]?.image === '') {
           return (document.getElementById(
             user?.info?.experiences[id]?.date
@@ -278,7 +273,7 @@ const Experience = ({ hasId }) => {
       });
     }
     user?.setId(userId);
-  }, [experiences, flag, user, user?.info?.info?.color, userId]);
+  }, [experiences, flag, user, userId]);
 
   if (!user?.info) return <></>;
 
